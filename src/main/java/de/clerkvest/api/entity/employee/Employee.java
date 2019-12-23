@@ -1,7 +1,11 @@
 package de.clerkvest.api.entity.employee;
 
 import de.clerkvest.api.entity.company.Company;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.hateoas.RepresentationModel;
 
 import javax.persistence.*;

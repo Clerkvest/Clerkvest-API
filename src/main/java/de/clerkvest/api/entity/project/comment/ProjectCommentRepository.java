@@ -1,6 +1,5 @@
 package de.clerkvest.api.entity.project.comment;
 
-import de.clerkvest.api.entity.image.Image;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
