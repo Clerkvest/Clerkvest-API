@@ -21,7 +21,7 @@ public class Invest extends RepresentationModel {
     @Id
     @SequenceGenerator(name = "invest_gen", sequenceName = "invest_invest_id_seq", allocationSize = 1)
     @GeneratedValue(generator = "invest_gen", strategy = GenerationType.SEQUENCE)
-    @Column(name = "invest_id", updatable = false)
+    @Column(name = "invest_in_id", updatable = false)
     private Long investInId;
 
     @ManyToOne(targetEntity = Project.class)

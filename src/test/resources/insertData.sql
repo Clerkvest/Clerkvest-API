@@ -1,6 +1,6 @@
 CREATE TABLE IF NOT EXISTS company
 (
-    company_id   BIGSERIAL PRIMARY KEY,
+    company_id   BIGINT auto_increment PRIMARY KEY,
     name         varchar(255)                                     NOT NULL,
     domain       varchar(255)                                     NOT NULL,
     image_id  bigint                                                        ,
@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS company
 
 CREATE TABLE IF NOT EXISTS email_token
 (
-    email_token_id BIGSERIAL PRIMARY KEY,
+    email_token_id BIGINT auto_increment PRIMARY KEY,
     employee_id    bigint                                                                                  NOT NULL,
     created_at     timestamp DEFAULT now()                                               NOT NULL,
     token          varchar(255)                                                                  NOT NULL
@@ -22,7 +22,7 @@ CREATE TABLE IF NOT EXISTS email_token
 
 CREATE TABLE IF NOT EXISTS employee
 (
-    employee_id BIGSERIAL PRIMARY KEY,
+    employee_id BIGINT auto_increment PRIMARY KEY,
     company_id  bigint                                                       NOT NULL,
     email       varchar(255)                                       NOT NULL,
     balance     DECIMAL                                                      NOT NULL,
@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS employee
 
 CREATE TABLE IF NOT EXISTS employee_comment
 (
-    employee_comment_id BIGSERIAL PRIMARY KEY,
+    employee_comment_id BIGINT auto_increment PRIMARY KEY,
     employee_id         bigint                                                                                            NOT NULL,
     commenter_id        bigint                                                                                            NOT NULL,
     comment             varchar(255)                                                                            NOT NULL,
@@ -48,7 +48,7 @@ CREATE TABLE IF NOT EXISTS employee_comment
 
 CREATE TABLE IF NOT EXISTS project
 (
-    project_id  BIGSERIAL PRIMARY KEY,
+    project_id  BIGINT auto_increment PRIMARY KEY,
     employee_id bigint                                                                          NOT NULL,
     company_id  bigint                                                                          NOT NULL,
     link        varchar(255)                                                          NOT NULL,
@@ -65,7 +65,7 @@ CREATE TABLE IF NOT EXISTS project
 
 CREATE TABLE IF NOT EXISTS invest_in
 (
-    invest_in_id BIGSERIAL PRIMARY KEY,
+    invest_in_id BIGINT auto_increment PRIMARY KEY,
     project_id   bigint                                                         NOT NULL,
     employee_id  bigint                                                         NOT NULL,
     investment   DECIMAL                                                        NOT NULL
@@ -74,7 +74,7 @@ CREATE TABLE IF NOT EXISTS invest_in
 
 CREATE TABLE IF NOT EXISTS project_comment
 (
-    project_comment_id BIGSERIAL PRIMARY KEY,
+    project_comment_id BIGINT auto_increment PRIMARY KEY,
     employee_id        bigint                                                                                          NOT NULL,
     project_id         bigint                                                                                          NOT NULL,
     title              varchar(255)                                                                          NOT NULL,
@@ -84,7 +84,7 @@ CREATE TABLE IF NOT EXISTS project_comment
 
 CREATE TABLE IF NOT EXISTS image
 (
-    image_id   BIGSERIAL PRIMARY KEY,
+    image_id   BIGINT auto_increment PRIMARY KEY,
     fileName   varchar(255)                                     NOT NULL,
     path       varchar(255)                                     NOT NULL
 );
