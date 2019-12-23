@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://github.com/clerkvest">
-    <img alt="Clerkvest" title="Clerkvest" src=".github/images/clerkvest_github_readme.png" width="350">
+    <img alt="Clerkvest" title="Clerkvest" src=".github/images/Clerkvest_Github_Readme.png" width="350">
   </a>
   <br>
   <a href="https://github.com/Clerkvest/Clerkvest-API">
