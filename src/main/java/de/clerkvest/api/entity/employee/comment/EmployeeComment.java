@@ -1,6 +1,7 @@
 package de.clerkvest.api.entity.employee.comment;
 
 import de.clerkvest.api.entity.employee.Employee;
+import de.clerkvest.api.implement.service.IServiceEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -19,7 +20,7 @@ import java.sql.Timestamp;
 @Getter
 @Table(name = "employee_comment")
 @Entity
-public class EmployeeComment extends RepresentationModel {
+public class EmployeeComment extends RepresentationModel<EmployeeComment> implements IServiceEntity {
 
     @Id
     @SequenceGenerator(name = "employee_comment_gen", sequenceName = "employee_comment_employee_comment_id_seq", allocationSize = 1)
@@ -43,4 +44,13 @@ public class EmployeeComment extends RepresentationModel {
     @NotNull
     private Timestamp date;
 
+    @Override
+    public Long getId () {
+        return employeeCommentId;
+    }
+
+    @Override
+    public void setId (Long id) {
+        employeeCommentId = id;
+    }
 }

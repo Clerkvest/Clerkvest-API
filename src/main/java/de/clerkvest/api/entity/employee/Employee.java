@@ -1,6 +1,7 @@
 package de.clerkvest.api.entity.employee;
 
 import de.clerkvest.api.entity.company.Company;
+import de.clerkvest.api.implement.service.IServiceEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -20,7 +21,7 @@ import java.math.BigDecimal;
 @Getter
 @Table(name = "employee")
 @Entity
-public class Employee extends RepresentationModel {
+public class Employee extends RepresentationModel<Employee> implements IServiceEntity {
     @Id
     @SequenceGenerator(name = "employee_gen", sequenceName = "employee_employee_id_seq", allocationSize = 1)
     @GeneratedValue(generator = "employee_gen", strategy = GenerationType.SEQUENCE)
@@ -51,4 +52,13 @@ public class Employee extends RepresentationModel {
 
     private boolean is_admin;
 
+    @Override
+    public Long getId () {
+        return employeeId;
+    }
+
+    @Override
+    public void setId (Long id) {
+        employeeId = id;
+    }
 }
