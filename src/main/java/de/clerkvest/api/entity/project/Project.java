@@ -16,6 +16,15 @@ import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+/**
+ * api <p>
+ * de.clerkvest.api.entity.project <p>
+ * Project.java <p>
+ *
+ * @author Michael K.
+ * @version 1.0
+ * @since 21 Dec 2019 19:13
+ */
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor

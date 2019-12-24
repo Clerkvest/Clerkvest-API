@@ -22,6 +22,15 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
+/**
+ * api <p>
+ * de.clerkvest.api.entity.investment <p>
+ * Invest.java <p>
+ *
+ * @author Michael K.
+ * @version 1.0
+ * @since 21 Dec 2019 19:12
+ */
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor

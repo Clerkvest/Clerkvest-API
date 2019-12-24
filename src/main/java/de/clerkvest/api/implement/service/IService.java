@@ -5,9 +5,10 @@ import java.util.Optional;
 
 /**
  * api <p>
+ * de.clerkvest.api.implement.service <p>
  * IService.java <p>
  *
- * @author q1x
+ * @author Danny B.
  * @version 1.0
  * @since 21 Dec 2019 19:27
  */

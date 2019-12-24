@@ -1,12 +1,13 @@
 package de.clerkvest.api.entity.project;
 
-import org.springframework.web.bind.annotation.RestController;
+        import org.springframework.web.bind.annotation.RestController;
 
 /**
  * api <p>
+ * de.clerkvest.api.entity.project <p>
  * ProjectController.java <p>
  *
- * @author q1x
+ * @author Danny B.
  * @version 1.0
  * @since 21 Dec 2019 19:13
  */

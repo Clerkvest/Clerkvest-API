@@ -13,6 +13,15 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 
+/**
+ * api <p>
+ * de.clerkvest.api.entity.employee.comment <p>
+ * EmployeeComment.java <p>
+ *
+ * @author Michael K.
+ * @version 1.0
+ * @since 21 Dec 2019 19:10
+ */
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor

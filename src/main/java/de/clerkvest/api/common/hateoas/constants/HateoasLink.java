@@ -2,9 +2,10 @@ package de.clerkvest.api.common.hateoas.constants;
 
 /**
  * api <p>
+ * de.clerkvest.api.common.hateoas.constants <p>
  * HateoasLink.java <p>
  *
- * @author q1x
+ * @author Danny B.
  * @version 1.0
  * @since 22 Dec 2019 11:33
  */

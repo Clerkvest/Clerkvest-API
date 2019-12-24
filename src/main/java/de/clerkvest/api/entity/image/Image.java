@@ -17,6 +17,15 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+/**
+ * api <p>
+ * de.clerkvest.api.entity.image <p>
+ * Image.java <p>
+ *
+ * @author Michael K.
+ * @version 1.0
+ * @since 21 Dec 2019 19:11
+ */
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor

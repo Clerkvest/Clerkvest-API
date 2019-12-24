@@ -8,9 +8,10 @@ import org.springframework.hateoas.RepresentationModel;
 
 /**
  * api <p>
+ * de.clerkvest.api.common.hateoas.link <p>
  * LinkBuilder.java <p>
  *
- * @author q1x
+ * @author Danny B.
  * @version 1.0
  * @since 22 Dec 2019 12:28
  */
