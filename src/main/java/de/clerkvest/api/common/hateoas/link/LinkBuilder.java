@@ -11,27 +11,43 @@ import org.springframework.hateoas.RepresentationModel;
  * de.clerkvest.api.common.hateoas.link <p>
  * LinkBuilder.java <p>
  *
+ *     Build class to add HATEOAS field {@code _link} to a object that extends {@code RepresentationModel}. <p>
+ *
+ *     Example:
+ *     <pre>
+ *     LinkBuilder<Company> linkBuilder = new LinkBuilder<Company>()
+ *          .withSelf(HateoasLink.COMPANY_SINGLE)
+ *          .withAll(HateoasLink.COMPANY_ALL)
+ *          .withCreate(HateoasLink.COMPANY_CREATE)
+ *          .withDelete(HateoasLink.COMPANY_DELETE)
+ *          .withUpdate(HateoasLink.COMPANY_UPDATE);
+ *      linkBuilder.ifDesiredEmbed(company);
+ *      </pre>
+ *
  * @author Danny B.
  * @version 1.0
  * @since 22 Dec 2019 12:28
+ *
+ * @see RepresentationModel
+ * @see IServiceEntity
  */
 @Data
 public class LinkBuilder<T extends RepresentationModel<T> & IServiceEntity> {
 
     /** _link to itself */
-    private String self;
+    private String self = HateoasLink.BASE_ENDPOINT;
 
     /** _link to all entities */
-    private String all;
+    private String all = HateoasLink.BASE_ENDPOINT;
 
     /** _link to delete a entity */
-    private String delete;
+    private String delete = HateoasLink.BASE_ENDPOINT;
 
     /** _link to create a entity */
-    private String create;
+    private String create = HateoasLink.BASE_ENDPOINT;
 
     /** _link to update a entity */
-    private String update;
+    private String update = HateoasLink.BASE_ENDPOINT;
 
     /** Defines if self should be embedded into _link */
     private boolean withSelf = false;
@@ -52,30 +68,11 @@ public class LinkBuilder<T extends RepresentationModel<T> & IServiceEntity> {
      * Creates an instance of LinkBuilder with default values;
      */
     public LinkBuilder () {
-        this.self = HateoasLink.BASE_ENDPOINT;
-        this.all = HateoasLink.BASE_ENDPOINT;
-        this.delete = HateoasLink.BASE_ENDPOINT;
-        this.create = HateoasLink.BASE_ENDPOINT;
     }
 
     /**
-     * Creates an instance of LinkBuilder with given params
-     * @param self Link to itself
-     * @param all Link to all entities
-     * @param delete Link to delete an entity
-     * @param create Link to create an entity
-     * @param update Link to update an entity
-     */
-    public LinkBuilder (String self, String all, String delete, String create, String update) {
-        this.self = self;
-        this.all = all;
-        this.delete = delete;
-        this.create = create;
-        this.update = update;
-    }
-
-    /**
-     * Sets the property withSelf to true. <p></p>
+     * Sets the property withSelf to true.
+     * And sets the link to itself.
      *
      * @param link link to self
      *
@@ -88,7 +85,8 @@ public class LinkBuilder<T extends RepresentationModel<T> & IServiceEntity> {
     }
 
     /**
-     * Sets the property withAll to true. <p></p>
+     * Sets the property withAll to true.
+     * And sets the link to all entities.
      *
      * @param link link to all
      *
@@ -101,7 +99,8 @@ public class LinkBuilder<T extends RepresentationModel<T> & IServiceEntity> {
     }
 
     /**
-     * Sets the property withDelete to true. <p></p>
+     * Sets the property withDelete to true.
+     * And sets the link to delete an entity.
      *
      * @param link link to delete
      *
@@ -114,7 +113,8 @@ public class LinkBuilder<T extends RepresentationModel<T> & IServiceEntity> {
     }
 
     /**
-     * Sets the property withCreate to true. <p></p>
+     * Sets the property withCreate to true.
+     * And sets the link to create an entity.
      *
      * @param link link to create
      *
@@ -127,7 +127,8 @@ public class LinkBuilder<T extends RepresentationModel<T> & IServiceEntity> {
     }
 
     /**
-     * Sets the property withUpdate to true. <p></p>
+     * Sets the property withUpdate to true.
+     * And sets the link to update an entity.
      *
      * @param link link to update
      *
@@ -209,7 +210,7 @@ public class LinkBuilder<T extends RepresentationModel<T> & IServiceEntity> {
     }
 
     /**
-     * Embeds the Links into the object if desired
+     * Embeds all desired links into the object
      *
      * @param model model
      *
