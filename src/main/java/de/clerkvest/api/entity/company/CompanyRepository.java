@@ -1,16 +1,16 @@
 package de.clerkvest.api.entity.company;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 import java.util.Optional;
 
 /**
  * api <p>
+ * de.clerkvest.api.entity.employee.company <p>
  * CompanyRepository.java <p>
  *
- * @author q1x
+ * @author Danny B.
  * @version 1.0
  * @since 21 Dec 2019 17:14
  */

@@ -4,7 +4,11 @@ import de.clerkvest.api.entity.company.Company;
 import de.clerkvest.api.entity.employee.Employee;
 import de.clerkvest.api.entity.image.Image;
 import de.clerkvest.api.implement.service.IServiceEntity;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.hateoas.RepresentationModel;
 
 import javax.persistence.*;
@@ -12,6 +16,15 @@ import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+/**
+ * api <p>
+ * de.clerkvest.api.entity.project <p>
+ * Project.java <p>
+ *
+ * @author Michael K.
+ * @version 1.0
+ * @since 21 Dec 2019 19:13
+ */
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor

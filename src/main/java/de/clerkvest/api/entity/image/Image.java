@@ -1,12 +1,31 @@
 package de.clerkvest.api.entity.image;
 
 import de.clerkvest.api.implement.service.IServiceEntity;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.hateoas.RepresentationModel;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+/**
+ * api <p>
+ * de.clerkvest.api.entity.image <p>
+ * Image.java <p>
+ *
+ * @author Michael K.
+ * @version 1.0
+ * @since 21 Dec 2019 19:11
+ */
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor

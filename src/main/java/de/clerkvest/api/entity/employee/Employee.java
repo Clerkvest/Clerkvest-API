@@ -2,7 +2,11 @@ package de.clerkvest.api.entity.employee;
 
 import de.clerkvest.api.entity.company.Company;
 import de.clerkvest.api.implement.service.IServiceEntity;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.hateoas.RepresentationModel;
 
 import javax.persistence.*;
@@ -10,6 +14,15 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
+/**
+ * api <p>
+ * de.clerkvest.api.entity.employee <p>
+ * Employee.java <p>
+ *
+ * @author Michael K.
+ * @version 1.0
+ * @since 21 Dec 2019 19:10
+ */
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
