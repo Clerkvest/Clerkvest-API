@@ -25,7 +25,7 @@ import static org.springframework.http.HttpStatus.OK;
 @Transactional
 public class GetCompanyResourceTest {
 
-    private final static String REST_ENDPOINT_URL = REST_BASE_URL + "/company/";
+    private final static String REST_ENDPOINT_URL = REST_BASE_URL + "/company/get/";
 
     @Test
     public void getCompany_0() {

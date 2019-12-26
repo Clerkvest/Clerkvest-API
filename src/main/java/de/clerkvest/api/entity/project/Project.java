@@ -3,6 +3,7 @@ package de.clerkvest.api.entity.project;
 import de.clerkvest.api.entity.company.Company;
 import de.clerkvest.api.entity.employee.Employee;
 import de.clerkvest.api.entity.image.Image;
+import de.clerkvest.api.implement.service.IServiceEntity;
 import lombok.*;
 import org.springframework.hateoas.RepresentationModel;
 
@@ -18,7 +19,7 @@ import java.time.LocalDateTime;
 @Getter
 @Table(name = "project")
 @Entity
-public class Project extends RepresentationModel {
+public class Project extends RepresentationModel<Project> implements IServiceEntity {
 
     @Id
     @SequenceGenerator(name = "project_gen", sequenceName = "project_project_id_seq", allocationSize = 1)
@@ -59,4 +60,13 @@ public class Project extends RepresentationModel {
 
     private LocalDateTime fundedAt;
 
+    @Override
+    public Long getId() {
+        return getProjectId();
+    }
+
+    @Override
+    public void setId(Long id) {
+        setProjectId(id);
+    }
 }

@@ -1,5 +1,6 @@
 package de.clerkvest.api.entity.image;
 
+import de.clerkvest.api.exception.ClerkEntityNotFoundException;
 import de.clerkvest.api.implement.service.IService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,22 +22,38 @@ public class ImageService implements IService<Image> {
     private final ImageRepository repository;
 
     @Autowired
-    public ImageService (ImageRepository repository) {
+    public ImageService(ImageRepository repository) {
         this.repository = repository;
     }
 
     @Override
-    public void save (Image image) {
+    public void save(Image image) {
         repository.save(image);
     }
 
     @Override
-    public List<Image> getAll () {
+    public void update(Image image) {
+        //Check if company is new
+        Optional<Image> existingImage = repository.findById(image.getId());
+        existingImage.ifPresentOrElse(
+                value -> {
+                    value.setFilename(image.getFilename());
+                    value.setPath(image.getPath());
+                    repository.save(value);
+                },
+                () -> {
+                    throw new ClerkEntityNotFoundException("Image can't be updated, not saved yet.");
+                }
+        );
+    }
+
+    @Override
+    public List<Image> getAll() {
         return repository.findAll();
     }
 
     @Override
-    public Optional<Image> getById (long id) {
+    public Optional<Image> getById(long id) {
         return repository.findById(id);
     }
 

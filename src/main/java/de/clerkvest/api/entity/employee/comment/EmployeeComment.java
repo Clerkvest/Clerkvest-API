@@ -1,7 +1,8 @@
 package de.clerkvest.api.entity.employee.comment;
 
-import lombok.*;
 import de.clerkvest.api.entity.employee.Employee;
+import de.clerkvest.api.implement.service.IServiceEntity;
+import lombok.*;
 import org.springframework.hateoas.RepresentationModel;
 
 import javax.persistence.*;
@@ -15,7 +16,7 @@ import java.sql.Timestamp;
 @Getter
 @Table(name = "employee_comment")
 @Entity
-public class EmployeeComment extends RepresentationModel {
+public class EmployeeComment extends RepresentationModel<EmployeeComment> implements IServiceEntity {
 
     @Id
     @SequenceGenerator(name = "employee_comment_gen", sequenceName = "employee_comment_employee_comment_id_seq", allocationSize = 1)
@@ -39,4 +40,13 @@ public class EmployeeComment extends RepresentationModel {
     @NotNull
     private Timestamp date;
 
+    @Override
+    public Long getId() {
+        return getEmployeeCommentId();
+    }
+
+    @Override
+    public void setId(Long id) {
+        setEmployeeCommentId(id);
+    }
 }

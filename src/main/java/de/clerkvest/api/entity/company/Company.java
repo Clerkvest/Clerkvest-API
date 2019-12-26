@@ -7,6 +7,7 @@ import org.springframework.hateoas.RepresentationModel;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
@@ -29,7 +30,8 @@ public class Company extends RepresentationModel<Company> implements IServiceEnt
     @NotEmpty
     private String name;
 
-    @NotNull
+    @Column(updatable = false)
+    @NotBlank
     private String domain;
 
     @OneToOne(targetEntity = Image.class)

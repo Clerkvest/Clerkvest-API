@@ -21,22 +21,27 @@ public class ProjectCommentService implements IService<ProjectComment> {
     private final ProjectCommentRepository repository;
 
     @Autowired
-    public ProjectCommentService (ProjectCommentRepository repository) {
+    public ProjectCommentService(ProjectCommentRepository repository) {
         this.repository = repository;
     }
 
     @Override
-    public void save (ProjectComment projectComment) {
+    public void save(ProjectComment projectComment) {
         repository.save(projectComment);
     }
 
     @Override
-    public List<ProjectComment> getAll () {
+    public void update(ProjectComment projectComment) {
+
+    }
+
+    @Override
+    public List<ProjectComment> getAll() {
         return repository.findAll();
     }
 
     @Override
-    public Optional<ProjectComment> getById (long id) {
+    public Optional<ProjectComment> getById(long id) {
         return repository.findById(id);
     }
 

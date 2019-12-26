@@ -15,13 +15,43 @@ public class HateoasLink {
 
     /** All companies */
     public static final String COMPANY_ALL = BASE_ENDPOINT + "/company/all";
-    /** Single company */
+    /**
+     * Single company
+     */
     public static final String COMPANY_SINGLE = BASE_ENDPOINT + "/company/get/";
-    /** Delete company */
+    /**
+     * Delete company
+     */
     public static final String COMPANY_DELETE = BASE_ENDPOINT + "/company/delete/";
-    /** Create company */
+    /**
+     * Create company
+     */
     public static final String COMPANY_CREATE = BASE_ENDPOINT + "/company/create";
-    /** Update company */
+    /**
+     * Update company
+     */
     public static final String COMPANY_UPDATE = BASE_ENDPOINT + "/company/update";
+
+
+    /**
+     * All companies
+     */
+    public static final String EMPLOYEE_ALL = BASE_ENDPOINT + "/employee/all";
+    /**
+     * Single company
+     */
+    public static final String EMPLOYEE_SINGLE = BASE_ENDPOINT + "/employee/get/";
+    /**
+     * Delete company
+     */
+    public static final String EMPLOYEE_DELETE = BASE_ENDPOINT + "/employee/delete/";
+    /**
+     * Create company
+     */
+    public static final String EMPLOYEE_CREATE = BASE_ENDPOINT + "/employee/create";
+    /**
+     * Update company
+     */
+    public static final String EMPLOYEE_UPDATE = BASE_ENDPOINT + "/employee/update";
 
 }

@@ -18,7 +18,7 @@ import static org.springframework.http.HttpStatus.*;
         @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = "classpath:insertData.sql")})
 @Transactional
 public class DeleteEmployeeResourceTest {
-    private final static String REST_ENDPOINT_URL = REST_BASE_URL + "/employee";
+    private final static String REST_ENDPOINT_URL = REST_BASE_URL + "/employee/delete";
 
     @Test
     public void deleteEmployeeAsSelf() {

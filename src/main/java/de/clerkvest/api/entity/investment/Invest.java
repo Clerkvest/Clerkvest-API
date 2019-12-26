@@ -2,6 +2,7 @@ package de.clerkvest.api.entity.investment;
 
 import de.clerkvest.api.entity.employee.Employee;
 import de.clerkvest.api.entity.project.Project;
+import de.clerkvest.api.implement.service.IServiceEntity;
 import lombok.*;
 import org.springframework.hateoas.RepresentationModel;
 
@@ -16,7 +17,7 @@ import java.math.BigDecimal;
 @Getter
 @Table(name = "invest_in")
 @Entity
-public class Invest extends RepresentationModel {
+public class Invest extends RepresentationModel<Invest> implements IServiceEntity {
 
     @Id
     @SequenceGenerator(name = "invest_gen", sequenceName = "invest_invest_id_seq", allocationSize = 1)
@@ -35,4 +36,13 @@ public class Invest extends RepresentationModel {
     @NotNull
     private BigDecimal investment;
 
+    @Override
+    public Long getId() {
+        return getInvestInId();
+    }
+
+    @Override
+    public void setId(Long id) {
+        setInvestInId(id);
+    }
 }

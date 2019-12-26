@@ -14,13 +14,22 @@ import java.util.Optional;
 public interface IService<T> {
 
     /**
-     * Saves or updates an entity into the database.
-     * @param t Entity to save/update
+     * Saves an entity into the database.
+     *
+     * @param t Entity to save
      */
     public void save(T t);
 
     /**
+     * Updates a existing entity database.
+     *
+     * @param t Entity to update
+     */
+    public void update(T t);
+
+    /**
      * Gets all entities from the database
+     *
      * @return A Optional list of the Entity
      */
     public List<T> getAll();
