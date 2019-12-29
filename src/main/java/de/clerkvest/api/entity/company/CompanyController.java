@@ -2,14 +2,9 @@ package de.clerkvest.api.entity.company;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
 import javax.validation.Valid;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.PostMapping;
 /**
  * api <p>
  * de.clerkvest.api.entity.employee.company <p>
@@ -35,13 +30,13 @@ public class CompanyController {
         return ResponseEntity.of(service.getById(id));
     }
 
-    @PutMapping(value = "")
+    @PutMapping(value = "/update")
     public ResponseEntity<String> updateCompany(@Valid @RequestBody Company updated) {
         service.update(updated);
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping(value = "")
+    @PostMapping(value = "/create")
     public ResponseEntity<Company> createCompany(@Valid @RequestBody Company fresh) {
         service.save(fresh);
         return ResponseEntity.ok().body(fresh);

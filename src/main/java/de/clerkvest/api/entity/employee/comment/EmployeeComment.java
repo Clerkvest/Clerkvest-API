@@ -2,11 +2,7 @@ package de.clerkvest.api.entity.employee.comment;
 
 import de.clerkvest.api.entity.employee.Employee;
 import de.clerkvest.api.implement.service.IServiceEntity;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.hateoas.RepresentationModel;
 
 import javax.persistence.*;
@@ -27,6 +23,7 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @Setter
 @Getter
+@ToString
 @Table(name = "employee_comment")
 @Entity
 public class EmployeeComment extends RepresentationModel<EmployeeComment> implements IServiceEntity {

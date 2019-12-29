@@ -1,6 +1,10 @@
 package de.clerkvest.api.entity.investment;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+
+import java.util.List;
+import java.util.Optional;
 
 /**
  * api <p>
@@ -13,4 +17,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 public interface InvestRepository extends JpaRepository<Invest, Long> {
 
+    @Query(value = "SELECT * FROM Invest i WHERE i.employeeId = ?1", nativeQuery = true)
+    Optional<List<Invest>> getByEmployeeId(Long id);
 }

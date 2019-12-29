@@ -58,7 +58,11 @@ public class EmployeeCommentService implements IService<EmployeeComment> {
     }
 
     @Override
-    public void delete (EmployeeComment employeeComment) {
+    public void delete(EmployeeComment employeeComment) {
         repository.delete(employeeComment);
+    }
+
+    public List<EmployeeComment> getByEmployeeId(long id) {
+        return getByEmployeeId(id);
     }
 }

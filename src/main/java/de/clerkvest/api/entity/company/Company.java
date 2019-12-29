@@ -2,11 +2,7 @@ package de.clerkvest.api.entity.company;
 
 import de.clerkvest.api.entity.image.Image;
 import de.clerkvest.api.implement.service.IServiceEntity;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.hateoas.RepresentationModel;
 
 import javax.persistence.Column;
@@ -76,5 +72,15 @@ public class Company extends RepresentationModel<Company> implements IServiceEnt
     @Override
     public void setId (Long id) {
         setCompanyId(id);
+    }
+
+    @Override
+    public String toString() {
+        try {
+            return new com.fasterxml.jackson.databind.ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(this);
+        } catch (com.fasterxml.jackson.core.JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

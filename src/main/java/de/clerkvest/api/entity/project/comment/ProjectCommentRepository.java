@@ -2,6 +2,9 @@ package de.clerkvest.api.entity.project.comment;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
+import java.util.Optional;
+
 /**
  * api <p>
  * de.clerkvest.api.entity.project.comment <p>
@@ -12,5 +15,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @since 21 Dec 2019 17:14
  */
 public interface ProjectCommentRepository extends JpaRepository<ProjectComment, Long> {
-
+    Optional<List<ProjectComment>> getProjectCommentsByEmployeeId(Long id);
 }

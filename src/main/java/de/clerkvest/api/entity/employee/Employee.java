@@ -1,12 +1,12 @@
 package de.clerkvest.api.entity.employee;
 
+import com.fasterxml.jackson.annotation.JsonValue;
 import de.clerkvest.api.entity.company.Company;
 import de.clerkvest.api.implement.service.IServiceEntity;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.rest.core.annotation.RestResource;
+import org.springframework.data.rest.core.config.Projection;
 import org.springframework.hateoas.RepresentationModel;
 
 import javax.persistence.*;
@@ -30,7 +30,7 @@ import java.math.BigDecimal;
 @Getter
 @Table(name = "employee")
 @Entity
-public class Employee extends RepresentationModel<Employee> implements IServiceEntity {
+public class Employee implements IServiceEntity {
     @Id
     @SequenceGenerator(name = "employee_gen", sequenceName = "employee_employee_id_seq", allocationSize = 1)
     @GeneratedValue(generator = "employee_gen", strategy = GenerationType.SEQUENCE)
@@ -74,5 +74,15 @@ public class Employee extends RepresentationModel<Employee> implements IServiceE
     @Override
     public void setId(Long id) {
         setEmployeeId(id);
+    }
+
+    @Override
+    public String toString() {
+        try {
+            return new com.fasterxml.jackson.databind.ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(this);
+        } catch (com.fasterxml.jackson.core.JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

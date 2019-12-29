@@ -1,6 +1,7 @@
 package de.clerkvest.api.entity.employee;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 /**
  * api <p>
@@ -12,5 +13,4 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @since 21 Dec 2019 17:14
  */
 public interface EmployeeRepository extends JpaRepository<Employee, Long> {
-
 }

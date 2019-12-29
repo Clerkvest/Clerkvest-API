@@ -122,12 +122,12 @@ ALTER TABLE project_comment
 
 CREATE TRIGGER IF NOT EXISTS investment_insert_trigger
     BEFORE INSERT
-    ON invest_in
-    FOR EACH ROW
-CALL "de.clerkvest.api.H2Triggers$InvestmentInsertTrigger";
+           ON invest_in
+               FOR EACH ROW
+               CALL "de.clerkvest.api.H2Triggers$InvestmentInsertTrigger";
 
 CREATE TRIGGER  IF NOT EXISTS investment_delete_trigger
     BEFORE DELETE
-    ON invest_in
-    FOR EACH ROW
-CALL "de.clerkvest.api.H2Triggers$InvestmentDeleteTrigger";
+           ON invest_in
+               FOR EACH ROW
+               CALL "de.clerkvest.api.H2Triggers$InvestmentDeleteTrigger";

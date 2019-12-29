@@ -58,7 +58,11 @@ public class InvestService implements IService<Invest> {
     }
 
     @Override
-    public void delete (Invest invest) {
+    public void delete(Invest invest) {
         repository.delete(invest);
+    }
+
+    public Optional<List<Invest>> getByEmployeeId(long id) {
+        return repository.getByEmployeeId(id);
     }
 }

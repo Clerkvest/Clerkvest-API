@@ -3,11 +3,7 @@ package de.clerkvest.api.entity.investment;
 import de.clerkvest.api.entity.employee.Employee;
 import de.clerkvest.api.entity.project.Project;
 import de.clerkvest.api.implement.service.IServiceEntity;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.hateoas.RepresentationModel;
 
 import javax.persistence.Column;
@@ -65,5 +61,15 @@ public class Invest extends RepresentationModel<Invest> implements IServiceEntit
     @Override
     public void setId(Long id) {
         setInvestInId(id);
+    }
+
+    @Override
+    public String toString() {
+        try {
+            return new com.fasterxml.jackson.databind.ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(this);
+        } catch (com.fasterxml.jackson.core.JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

@@ -31,13 +31,6 @@ public class EmployeeService implements IService<Employee> {
 
     @Override
     public void save (Employee employee) {
-        LinkBuilder<Employee> linkBuilder = new LinkBuilder<Employee>()
-                .withSelf(HateoasLink.EMPLOYEE_SINGLE)
-                .withAll(HateoasLink.EMPLOYEE_ALL)
-                .withCreate(HateoasLink.EMPLOYEE_CREATE)
-                .withDelete(HateoasLink.EMPLOYEE_DELETE)
-                .withUpdate(HateoasLink.EMPLOYEE_UPDATE);
-        linkBuilder.ifDesiredEmbed(employee);
         if (repository.existsById(employee.getId())) {
             return;
         }
@@ -70,16 +63,8 @@ public class EmployeeService implements IService<Employee> {
 
     @Override
     public Optional<Employee> getById(long id) {
-        Optional<Employee> employee = repository.findById(id);
-
-        LinkBuilder<Employee> linkBuilder = new LinkBuilder<Employee>()
-                .withSelf(HateoasLink.EMPLOYEE_SINGLE)
-                .withAll(HateoasLink.EMPLOYEE_ALL)
-                .withCreate(HateoasLink.EMPLOYEE_CREATE)
-                .withDelete(HateoasLink.EMPLOYEE_DELETE)
-                .withUpdate(HateoasLink.EMPLOYEE_UPDATE);
-        employee.ifPresent(linkBuilder::ifDesiredEmbed);
-        return employee;
+        //employee.ifPresent(linkBuilder::ifDesiredEmbed);
+        return repository.findById(id);
     }
 
     @Override

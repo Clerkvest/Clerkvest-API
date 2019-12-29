@@ -47,7 +47,11 @@ public class ProjectCommentService implements IService<ProjectComment> {
     }
 
     @Override
-    public void delete (ProjectComment projectComment) {
+    public void delete(ProjectComment projectComment) {
         repository.delete(projectComment);
+    }
+
+    public Optional<List<ProjectComment>> getByEmployeeId(long id) {
+        return repository.getProjectCommentsByEmployeeId(id);
     }
 }

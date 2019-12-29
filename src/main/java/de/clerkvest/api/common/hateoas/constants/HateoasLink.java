@@ -17,18 +17,11 @@ package de.clerkvest.api.common.hateoas.constants;
 public class HateoasLink {
 
     /** API Base address without a "/" at the end */
-    public static final String BASE_ENDPOINT = "http://localhost:8080";
-
-    /** All companies */
-    public static final String COMPANY_ALL = BASE_ENDPOINT + "/company/all";
+    public static final String BASE_ENDPOINT = "http://localhost:8080/api";
     /**
      * Single company
      */
     public static final String COMPANY_SINGLE = BASE_ENDPOINT + "/company/get/";
-    /**
-     * Delete company
-     */
-    public static final String COMPANY_DELETE = BASE_ENDPOINT + "/company/delete/";
     /**
      * Create company
      */
@@ -40,23 +33,23 @@ public class HateoasLink {
 
 
     /**
-     * All companies
+     * All Employees
      */
     public static final String EMPLOYEE_ALL = BASE_ENDPOINT + "/employee/all";
     /**
-     * Single company
+     * Single Employee
      */
     public static final String EMPLOYEE_SINGLE = BASE_ENDPOINT + "/employee/get/";
     /**
-     * Delete company
+     * Delete Employee
      */
     public static final String EMPLOYEE_DELETE = BASE_ENDPOINT + "/employee/delete/";
     /**
-     * Create company
+     * Create Employee
      */
     public static final String EMPLOYEE_CREATE = BASE_ENDPOINT + "/employee/create";
     /**
-     * Update company
+     * Update Employee
      */
     public static final String EMPLOYEE_UPDATE = BASE_ENDPOINT + "/employee/update";
 

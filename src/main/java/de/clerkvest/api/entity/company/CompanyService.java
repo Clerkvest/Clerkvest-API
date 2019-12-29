@@ -33,9 +33,7 @@ public class CompanyService implements IService<Company> {
     public void save(Company company) {
         LinkBuilder<Company> linkBuilder = new LinkBuilder<Company>()
                 .withSelf(HateoasLink.COMPANY_SINGLE)
-                .withAll(HateoasLink.COMPANY_ALL)
                 .withCreate(HateoasLink.COMPANY_CREATE)
-                .withDelete(HateoasLink.COMPANY_DELETE)
                 .withUpdate(HateoasLink.COMPANY_UPDATE);
         linkBuilder.ifDesiredEmbed(company);
         //Check if the Company is already saved
@@ -76,9 +74,7 @@ public class CompanyService implements IService<Company> {
 
         LinkBuilder<Company> linkBuilder = new LinkBuilder<Company>()
                 .withSelf(HateoasLink.COMPANY_SINGLE)
-                .withAll(HateoasLink.COMPANY_ALL)
                 .withCreate(HateoasLink.COMPANY_CREATE)
-                .withDelete(HateoasLink.COMPANY_DELETE)
                 .withUpdate(HateoasLink.COMPANY_UPDATE);
 
         optionalCompany.ifPresent(linkBuilder::ifDesiredEmbed);
