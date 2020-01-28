@@ -1,7 +1,9 @@
 package de.clerkvest.api.project;
 
 import de.clerkvest.api.Application;
+import de.clerkvest.api.common.hateoas.constants.HateoasLink;
 import de.clerkvest.api.entity.project.Project;
+import de.clerkvest.api.entity.project.ProjectDTO;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
@@ -22,18 +24,18 @@ import static org.springframework.http.HttpStatus.OK;
 public class GetProjectsResourceTest {
 
 
-    private final static String REST_ENDPOINT_URL = REST_BASE_URL + "/projects";
+    private final static String REST_ENDPOINT_URL = HateoasLink.PROJECT_ALL;
 
 
     @Test
     public void getProject_0() {
-        List rest = given().header("X-API-Key", "exampleToken1").get(REST_ENDPOINT_URL).then().statusCode(OK.value()).extract().body().jsonPath().getList(".", Project.class);
+        List rest = given().header("X-API-Key", "exampleToken1").get(REST_ENDPOINT_URL).then().statusCode(OK.value()).extract().body().jsonPath().getList(".", ProjectDTO.class);
         assertThat(rest.isEmpty()).isFalse();
     }
 
     @Test
     public void getProject_1() {
-        List rest = given().header("X-API-Key", "exampleToken2").get(REST_ENDPOINT_URL).then().statusCode(OK.value()).extract().body().jsonPath().getList(".", Project.class);
+        List rest = given().header("X-API-Key", "exampleToken2").get(REST_ENDPOINT_URL).then().statusCode(OK.value()).extract().body().jsonPath().getList(".", ProjectDTO.class);
         assertThat(rest.isEmpty()).isFalse();
     }
 

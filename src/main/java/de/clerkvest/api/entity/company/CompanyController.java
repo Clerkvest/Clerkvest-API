@@ -1,10 +1,20 @@
 package de.clerkvest.api.entity.company;
 
+import de.clerkvest.api.common.hateoas.constants.HateoasLink;
+import de.clerkvest.api.common.hateoas.link.LinkBuilder;
+import de.clerkvest.api.entity.employee.Employee;
+import de.clerkvest.api.entity.employee.EmployeeDTO;
+import de.clerkvest.api.exception.ClerkEntityNotFoundException;
+import de.clerkvest.api.implement.DTOConverter;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.text.ParseException;
+import java.util.Optional;
+
 /**
  * api <p>
  * de.clerkvest.api.entity.employee.company <p>
@@ -16,18 +26,25 @@ import javax.validation.Valid;
  */
 @RestController
 @RequestMapping("/company")
-public class CompanyController {
+public class CompanyController implements DTOConverter<Company,CompanyDTO> {
 
     private final CompanyService service;
+    private final ModelMapper modelMapper;
 
     @Autowired
-    public CompanyController(CompanyService service) {
+    public CompanyController(CompanyService service, ModelMapper modelMapper) {
         this.service = service;
+        this.modelMapper = modelMapper;
     }
 
     @GetMapping(value = "/get/{id}")
-    public ResponseEntity<Company> getSingleCompany(@PathVariable long id) {
-        return ResponseEntity.of(service.getById(id));
+    public ResponseEntity<CompanyDTO> getSingleCompany(@PathVariable long id) {
+        Optional<Company> company = service.getById(id);
+        if(company.isPresent()){
+            return ResponseEntity.ok(convertToDto(company.get()));
+        }else{
+            throw new ClerkEntityNotFoundException("Company not found");
+        }
     }
 
     @PutMapping(value = "/update")
@@ -37,8 +54,29 @@ public class CompanyController {
     }
 
     @PostMapping(value = "/create")
-    public ResponseEntity<Company> createCompany(@Valid @RequestBody Company fresh) {
+    public ResponseEntity<CompanyDTO> createCompany(@Valid @RequestBody Company fresh) {
         service.save(fresh);
-        return ResponseEntity.ok().body(fresh);
+        return ResponseEntity.ok().body(convertToDto(fresh));
+    }
+
+    @Override
+    public CompanyDTO convertToDto(Company post) {
+        CompanyDTO postDto = modelMapper.map(post, CompanyDTO.class);
+        LinkBuilder<CompanyDTO> linkBuilder = new LinkBuilder<CompanyDTO>()
+                .withSelf(HateoasLink.COMPANY_SINGLE)
+                .withCreate(HateoasLink.COMPANY_CREATE)
+                .withUpdate(HateoasLink.COMPANY_UPDATE);
+        linkBuilder.ifDesiredEmbed(postDto);
+        return postDto;
+    }
+
+    @Override
+    public Company convertToEntity(CompanyDTO postDto) throws ParseException {
+        Company post = modelMapper.map(postDto, Company.class);
+        if (postDto.getId() != null) {
+            Optional<Company> oldPost = service.getById(postDto.getId());
+            //oldPost.ifPresent(value -> {post.setNickname(value.getNickname());});
+        }
+        return post;
     }
 }

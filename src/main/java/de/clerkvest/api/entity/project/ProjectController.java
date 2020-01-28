@@ -1,11 +1,19 @@
 package de.clerkvest.api.entity.project;
 
+import de.clerkvest.api.common.hateoas.constants.HateoasLink;
+import de.clerkvest.api.common.hateoas.link.LinkBuilder;
+import de.clerkvest.api.entity.investment.Invest;
+import de.clerkvest.api.entity.investment.InvestDTO;
 import de.clerkvest.api.exception.ClerkEntityNotFoundException;
+import de.clerkvest.api.implement.DTOConverter;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.text.ParseException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,18 +28,20 @@ import java.util.Optional;
  */
 @RestController
 @RequestMapping("/project")
-public class ProjectController {
+public class ProjectController implements DTOConverter<Project,ProjectDTO> {
         private final ProjectService service;
+        private final ModelMapper modelMapper;
 
         @Autowired
-        public ProjectController(ProjectService service) {
+        public ProjectController(ProjectService service, ModelMapper modelMapper) {
                 this.service = service;
+                this.modelMapper = modelMapper;
         }
 
         @PostMapping(value = "/create")
-        public ResponseEntity<Project> createProject(@Valid @RequestBody Project fresh) {
+        public ResponseEntity<ProjectDTO> createProject(@Valid @RequestBody Project fresh) {
                 service.save(fresh);
-                return ResponseEntity.ok().body(fresh);
+                return ResponseEntity.ok().body(convertToDto(fresh));
         }
 
         @PutMapping(value = "/update")
@@ -41,21 +51,54 @@ public class ProjectController {
         }
 
         @GetMapping(value = "/get/{id}")
-        public ResponseEntity<Project> getSingleProject(@PathVariable long id) {
-                return ResponseEntity.of(service.getById(id));
+        public ResponseEntity<ProjectDTO> getSingleProject(@PathVariable long id) {
+                Optional<Project> project = service.getById(id);
+                if(project.isPresent()){
+                        return ResponseEntity.ok(convertToDto(project.get()));
+                }else{
+                        throw new ClerkEntityNotFoundException("Project not found");
+                }
         }
 
         @GetMapping(value = "/all")
-        public List<Project> getAllProjects(@PathVariable long id) {
-                return service.getAll();
+        public ResponseEntity<List<ProjectDTO>> getAllProjects() {
+                List<Project> projects = service.getAll();
+                List<ProjectDTO> projectDTOs = Arrays.asList(modelMapper.map(projects, ProjectDTO[].class));
+                LinkBuilder<ProjectDTO> linkBuilder = new LinkBuilder<ProjectDTO>()
+                        .withSelf(HateoasLink.PROJECT_SINGLE);
+                projectDTOs.forEach(linkBuilder::ifDesiredEmbed);
+                return ResponseEntity.ok(projectDTOs);
         }
 
         @DeleteMapping(value = "/delete/{id}")
         public ResponseEntity<String> deleteProject(@PathVariable long id) {
                 Optional<Project> project = service.getById(id);
                 project.ifPresentOrElse(service::delete, () -> {
-                        throw new ClerkEntityNotFoundException("Company not found");
+                        throw new ClerkEntityNotFoundException("Project not found");
                 });
                 return ResponseEntity.ok().build();
+        }
+
+        @Override
+        public ProjectDTO convertToDto(Project post) {
+                ProjectDTO postDto = modelMapper.map(post, ProjectDTO.class);
+                LinkBuilder<ProjectDTO> linkBuilder = new LinkBuilder<ProjectDTO>()
+                        .withSelf(HateoasLink.PROJECT_SINGLE)
+                        .withAll(HateoasLink.PROJECT_ALL)
+                        .withCreate(HateoasLink.PROJECT_CREATE)
+                        .withDelete(HateoasLink.PROJECT_DELETE)
+                        .withUpdate(HateoasLink.PROJECT_UPDATE);
+                linkBuilder.ifDesiredEmbed(postDto);
+                return postDto;
+        }
+
+        @Override
+        public Project convertToEntity(ProjectDTO postDto) throws ParseException {
+                Project post = modelMapper.map(postDto, Project.class);
+                if (postDto.getId() != null) {
+                        Optional<Project> oldPost = service.getById(postDto.getId());
+                        //oldPost.ifPresent(value -> {post.setNickname(value.getNickname());});
+                }
+                return post;
         }
 }

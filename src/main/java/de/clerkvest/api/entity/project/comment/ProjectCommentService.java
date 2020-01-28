@@ -51,7 +51,7 @@ public class ProjectCommentService implements IService<ProjectComment> {
         repository.delete(projectComment);
     }
 
-    public Optional<List<ProjectComment>> getByEmployeeId(long id) {
-        return repository.getProjectCommentsByEmployeeId(id);
+    public Optional<List<ProjectComment>> getByProjectId(long id) {
+        return repository.getProjectCommentsByProjectId(id);
     }
 }

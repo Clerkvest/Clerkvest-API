@@ -1,6 +1,7 @@
 package de.clerkvest.api.entity.image;
 
 import de.clerkvest.api.exception.ClerkEntityNotFoundException;
+import de.clerkvest.api.implement.DTOConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -33,17 +34,4 @@ public class ImageController {
         return ResponseEntity.ok().body(fresh);
     }
 
-    @GetMapping(value = "/get/{id}")
-    public ResponseEntity<Image> getSingleImage(@PathVariable long id) {
-        return ResponseEntity.of(service.getById(id));
-    }
-
-    @DeleteMapping(value = "/delete/{id}")
-    public ResponseEntity<String> deleteImage(@PathVariable long id) {
-        Optional<Image> employee = service.getById(id);
-        employee.ifPresentOrElse(service::delete, () -> {
-            throw new ClerkEntityNotFoundException("Image not found");
-        });
-        return ResponseEntity.ok().build();
-    }
 }

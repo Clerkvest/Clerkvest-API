@@ -53,4 +53,59 @@ public class HateoasLink {
      */
     public static final String EMPLOYEE_UPDATE = BASE_ENDPOINT + "/employee/update";
 
+    /**
+     * All Investments
+     */
+    public static final String INVEST_ALL = BASE_ENDPOINT + "/invest/all";
+    /**
+     * Single Investment
+     */
+    public static final String INVEST_SINGLE = BASE_ENDPOINT + "/invest/get/";
+    /**
+     * Delete Investment
+     */
+    public static final String INVEST_DELETE = BASE_ENDPOINT + "/invest/delete/";
+    /**
+     * Create Investment
+     */
+    public static final String INVEST_CREATE = BASE_ENDPOINT + "/invest/create";
+    /**
+     * Update Investment
+     */
+    public static final String INVEST_UPDATE = BASE_ENDPOINT + "/invest/update";
+
+    /**
+     * All Projects
+     */
+    public static final String PROJECT_ALL = BASE_ENDPOINT + "/project/all";
+    /**
+     * Single Project
+     */
+    public static final String PROJECT_SINGLE = BASE_ENDPOINT + "/project/get/";
+    /**
+     * Delete Project
+     */
+    public static final String PROJECT_DELETE = BASE_ENDPOINT + "/project/delete/";
+    /**
+     * Create Project
+     */
+    public static final String PROJECT_CREATE = BASE_ENDPOINT + "/project/create";
+    /**
+     * Update Project
+     */
+    public static final String PROJECT_UPDATE = BASE_ENDPOINT + "/project/update";
+
+
+    /**
+     * Delete Comment
+     */
+    public static final String PROJECT_COMMENT_DELETE = BASE_ENDPOINT + "/comment/delete/";
+    /**
+     * Create Comment
+     */
+    public static final String PROJECT_COMMENT_CREATE = BASE_ENDPOINT + "/comment/create";
+    /**
+     * Update Comment
+     */
+    public static final String PROJECT_COMMENT_UPDATE = BASE_ENDPOINT + "/comment/update";
 }

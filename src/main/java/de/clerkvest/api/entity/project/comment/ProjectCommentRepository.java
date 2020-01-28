@@ -15,5 +15,5 @@ import java.util.Optional;
  * @since 21 Dec 2019 17:14
  */
 public interface ProjectCommentRepository extends JpaRepository<ProjectComment, Long> {
-    Optional<List<ProjectComment>> getProjectCommentsByEmployeeId(Long id);
+    Optional<List<ProjectComment>> getProjectCommentsByProjectId(Long id);
 }

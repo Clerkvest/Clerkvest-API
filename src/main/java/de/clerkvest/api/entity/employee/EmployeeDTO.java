@@ -7,8 +7,18 @@ import org.springframework.hateoas.RepresentationModel;
 import java.math.BigDecimal;
 import java.util.Objects;
 
-@JsonIgnoreProperties({"_links","token"})
+@JsonIgnoreProperties({"token","employee_id"})
 public class EmployeeDTO extends RepresentationModel<EmployeeDTO> implements IServiceEntity {
+    @Override
+    public Long getId() {
+        return employee_id;
+    }
+
+    @Override
+    public void setId(Long id) {
+        this.employee_id = id;
+    }
+
     private Long employee_id = null;
 
     private long company;
@@ -61,15 +71,7 @@ public class EmployeeDTO extends RepresentationModel<EmployeeDTO> implements ISe
         this.employee_id = employee_id;
     }
 
-    @Override
-    public Long getId() {
-        return employee_id;
-    }
 
-    @Override
-    public void setId(Long id) {
-        this.employee_id = id;
-    }
 
     public EmployeeDTO company(long companyRest) {
         this.company = companyRest;

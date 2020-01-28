@@ -3,6 +3,7 @@ package de.clerkvest.api.entity.employee;
 import de.clerkvest.api.common.hateoas.constants.HateoasLink;
 import de.clerkvest.api.common.hateoas.link.LinkBuilder;
 import de.clerkvest.api.exception.ClerkEntityNotFoundException;
+import de.clerkvest.api.implement.DTOConverter;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +26,7 @@ import java.util.Optional;
  */
 @RestController
 @RequestMapping("/employee")
-public class EmployeeController {
+public class EmployeeController implements DTOConverter<Employee,EmployeeDTO> {
 
     private final EmployeeService service;
     private final ModelMapper modelMapper;
@@ -67,6 +68,9 @@ public class EmployeeController {
     public ResponseEntity<List<EmployeeDTO>> getAllEmployees() {
         List<Employee> employees = service.getAll();
         List<EmployeeDTO> employeesDTOs = Arrays.asList(modelMapper.map(employees, EmployeeDTO[].class));
+        LinkBuilder<EmployeeDTO> linkBuilder = new LinkBuilder<EmployeeDTO>()
+                .withSelf(HateoasLink.EMPLOYEE_SINGLE);
+        employeesDTOs.forEach(linkBuilder::ifDesiredEmbed);
         return ResponseEntity.ok(employeesDTOs);
     }
 
@@ -79,7 +83,7 @@ public class EmployeeController {
         return ResponseEntity.ok().build();
     }
 
-    private EmployeeDTO convertToDto(Employee post) {
+    public EmployeeDTO convertToDto(Employee post) {
         EmployeeDTO postDto = modelMapper.map(post, EmployeeDTO.class);
         LinkBuilder<EmployeeDTO> linkBuilder = new LinkBuilder<EmployeeDTO>()
                 .withSelf(HateoasLink.EMPLOYEE_SINGLE)
@@ -91,7 +95,7 @@ public class EmployeeController {
         return postDto;
     }
 
-    private Employee convertToEntity(EmployeeDTO postDto) throws ParseException {
+    public Employee convertToEntity(EmployeeDTO postDto) throws ParseException {
         Employee post = modelMapper.map(postDto, Employee.class);
         if (postDto.getEmployee_id() != null) {
             Optional<Employee> oldPost = service.getById(postDto.getEmployee_id());
