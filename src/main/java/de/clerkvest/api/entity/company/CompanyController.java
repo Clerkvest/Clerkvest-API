@@ -2,8 +2,6 @@ package de.clerkvest.api.entity.company;
 
 import de.clerkvest.api.common.hateoas.constants.HateoasLink;
 import de.clerkvest.api.common.hateoas.link.LinkBuilder;
-import de.clerkvest.api.entity.employee.Employee;
-import de.clerkvest.api.entity.employee.EmployeeDTO;
 import de.clerkvest.api.exception.ClerkEntityNotFoundException;
 import de.clerkvest.api.implement.DTOConverter;
 import org.modelmapper.ModelMapper;
@@ -48,15 +46,17 @@ public class CompanyController implements DTOConverter<Company,CompanyDTO> {
     }
 
     @PutMapping(value = "/update")
-    public ResponseEntity<String> updateCompany(@Valid @RequestBody Company updated) {
-        service.update(updated);
+    public ResponseEntity<String> updateCompany(@Valid @RequestBody CompanyDTO updated) throws ParseException {
+        Company converted = convertToEntity(updated);
+        service.update(converted);
         return ResponseEntity.ok().build();
     }
 
     @PostMapping(value = "/create")
-    public ResponseEntity<CompanyDTO> createCompany(@Valid @RequestBody Company fresh) {
-        service.save(fresh);
-        return ResponseEntity.ok().body(convertToDto(fresh));
+    public ResponseEntity<CompanyDTO> createCompany(@Valid @RequestBody CompanyDTO fresh, @RequestParam String mail) throws ParseException {
+        Company converted = convertToEntity(fresh);
+        service.save(converted);
+        return ResponseEntity.ok().body(convertToDto(converted));
     }
 
     @Override

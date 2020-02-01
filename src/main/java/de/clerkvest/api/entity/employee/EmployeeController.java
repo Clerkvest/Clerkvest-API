@@ -38,15 +38,17 @@ public class EmployeeController implements DTOConverter<Employee,EmployeeDTO> {
     }
 
     @PostMapping(value = "/create")
-    public ResponseEntity<EmployeeDTO> createEmployee(@Valid @RequestBody Employee fresh) {
-        service.save(fresh);
-        return ResponseEntity.ok().body(convertToDto(fresh));
+    public ResponseEntity<EmployeeDTO> createEmployee(@Valid @RequestBody EmployeeDTO fresh) throws ParseException {
+        Employee converted = convertToEntity(fresh);
+        service.save(converted);
+        return ResponseEntity.ok().body(convertToDto(converted));
     }
 
     @PutMapping(value = "/update")
-    public ResponseEntity<String> updatedEmployee(@Valid @RequestBody Employee updated) {
-        service.update(updated);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<EmployeeDTO> updatedEmployee(@Valid @RequestBody EmployeeDTO updated) throws ParseException {
+        Employee converted = convertToEntity(updated);
+        service.update(converted);
+        return ResponseEntity.ok().body(convertToDto(converted));
     }
 
     /*@GetMapping(value = "findByNickname")
@@ -97,8 +99,8 @@ public class EmployeeController implements DTOConverter<Employee,EmployeeDTO> {
 
     public Employee convertToEntity(EmployeeDTO postDto) throws ParseException {
         Employee post = modelMapper.map(postDto, Employee.class);
-        if (postDto.getEmployee_id() != null) {
-            Optional<Employee> oldPost = service.getById(postDto.getEmployee_id());
+        if (postDto.getEmployeeId() != null) {
+            Optional<Employee> oldPost = service.getById(postDto.getEmployeeId());
             //oldPost.ifPresent(value -> {post.setNickname(value.getNickname());});
         }
         return post;

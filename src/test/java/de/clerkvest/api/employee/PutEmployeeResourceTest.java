@@ -1,16 +1,14 @@
 package de.clerkvest.api.employee;
 
 import de.clerkvest.api.Application;
-import de.clerkvest.api.entity.employee.Employee;
+import de.clerkvest.api.common.hateoas.constants.HateoasLink;
+import de.clerkvest.api.entity.employee.EmployeeDTO;
 import io.restassured.http.ContentType;
 import io.restassured.response.ValidatableResponse;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.transaction.annotation.Transactional;
 
-import static de.clerkvest.api.config.TestConfig.REST_BASE_URL;
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
@@ -22,14 +20,14 @@ import static org.springframework.http.HttpStatus.OK;
 @Transactional
 public class PutEmployeeResourceTest {
 
-    private final static String REST_ENDPOINT_URL = REST_BASE_URL + "/employee";
+    private final static String REST_ENDPOINT_URL = HateoasLink.EMPLOYEE_UPDATE;
 
     @Test
     public void updateEmployeeAsSelf() {
         String name = "TEST NAME";
-        Employee rest = given().header("X-API-Key", "exampleToken0").get(REST_ENDPOINT_URL + "/0").then().statusCode(OK.value()).extract().as(Employee.class);
+        EmployeeDTO rest = given().header("X-API-Key", "exampleToken0").get(HateoasLink.EMPLOYEE_SINGLE + 0).then().statusCode(OK.value()).extract().as(EmployeeDTO.class);
         rest.setNickname(name);
-        Employee updated = given().header("X-API-Key", "exampleToken0").body(rest).contentType(ContentType.JSON).put(REST_ENDPOINT_URL).then().statusCode(OK.value()).extract().as(Employee.class);
+        EmployeeDTO updated = given().header("X-API-Key", "exampleToken0").body(rest).contentType(ContentType.JSON).put(REST_ENDPOINT_URL).then().statusCode(OK.value()).extract().as(EmployeeDTO.class);
         assertThat(rest.getEmployeeId()).isEqualTo(updated.getEmployeeId());
         assertThat(name).isEqualTo(updated.getNickname());
     }
@@ -37,9 +35,9 @@ public class PutEmployeeResourceTest {
     @Test
     public void updateEmployeeAsAdmin() {
         String name = "TEST NAME";
-        Employee rest = given().header("X-API-Key", "exampleToken0").get(REST_ENDPOINT_URL + "/0").then().statusCode(OK.value()).extract().as(Employee.class);
+        EmployeeDTO rest = given().header("X-API-Key", "exampleToken0").get(HateoasLink.EMPLOYEE_SINGLE + 0).then().statusCode(OK.value()).extract().as(EmployeeDTO.class);
         rest.setNickname(name);
-        Employee updated = given().header("X-API-Key", "exampleToken1").body(rest).contentType(ContentType.JSON).put(REST_ENDPOINT_URL).then().statusCode(OK.value()).extract().as(Employee.class);
+        EmployeeDTO updated = given().header("X-API-Key", "exampleToken1").body(rest).contentType(ContentType.JSON).put(REST_ENDPOINT_URL).then().statusCode(OK.value()).extract().as(EmployeeDTO.class);
         assertThat(rest.getEmployeeId()).isEqualTo(updated.getEmployeeId());
         assertThat(name).isEqualTo(updated.getNickname());
     }
@@ -47,7 +45,7 @@ public class PutEmployeeResourceTest {
     @Test
     public void updateEmployeeAsNonAdmin() {
         String name = "TEST NAME";
-        Employee rest = given().header("X-API-Key", "exampleToken1").get(REST_ENDPOINT_URL + "/1").then().statusCode(OK.value()).extract().as(Employee.class);
+        EmployeeDTO rest = given().header("X-API-Key", "exampleToken1").get(HateoasLink.EMPLOYEE_SINGLE + 1).then().statusCode(OK.value()).extract().as(EmployeeDTO.class);
         rest.setNickname(name);
         ValidatableResponse updated = given().header("X-API-Key", "exampleToken0").body(rest).contentType(ContentType.JSON).put(REST_ENDPOINT_URL).then().statusCode(BAD_REQUEST.value());
     }
@@ -55,7 +53,7 @@ public class PutEmployeeResourceTest {
     @Test
     public void updateEmployeeAsForeignAdmin() {
         String name = "TEST NAME";
-        Employee rest = given().header("X-API-Key", "exampleToken0").get(REST_ENDPOINT_URL + "/0").then().statusCode(OK.value()).extract().as(Employee.class);
+        EmployeeDTO rest = given().header("X-API-Key", "exampleToken0").get(HateoasLink.EMPLOYEE_SINGLE + 0).then().statusCode(OK.value()).extract().as(EmployeeDTO.class);
         rest.setNickname(name);
         ValidatableResponse updated = given().header("X-API-Key", "exampleToken3").body(rest).contentType(ContentType.JSON).put(REST_ENDPOINT_URL).then().statusCode(BAD_REQUEST.value());
 
@@ -64,7 +62,7 @@ public class PutEmployeeResourceTest {
     @Test
     public void updateEmployeeAsForeignEmployee() {
         String name = "TEST NAME";
-        Employee rest = given().header("X-API-Key", "exampleToken0").get(REST_ENDPOINT_URL + "/0").then().statusCode(OK.value()).extract().as(Employee.class);
+        EmployeeDTO rest = given().header("X-API-Key", "exampleToken0").get(HateoasLink.EMPLOYEE_SINGLE + 0).then().statusCode(OK.value()).extract().as(EmployeeDTO.class);
         rest.setNickname(name);
         ValidatableResponse updated = given().header("X-API-Key", "exampleToken2").body(rest).contentType(ContentType.JSON).put(REST_ENDPOINT_URL).then().statusCode(BAD_REQUEST.value());
     }

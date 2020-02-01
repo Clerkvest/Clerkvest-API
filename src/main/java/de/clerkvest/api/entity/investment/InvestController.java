@@ -2,8 +2,6 @@ package de.clerkvest.api.entity.investment;
 
 import de.clerkvest.api.common.hateoas.constants.HateoasLink;
 import de.clerkvest.api.common.hateoas.link.LinkBuilder;
-import de.clerkvest.api.entity.employee.Employee;
-import de.clerkvest.api.entity.employee.EmployeeDTO;
 import de.clerkvest.api.exception.ClerkEntityNotFoundException;
 import de.clerkvest.api.implement.DTOConverter;
 import org.modelmapper.ModelMapper;
@@ -39,9 +37,10 @@ public class InvestController implements DTOConverter<Invest,InvestDTO> {
     }
 
     @PostMapping(value = "/create")
-    public ResponseEntity<InvestDTO> createInvestment(@Valid @RequestBody Invest fresh) {
-        service.save(fresh);
-        return ResponseEntity.ok().body(convertToDto(fresh));
+    public ResponseEntity<InvestDTO> createInvestment(@Valid @RequestBody InvestDTO fresh) throws ParseException {
+        Invest converted = convertToEntity(fresh);
+        service.save(converted);
+        return ResponseEntity.ok().body(convertToDto(converted));
     }
 
     @GetMapping(value = "/get/{id}")
@@ -57,6 +56,17 @@ public class InvestController implements DTOConverter<Invest,InvestDTO> {
     @GetMapping(value = "/get/employee/{id}")
     public ResponseEntity<List<InvestDTO>> getInvestmentsByEmployee(@PathVariable long id) {
         Optional<List<Invest>> investments = service.getByEmployeeId(id);
+        List<InvestDTO> investmentDTOs = Arrays.asList(modelMapper.map(investments, InvestDTO[].class));
+        LinkBuilder<InvestDTO> linkBuilder = new LinkBuilder<InvestDTO>()
+                .withSelf(HateoasLink.INVEST_SINGLE);
+        investmentDTOs.forEach(linkBuilder::ifDesiredEmbed);
+        return ResponseEntity.ok(investmentDTOs);
+    }
+
+    @GetMapping(value = "/all")
+    public ResponseEntity<List<InvestDTO>> getInvestmentsByCompany() {
+        //TODO: return all Investments based on the company
+        List<Invest> investments = service.getAll();
         List<InvestDTO> investmentDTOs = Arrays.asList(modelMapper.map(investments, InvestDTO[].class));
         LinkBuilder<InvestDTO> linkBuilder = new LinkBuilder<InvestDTO>()
                 .withSelf(HateoasLink.INVEST_SINGLE);

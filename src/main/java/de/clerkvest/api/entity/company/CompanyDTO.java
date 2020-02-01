@@ -15,9 +15,10 @@ package de.clerkvest.api.entity.company;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import de.clerkvest.api.entity.employee.EmployeeDTO;
 import de.clerkvest.api.entity.image.Image;
 import de.clerkvest.api.implement.service.IServiceEntity;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import org.springframework.hateoas.RepresentationModel;
 
 import java.math.BigDecimal;
@@ -26,41 +27,43 @@ import java.util.Objects;
 /**
  * CompanyRest
  */
+@Builder
+@AllArgsConstructor
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaJerseyServerCodegen", date = "2019-04-26T13:56:04.987Z")
-@JsonIgnoreProperties({"company_id"})
+@JsonIgnoreProperties({"company_id", "_links"})
 public class CompanyDTO extends RepresentationModel<CompanyDTO> implements IServiceEntity {
-    private Long company_id = null;
+    private Long companyId = null;
 
     private String name = null;
 
     private String domain = null;
 
-    private Long image_id = null;
+    private Long imageId = null;
 
-    private BigDecimal pay_amount = null;
+    private BigDecimal payAmount = null;
 
-    private Integer pay_interval = null;
+    private Integer payInterval = null;
 
-    private Boolean invite_only = false;
+    private Boolean inviteOnly = false;
 
     public CompanyDTO() {
 
     }
     public CompanyDTO(Company createdCompany) {
-        company_id = createdCompany.getId();
+        companyId = createdCompany.getId();
         name = createdCompany.getName();
         domain = createdCompany.getDomain();
         Image companyImage = createdCompany.getImageId();
         if (companyImage != null) {
-            image_id = companyImage.getImageId();
+            imageId = companyImage.getImageId();
         }
-        pay_amount = createdCompany.getPayAmount();
-        pay_interval = createdCompany.getPayInterval();
-        invite_only = createdCompany.isInviteOnly();
+        payAmount = createdCompany.getPayAmount();
+        payInterval = createdCompany.getPayInterval();
+        inviteOnly = createdCompany.isInviteOnly();
     }
 
     public CompanyDTO companyId(Long companyId) {
-        this.company_id = companyId;
+        this.companyId = companyId;
         return this;
     }
 
@@ -69,12 +72,12 @@ public class CompanyDTO extends RepresentationModel<CompanyDTO> implements IServ
      *
      * @return company_id
      **/
-    public Long getCompany_id() {
-        return company_id;
+    public Long getCompanyId() {
+        return companyId;
     }
 
-    public void setCompany_id(Long company_id) {
-        this.company_id = company_id;
+    public void setCompanyId(Long companyId) {
+        this.companyId = companyId;
     }
 
     public CompanyDTO name(String name) {
@@ -114,7 +117,7 @@ public class CompanyDTO extends RepresentationModel<CompanyDTO> implements IServ
     }
 
     public CompanyDTO image_id(Long image) {
-        this.image_id = image;
+        this.imageId = image;
         return this;
     }
 
@@ -125,15 +128,15 @@ public class CompanyDTO extends RepresentationModel<CompanyDTO> implements IServ
      **/
     public Long getImage() {
         //return new BinaryNode(image).getValueAsText();
-        return image_id;
+        return imageId;
     }
 
     public void setImage(Long image) {
-        this.image_id = image;
+        this.imageId = image;
     }
 
     public CompanyDTO payAmount(BigDecimal payAmount) {
-        this.pay_amount = payAmount;
+        this.payAmount = payAmount;
         return this;
     }
 
@@ -142,15 +145,16 @@ public class CompanyDTO extends RepresentationModel<CompanyDTO> implements IServ
      *
      * @return pay_amount
      **/
-    public BigDecimal getPay_amount() {
-        return pay_amount;
+    public BigDecimal getPayAmount() {
+        return payAmount;
     }
 
-    public void setPay_amount(BigDecimal pay_amount) {
-        this.pay_amount = pay_amount;
+    public void setPayAmount(BigDecimal payAmount) {
+        this.payAmount = payAmount;
     }
+
     public CompanyDTO payInterval(Integer payInterval) {
-        this.pay_interval = payInterval;
+        this.payInterval = payInterval;
         return this;
     }
 
@@ -159,16 +163,16 @@ public class CompanyDTO extends RepresentationModel<CompanyDTO> implements IServ
      *
      * @return pay_interval
      **/
-    public Integer getPay_interval() {
-        return pay_interval;
+    public Integer getPayInterval() {
+        return payInterval;
     }
 
-    public void setPay_interval(Integer pay_interval) {
-        this.pay_interval = pay_interval;
+    public void setPayInterval(Integer payInterval) {
+        this.payInterval = payInterval;
     }
 
     public CompanyDTO inviteOnly(Boolean inviteOnly) {
-        this.invite_only = inviteOnly;
+        this.inviteOnly = inviteOnly;
         return this;
     }
 
@@ -177,13 +181,13 @@ public class CompanyDTO extends RepresentationModel<CompanyDTO> implements IServ
      *
      * @return invite_only
      **/
-    public Boolean getInvite_only() {
-        return invite_only;
+    public Boolean getInviteOnly() {
+        return inviteOnly;
     }
 
 
-    public void setInvite_only(Boolean invite_only) {
-        this.invite_only = invite_only;
+    public void setInviteOnly(Boolean inviteOnly) {
+        this.inviteOnly = inviteOnly;
     }
 
 
@@ -192,13 +196,13 @@ public class CompanyDTO extends RepresentationModel<CompanyDTO> implements IServ
         StringBuilder sb = new StringBuilder();
         sb.append("class CompanyRest {\n");
 
-        sb.append("    company_id: ").append(toIndentedString(company_id)).append("\n");
+        sb.append("    company_id: ").append(toIndentedString(companyId)).append("\n");
         sb.append("    name: ").append(toIndentedString(name)).append("\n");
         sb.append("    domain: ").append(toIndentedString(domain)).append("\n");
-        sb.append("    image: ").append(toIndentedString(image_id)).append("\n");
-        sb.append("    pay_amount: ").append(toIndentedString(pay_amount)).append("\n");
-        sb.append("    pay_interval: ").append(toIndentedString(pay_interval)).append("\n");
-        sb.append("    invite_only: ").append(toIndentedString(invite_only)).append("\n");
+        sb.append("    image: ").append(toIndentedString(imageId)).append("\n");
+        sb.append("    pay_amount: ").append(toIndentedString(payAmount)).append("\n");
+        sb.append("    pay_interval: ").append(toIndentedString(payInterval)).append("\n");
+        sb.append("    invite_only: ").append(toIndentedString(inviteOnly)).append("\n");
         sb.append("}");
         return sb.toString();
     }
@@ -220,29 +224,29 @@ public class CompanyDTO extends RepresentationModel<CompanyDTO> implements IServ
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         CompanyDTO rest = (CompanyDTO) o;
-        return company_id.equals(rest.company_id) &&
+        return companyId.equals(rest.companyId) &&
                 Objects.equals(name, rest.name) &&
                 domain.equals(rest.domain) &&
-                Objects.equals(pay_amount, rest.pay_amount) &&
-                Objects.equals(pay_interval, rest.pay_interval) &&
-                Objects.equals(invite_only, rest.invite_only);
+                Objects.equals(payAmount, rest.payAmount) &&
+                Objects.equals(payInterval, rest.payInterval) &&
+                Objects.equals(inviteOnly, rest.inviteOnly);
     }
 
     @Override
     public int hashCode() {
-        int result = Objects.hash(company_id, name, domain, pay_amount, pay_interval, invite_only);
-        result = 31 * result + Objects.hashCode(image_id);
+        int result = Objects.hash(companyId, name, domain, payAmount, payInterval, inviteOnly);
+        result = 31 * result + Objects.hashCode(imageId);
         return result;
     }
 
     @Override
     public Long getId() {
-        return getCompany_id();
+        return getCompanyId();
     }
 
     @Override
     public void setId(Long id) {
-        company_id = id;
+        companyId = id;
     }
 }
 

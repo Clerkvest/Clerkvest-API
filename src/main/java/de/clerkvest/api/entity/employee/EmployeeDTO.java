@@ -2,26 +2,36 @@ package de.clerkvest.api.entity.employee;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import de.clerkvest.api.implement.service.IServiceEntity;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import org.springframework.hateoas.RepresentationModel;
 
 import java.math.BigDecimal;
 import java.util.Objects;
 
-@JsonIgnoreProperties({"token","employee_id"})
+@Builder
+@AllArgsConstructor
+@JsonIgnoreProperties({"token", "employee_id", "_links"})
 public class EmployeeDTO extends RepresentationModel<EmployeeDTO> implements IServiceEntity {
+    private Long employeeId = null;
+    private Long company;
+
+    public EmployeeDTO(Employee employee) {
+        employeeId = employee.getId();
+        company = employee.getCompany().getId();
+        email = employee.getEmail();
+        balance = employee.getBalance();
+        //token = employee.getToken();
+        firstname = employee.getFirstname();
+        lastname = employee.getLastname();
+        nickname = employee.getNickname();
+        isAdmin = employee.is_admin();
+    }
+
     @Override
     public Long getId() {
-        return employee_id;
+        return employeeId;
     }
-
-    @Override
-    public void setId(Long id) {
-        this.employee_id = id;
-    }
-
-    private Long employee_id = null;
-
-    private long company;
 
     private String email = null;
 
@@ -41,20 +51,13 @@ public class EmployeeDTO extends RepresentationModel<EmployeeDTO> implements ISe
 
     }
 
-    public EmployeeDTO(Employee employee) {
-        employee_id = employee.getId();
-        company = employee.getCompany().getId();
-        email = employee.getEmail();
-        balance = employee.getBalance();
-        //token = employee.getToken();
-        firstname = employee.getFirstname();
-        lastname = employee.getLastname();
-        nickname = employee.getNickname();
-        isAdmin = employee.is_admin();
+    @Override
+    public void setId(Long id) {
+        this.employeeId = id;
     }
 
     public EmployeeDTO employeeId(Long employeeId) {
-        this.employee_id = employeeId;
+        this.employeeId = employeeId;
         return this;
     }
 
@@ -63,14 +66,13 @@ public class EmployeeDTO extends RepresentationModel<EmployeeDTO> implements ISe
      *
      * @return employee_id
      **/
-    public Long getEmployee_id() {
-        return employee_id;
+    public Long getEmployeeId() {
+        return employeeId;
     }
 
-    public void setEmployee_id(Long employee_id) {
-        this.employee_id = employee_id;
+    public void setEmployeeId(Long employeeId) {
+        this.employeeId = employeeId;
     }
-
 
 
     public EmployeeDTO company(long companyRest) {
@@ -87,7 +89,7 @@ public class EmployeeDTO extends RepresentationModel<EmployeeDTO> implements ISe
         return company;
     }
 
-    public void setCompany(long company) {
+    public void setCompany(Long company) {
         this.company = company;
     }
 
@@ -227,7 +229,7 @@ public class EmployeeDTO extends RepresentationModel<EmployeeDTO> implements ISe
             return false;
         }
         EmployeeDTO employeeRest = (EmployeeDTO) o;
-        return Objects.equals(this.employee_id, employeeRest.employee_id) &&
+        return Objects.equals(this.employeeId, employeeRest.employeeId) &&
                 Objects.equals(this.company, employeeRest.company) &&
                 Objects.equals(this.email, employeeRest.email) &&
                 Objects.equals(this.balance, employeeRest.balance) &&
@@ -240,7 +242,7 @@ public class EmployeeDTO extends RepresentationModel<EmployeeDTO> implements ISe
 
     @Override
     public int hashCode() {
-        return Objects.hash(employee_id, company, email, balance, token, firstname, lastname, nickname, isAdmin);
+        return Objects.hash(employeeId, company, email, balance, token, firstname, lastname, nickname, isAdmin);
     }
 
 
@@ -249,7 +251,7 @@ public class EmployeeDTO extends RepresentationModel<EmployeeDTO> implements ISe
         StringBuilder sb = new StringBuilder();
         sb.append("class EmployeeRest {\n");
 
-        sb.append("    employee_id: ").append(toIndentedString(employee_id)).append("\n");
+        sb.append("    employee_id: ").append(toIndentedString(employeeId)).append("\n");
         sb.append("    company: ").append(toIndentedString(company)).append("\n");
         sb.append("    email: ").append(toIndentedString(email)).append("\n");
         sb.append("    balance: ").append(toIndentedString(balance)).append("\n");

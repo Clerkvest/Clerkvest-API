@@ -2,8 +2,6 @@ package de.clerkvest.api.entity.project;
 
 import de.clerkvest.api.common.hateoas.constants.HateoasLink;
 import de.clerkvest.api.common.hateoas.link.LinkBuilder;
-import de.clerkvest.api.entity.investment.Invest;
-import de.clerkvest.api.entity.investment.InvestDTO;
 import de.clerkvest.api.exception.ClerkEntityNotFoundException;
 import de.clerkvest.api.implement.DTOConverter;
 import org.modelmapper.ModelMapper;
@@ -39,15 +37,17 @@ public class ProjectController implements DTOConverter<Project,ProjectDTO> {
         }
 
         @PostMapping(value = "/create")
-        public ResponseEntity<ProjectDTO> createProject(@Valid @RequestBody Project fresh) {
-                service.save(fresh);
-                return ResponseEntity.ok().body(convertToDto(fresh));
+        public ResponseEntity<ProjectDTO> createProject(@Valid @RequestBody ProjectDTO fresh) throws ParseException {
+                Project converted = convertToEntity(fresh);
+                service.save(converted);
+                return ResponseEntity.ok().body(convertToDto(converted));
         }
 
         @PutMapping(value = "/update")
-        public ResponseEntity<String> updatedProject(@Valid @RequestBody Project updated) {
-                service.update(updated);
-                return ResponseEntity.ok().build();
+        public ResponseEntity<ProjectDTO> updatedProject(@Valid @RequestBody ProjectDTO updated) throws ParseException {
+                Project converted = convertToEntity(updated);
+                service.update(converted);
+                return ResponseEntity.ok().body(convertToDto(converted));
         }
 
         @GetMapping(value = "/get/{id}")

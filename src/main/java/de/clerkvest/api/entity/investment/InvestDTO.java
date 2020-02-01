@@ -14,8 +14,9 @@
 package de.clerkvest.api.entity.investment;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import de.clerkvest.api.entity.company.CompanyDTO;
 import de.clerkvest.api.implement.service.IServiceEntity;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import org.springframework.hateoas.RepresentationModel;
 
 import java.math.BigDecimal;
@@ -24,14 +25,16 @@ import java.util.Objects;
 /**
  * InvestInRest
  */
+@Builder
+@AllArgsConstructor
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaJerseyServerCodegen", date = "2019-04-26T13:56:04.987Z")
-@JsonIgnoreProperties({"invest_id"})
+@JsonIgnoreProperties({"invest_id", "_links"})
 public class InvestDTO extends RepresentationModel<InvestDTO> implements IServiceEntity {
-    private Long invest_id = null;
+    private Long investId = null;
 
-    private Long project_id;
+    private Long projectId;
 
-    private Long employee_id;
+    private Long employeeId;
 
     private BigDecimal investment = null;
 
@@ -40,14 +43,14 @@ public class InvestDTO extends RepresentationModel<InvestDTO> implements IServic
     }
 
     public InvestDTO(Invest investIn) {
-        invest_id = investIn.getId();
-        project_id = investIn.getProjectId().getId();
-        employee_id = investIn.getEmployeeId().getId();
+        investId = investIn.getId();
+        projectId = investIn.getProjectId().getId();
+        employeeId = investIn.getEmployeeId().getId();
         investment = investIn.getInvestment();
     }
 
     public InvestDTO investInId(Long investInId) {
-        this.invest_id = investInId;
+        this.investId = investInId;
         return this;
     }
 
@@ -57,15 +60,15 @@ public class InvestDTO extends RepresentationModel<InvestDTO> implements IServic
      * @return invest_in_id
      **/
     public Long getInvest_in_id() {
-        return invest_id;
+        return investId;
     }
 
     public void setInvest_in_id(Long invest_in_id) {
-        this.invest_id = invest_in_id;
+        this.investId = invest_in_id;
     }
 
     public InvestDTO projectId(long projectRestId) {
-        this.project_id = projectRestId;
+        this.projectId = projectRestId;
         return this;
     }
 
@@ -74,16 +77,16 @@ public class InvestDTO extends RepresentationModel<InvestDTO> implements IServic
      *
      * @return project_id
      **/
-    public long getProject_id() {
-        return project_id;
+    public long getProjectId() {
+        return projectId;
     }
 
-    public void setProject_id(Long project_id) {
-        this.project_id = project_id;
+    public void setProjectId(Long projectId) {
+        this.projectId = projectId;
     }
 
     public InvestDTO employeeId(Long employeeRestId) {
-        this.employee_id = employeeRestId;
+        this.employeeId = employeeRestId;
         return this;
     }
 
@@ -92,12 +95,12 @@ public class InvestDTO extends RepresentationModel<InvestDTO> implements IServic
      *
      * @return employee_id
      **/
-    public long getEmployee_id() {
-        return employee_id;
+    public long getEmployeeId() {
+        return employeeId;
     }
 
-    public void setEmployee_id(Long employee_id) {
-        this.employee_id = employee_id;
+    public void setEmployeeId(Long employeeId) {
+        this.employeeId = employeeId;
     }
 
     public InvestDTO investment(BigDecimal investment) {
@@ -128,15 +131,15 @@ public class InvestDTO extends RepresentationModel<InvestDTO> implements IServic
             return false;
         }
         InvestDTO investDTO = (InvestDTO) o;
-        return Objects.equals(this.invest_id, investDTO.invest_id) &&
-                Objects.equals(this.project_id, investDTO.project_id) &&
-                Objects.equals(this.employee_id, investDTO.employee_id) &&
+        return Objects.equals(this.investId, investDTO.investId) &&
+                Objects.equals(this.projectId, investDTO.projectId) &&
+                Objects.equals(this.employeeId, investDTO.employeeId) &&
                 Objects.equals(this.investment, investDTO.investment);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(invest_id, project_id, employee_id, investment);
+        return Objects.hash(investId, projectId, employeeId, investment);
     }
 
 
@@ -145,9 +148,9 @@ public class InvestDTO extends RepresentationModel<InvestDTO> implements IServic
         StringBuilder sb = new StringBuilder();
         sb.append("class InvestInRest {\n");
 
-        sb.append("    invest_in_id: ").append(toIndentedString(invest_id)).append("\n");
-        sb.append("    project_id: ").append(toIndentedString(project_id)).append("\n");
-        sb.append("    employee_id: ").append(toIndentedString(employee_id)).append("\n");
+        sb.append("    invest_in_id: ").append(toIndentedString(investId)).append("\n");
+        sb.append("    project_id: ").append(toIndentedString(projectId)).append("\n");
+        sb.append("    employee_id: ").append(toIndentedString(employeeId)).append("\n");
         sb.append("    investment: ").append(toIndentedString(investment)).append("\n");
         sb.append("}");
         return sb.toString();
@@ -166,12 +169,12 @@ public class InvestDTO extends RepresentationModel<InvestDTO> implements IServic
 
     @Override
     public Long getId() {
-        return invest_id;
+        return investId;
     }
 
     @Override
     public void setId(Long id) {
-        invest_id = id;
+        investId = id;
     }
 }
 

@@ -2,8 +2,6 @@ package de.clerkvest.api.entity.project.comment;
 
 import de.clerkvest.api.common.hateoas.constants.HateoasLink;
 import de.clerkvest.api.common.hateoas.link.LinkBuilder;
-import de.clerkvest.api.entity.project.Project;
-import de.clerkvest.api.entity.project.ProjectDTO;
 import de.clerkvest.api.exception.ClerkEntityNotFoundException;
 import de.clerkvest.api.implement.DTOConverter;
 import org.modelmapper.ModelMapper;
@@ -13,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.text.ParseException;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,14 +37,16 @@ public class ProjectCommentController implements DTOConverter<ProjectComment,Pro
     }
 
     @PostMapping(value = "/create")
-    public ResponseEntity<ProjectCommentDTO> createProjectComment(@Valid @RequestBody ProjectComment fresh) {
-        service.save(fresh);
-        return ResponseEntity.ok().body(convertToDto(fresh));
+    public ResponseEntity<ProjectCommentDTO> createProjectComment(@Valid @RequestBody ProjectCommentDTO fresh) throws ParseException {
+        ProjectComment converted = convertToEntity(fresh);
+        service.save(converted);
+        return ResponseEntity.ok().body(convertToDto(converted));
     }
 
     @PutMapping(value = "/update")
-    public ResponseEntity<String> updatedEmployee(@Valid @RequestBody ProjectComment updated) {
-        service.update(updated);
+    public ResponseEntity<String> updatedEmployee(@Valid @RequestBody ProjectCommentDTO updated) throws ParseException {
+        ProjectComment converted = convertToEntity(updated);
+        service.update(converted);
         return ResponseEntity.ok().build();
     }
 
@@ -62,7 +62,8 @@ public class ProjectCommentController implements DTOConverter<ProjectComment,Pro
     @GetMapping(value = "/{id}/comments")
     public ResponseEntity<List<ProjectCommentDTO>> getAllCommentsForProject(@PathVariable long id) {
         Optional<List<ProjectComment>> projects = service.getByProjectId(id);
-        List<ProjectCommentDTO> projectDTOs = Arrays.asList(modelMapper.map(projects, ProjectCommentDTO[].class));
+        List<ProjectCommentDTO> projectDTOs = new ArrayList<>();
+        projects.ifPresent(presentProjects -> presentProjects.forEach(project -> projectDTOs.add(convertToDto(project))));
         return ResponseEntity.ok(projectDTOs);
     }
 
