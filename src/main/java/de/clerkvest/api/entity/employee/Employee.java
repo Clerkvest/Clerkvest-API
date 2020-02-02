@@ -1,13 +1,8 @@
 package de.clerkvest.api.entity.employee;
 
-import com.fasterxml.jackson.annotation.JsonValue;
 import de.clerkvest.api.entity.company.Company;
 import de.clerkvest.api.implement.service.IServiceEntity;
 import lombok.*;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.rest.core.annotation.RestResource;
-import org.springframework.data.rest.core.config.Projection;
-import org.springframework.hateoas.RepresentationModel;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -64,7 +59,7 @@ public class Employee implements IServiceEntity {
     @Builder.Default
     private String nickname = "NickName";
 
-    private boolean is_admin;
+    private boolean isAdmin;
 
     @Override
     public Long getId() {

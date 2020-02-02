@@ -24,7 +24,7 @@ public class SpringConfig {
         //Employee
         TypeMap<Employee, EmployeeDTO> employeeyMap = mapper.createTypeMap(Employee.class, EmployeeDTO.class);
         employeeyMap.addMapping(Employee::getEmployeeId, EmployeeDTO::setEmployeeId);
-        employeeyMap.addMapping(Employee::is_admin, EmployeeDTO::setIsAdmin);
+        employeeyMap.addMapping(Employee::isAdmin, EmployeeDTO::setIsAdmin);
         employeeyMap.addMapping(src -> src.getCompany().getId(), EmployeeDTO::setCompany);
         employeeyMap.addMappings(map -> map.skip(EmployeeDTO::setEmployeeId));
 
@@ -56,7 +56,7 @@ public class SpringConfig {
         projectMap.addMapping(Project::getInvestedIn, ProjectDTO::setInvestedIn);
         projectMap.addMapping(Project::getCreatedAt, ProjectDTO::setCreatedAt);
         //projectMap.addMapping(Project::getImageId,ProjectDTO::setImage);
-        projectMap.addMapping(src -> src.getImageId().getId(), ProjectDTO::setImage);
+        projectMap.addMapping(src -> src.getImage().getId(), ProjectDTO::setImage);
         projectMap.addMappings(map -> map.skip(ProjectDTO::setProjectId));
 
         //Project Comment

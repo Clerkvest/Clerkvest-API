@@ -2,6 +2,7 @@ package de.clerkvest.api.entity.employee;
 
 import de.clerkvest.api.common.hateoas.constants.HateoasLink;
 import de.clerkvest.api.common.hateoas.link.LinkBuilder;
+import de.clerkvest.api.entity.company.CompanyService;
 import de.clerkvest.api.exception.ClerkEntityNotFoundException;
 import de.clerkvest.api.implement.DTOConverter;
 import org.modelmapper.ModelMapper;
@@ -29,11 +30,13 @@ import java.util.Optional;
 public class EmployeeController implements DTOConverter<Employee,EmployeeDTO> {
 
     private final EmployeeService service;
+    private final CompanyService companyService;
     private final ModelMapper modelMapper;
 
     @Autowired
-    public EmployeeController(EmployeeService service, ModelMapper modelMapper) {
+    public EmployeeController(EmployeeService service, CompanyService companyService, ModelMapper modelMapper) {
         this.service = service;
+        this.companyService = companyService;
         this.modelMapper = modelMapper;
     }
 
@@ -108,8 +111,12 @@ public class EmployeeController implements DTOConverter<Employee,EmployeeDTO> {
                 val.setFirstname(postDto.getFirstname());
                 val.setLastname(postDto.getLastname());
                 val.setBalance(postDto.getBalance());
-                val.set_admin(postDto.isAdmin());
+                val.setAdmin(postDto.isAdmin());
                 return val;
+            }
+        } else {
+            if (postDto.getCompany() != null) {
+                companyService.getById(postDto.getCompany()).ifPresent(post::setCompany);
             }
         }
         return post;

@@ -77,7 +77,7 @@ public class InvestDTO extends RepresentationModel<InvestDTO> implements IServic
      *
      * @return project_id
      **/
-    public long getProjectId() {
+    public Long getProjectId() {
         return projectId;
     }
 
@@ -95,7 +95,7 @@ public class InvestDTO extends RepresentationModel<InvestDTO> implements IServic
      *
      * @return employee_id
      **/
-    public long getEmployeeId() {
+    public Long getEmployeeId() {
         return employeeId;
     }
 

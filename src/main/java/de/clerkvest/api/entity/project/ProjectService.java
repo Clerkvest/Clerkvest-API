@@ -40,7 +40,7 @@ public class ProjectService implements IService<Project> {
                 value -> {
                     value.setDescription(project.getDescription());
                     value.setTitle(project.getTitle());
-                    value.setImageId(project.getImageId());
+                    value.setImage(project.getImage());
                     repository.save(value);
                 },
                 () -> {

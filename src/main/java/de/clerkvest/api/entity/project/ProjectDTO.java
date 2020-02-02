@@ -71,7 +71,7 @@ public class ProjectDTO extends RepresentationModel<ProjectDTO> implements IServ
         investedIn = projectId.getInvestedIn();
         reached = projectId.isReached();
 
-        Image projectImage = projectId.getImageId();
+        Image projectImage = projectId.getImage();
         if (projectImage != null) {
             imageId = projectImage.getImageId();
         }
@@ -102,7 +102,7 @@ public class ProjectDTO extends RepresentationModel<ProjectDTO> implements IServ
      *
      * @return company_id
      **/
-    public long getCompanyId() {
+    public Long getCompanyId() {
         return companyId;
     }
 
@@ -120,7 +120,7 @@ public class ProjectDTO extends RepresentationModel<ProjectDTO> implements IServ
      *
      * @return employee_id
      **/
-    public long getEmployeeId() {
+    public Long getEmployeeId() {
         return employeeId;
     }
 

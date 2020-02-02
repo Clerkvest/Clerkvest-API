@@ -33,7 +33,7 @@ public class EmployeeDTO extends RepresentationModel<EmployeeDTO> implements ISe
         firstname = employee.getFirstname();
         lastname = employee.getLastname();
         nickname = employee.getNickname();
-        admin = employee.is_admin();
+        admin = employee.isAdmin();
     }
 
     @Override
@@ -79,7 +79,7 @@ public class EmployeeDTO extends RepresentationModel<EmployeeDTO> implements ISe
      *
      * @return company
      **/
-    public long getCompany() {
+    public Long getCompany() {
         return company;
     }
 
@@ -243,7 +243,7 @@ public class EmployeeDTO extends RepresentationModel<EmployeeDTO> implements ISe
     @Override
     public String toString() {
 
-        String sb = "class EmployeeRest {\n" +
+        return "class EmployeeRest {\n" +
                 "    employee_id: " + toIndentedString(employeeId) + "\n" +
                 "    company: " + toIndentedString(company) + "\n" +
                 "    email: " + toIndentedString(email) + "\n" +
@@ -254,7 +254,6 @@ public class EmployeeDTO extends RepresentationModel<EmployeeDTO> implements ISe
                 "    nickname: " + toIndentedString(nickname) + "\n" +
                 "    is_admin: " + toIndentedString(admin) + "\n" +
                 "}";
-        return sb;
     }
 
     /**

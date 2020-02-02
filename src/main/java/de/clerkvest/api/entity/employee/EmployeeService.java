@@ -41,7 +41,7 @@ public class EmployeeService implements IService<Employee> {
         Optional<Employee> existingEmployee = repository.findById(employee.getId());
         existingEmployee.ifPresentOrElse(
                 value -> {
-                    value.set_admin(employee.is_admin());
+                    value.setAdmin(employee.isAdmin());
                     value.setBalance(employee.getBalance());
                     value.setFirstname(employee.getFirstname());
                     value.setLastname(employee.getLastname());

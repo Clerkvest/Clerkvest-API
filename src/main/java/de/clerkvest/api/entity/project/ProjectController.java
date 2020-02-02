@@ -2,6 +2,8 @@ package de.clerkvest.api.entity.project;
 
 import de.clerkvest.api.common.hateoas.constants.HateoasLink;
 import de.clerkvest.api.common.hateoas.link.LinkBuilder;
+import de.clerkvest.api.entity.company.CompanyService;
+import de.clerkvest.api.entity.employee.EmployeeService;
 import de.clerkvest.api.exception.ClerkEntityNotFoundException;
 import de.clerkvest.api.implement.DTOConverter;
 import org.modelmapper.ModelMapper;
@@ -26,13 +28,17 @@ import java.util.Optional;
  */
 @RestController
 @RequestMapping("/project")
-public class ProjectController implements DTOConverter<Project,ProjectDTO> {
+public class ProjectController implements DTOConverter<Project, ProjectDTO> {
         private final ProjectService service;
+        private final CompanyService companyService;
+        private final EmployeeService employeeService;
         private final ModelMapper modelMapper;
 
         @Autowired
-        public ProjectController(ProjectService service, ModelMapper modelMapper) {
+        public ProjectController(ProjectService service, CompanyService companyService, EmployeeService employeeService, ModelMapper modelMapper) {
                 this.service = service;
+                this.companyService = companyService;
+                this.employeeService = employeeService;
                 this.modelMapper = modelMapper;
         }
 
@@ -106,6 +112,13 @@ public class ProjectController implements DTOConverter<Project,ProjectDTO> {
                                 val.setInvestedIn(postDto.getInvestedIn());
                                 val.setReached(postDto.isReached());
                                 return val;
+                        }
+                } else {
+                        if (postDto.getEmployeeId() != null) {
+                                employeeService.getById(postDto.getEmployeeId()).ifPresent(post::setEmployee);
+                        }
+                        if (postDto.getCompanyId() != null) {
+                                companyService.getById(postDto.getProjectId()).ifPresent(post::setCompany);
                         }
                 }
                 return post;

@@ -63,7 +63,7 @@ public class Project extends RepresentationModel<Project> implements IServiceEnt
 
     @OneToOne(targetEntity = Image.class)
     @JoinColumn(name = "image_id")
-    private Image imageId;
+    private Image image;
 
     private LocalDateTime createdAt;
 

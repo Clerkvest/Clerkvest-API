@@ -2,6 +2,8 @@ package de.clerkvest.api.entity.project.comment;
 
 import de.clerkvest.api.common.hateoas.constants.HateoasLink;
 import de.clerkvest.api.common.hateoas.link.LinkBuilder;
+import de.clerkvest.api.entity.employee.EmployeeService;
+import de.clerkvest.api.entity.project.ProjectService;
 import de.clerkvest.api.exception.ClerkEntityNotFoundException;
 import de.clerkvest.api.implement.DTOConverter;
 import org.modelmapper.ModelMapper;
@@ -26,13 +28,17 @@ import java.util.Optional;
  */
 @RestController
 @RequestMapping("/comment")
-public class ProjectCommentController implements DTOConverter<ProjectComment,ProjectCommentDTO> {
+public class ProjectCommentController implements DTOConverter<ProjectComment, ProjectCommentDTO> {
     private final ProjectCommentService service;
+    private final EmployeeService employeeService;
+    private final ProjectService projectService;
     private final ModelMapper modelMapper;
 
     @Autowired
-    public ProjectCommentController(ProjectCommentService service, ModelMapper modelMapper) {
+    public ProjectCommentController(ProjectCommentService service, EmployeeService employeeService, ProjectService projectService, ModelMapper modelMapper) {
         this.service = service;
+        this.employeeService = employeeService;
+        this.projectService = projectService;
         this.modelMapper = modelMapper;
     }
 
@@ -89,6 +95,13 @@ public class ProjectCommentController implements DTOConverter<ProjectComment,Pro
                 val.setText(postDto.getText());
                 val.setTitle(postDto.getTitle());
                 return val;
+            }
+        } else {
+            if (postDto.getEmployeeId() != null) {
+                employeeService.getById(postDto.getEmployeeId()).ifPresent(post::setEmployee);
+            }
+            if (postDto.getProjectId() != null) {
+                projectService.getById(postDto.getProjectId()).ifPresent(post::setProject);
             }
         }
         return post;
