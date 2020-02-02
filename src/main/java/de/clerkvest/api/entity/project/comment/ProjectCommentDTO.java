@@ -46,8 +46,8 @@ public class ProjectCommentDTO extends RepresentationModel<ProjectCommentDTO> im
 
     public ProjectCommentDTO(ProjectComment item) {
         projectCommentId = item.getId();
-        employeeId = item.getEmployeeId().getId();
-        projectId = item.getProjectId().getId();
+        employeeId = item.getEmployee().getId();
+        projectId = item.getProject().getId();
         title = item.getTitle();
         text = item.getText();
         date = item.getDate();

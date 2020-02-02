@@ -38,6 +38,7 @@ public class ProjectCommentController implements DTOConverter<ProjectComment,Pro
 
     @PostMapping(value = "/create")
     public ResponseEntity<ProjectCommentDTO> createProjectComment(@Valid @RequestBody ProjectCommentDTO fresh) throws ParseException {
+        fresh.setId(-1L);
         ProjectComment converted = convertToEntity(fresh);
         service.save(converted);
         return ResponseEntity.ok().body(convertToDto(converted));
@@ -83,7 +84,12 @@ public class ProjectCommentController implements DTOConverter<ProjectComment,Pro
         ProjectComment post = modelMapper.map(postDto, ProjectComment.class);
         if (postDto.getId() != null) {
             Optional<ProjectComment> oldPost = service.getById(postDto.getId());
-            //oldPost.ifPresent(value -> {post.setNickname(value.getNickname());});
+            if (oldPost.isPresent()) {
+                ProjectComment val = oldPost.get();
+                val.setText(postDto.getText());
+                val.setTitle(postDto.getTitle());
+                return val;
+            }
         }
         return post;
     }

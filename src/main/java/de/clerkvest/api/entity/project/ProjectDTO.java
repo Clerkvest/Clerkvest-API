@@ -52,9 +52,9 @@ public class ProjectDTO extends RepresentationModel<ProjectDTO> implements IServ
 
     private Long imageId = null;
 
-    private LocalDateTime created_at = null;
+    private LocalDateTime createdAt = null;
 
-    private LocalDateTime funded_at = null;
+    private LocalDateTime fundedAt = null;
 
     public ProjectDTO() {
 
@@ -62,8 +62,8 @@ public class ProjectDTO extends RepresentationModel<ProjectDTO> implements IServ
 
     public ProjectDTO(Project projectId) {
         this.projectId = projectId.getId();
-        employeeId = projectId.getEmployeeId().getId();
-        companyId = projectId.getCompanyId().getId();
+        employeeId = projectId.getEmployee().getId();
+        companyId = projectId.getCompany().getId();
         title = projectId.getTitle();
         link = projectId.getLink();
         description = projectId.getDescription();
@@ -75,8 +75,8 @@ public class ProjectDTO extends RepresentationModel<ProjectDTO> implements IServ
         if (projectImage != null) {
             imageId = projectImage.getImageId();
         }
-        created_at = projectId.getCreatedAt();
-        funded_at = projectId.getFundedAt();
+        createdAt = projectId.getCreatedAt();
+        fundedAt = projectId.getFundedAt();
     }
 
     public ProjectDTO projectId(Long projectId) {
@@ -260,7 +260,7 @@ public class ProjectDTO extends RepresentationModel<ProjectDTO> implements IServ
     }
 
     public ProjectDTO createdAt(LocalDateTime createdAt) {
-        this.created_at = createdAt;
+        this.createdAt = createdAt;
         return this;
     }
 
@@ -269,16 +269,16 @@ public class ProjectDTO extends RepresentationModel<ProjectDTO> implements IServ
      *
      * @return created_at
      **/
-    public LocalDateTime getCreated_at() {
-        return created_at;
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 
-    public void setCreated_at(LocalDateTime created_at) {
-        this.created_at = created_at;
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 
     public ProjectDTO fundedAt(LocalDateTime fundedAt) {
-        this.funded_at = fundedAt;
+        this.fundedAt = fundedAt;
         return this;
     }
 
@@ -287,12 +287,12 @@ public class ProjectDTO extends RepresentationModel<ProjectDTO> implements IServ
      *
      * @return funded_at
      **/
-    public LocalDateTime getFunded_at() {
-        return funded_at;
+    public LocalDateTime getFundedAt() {
+        return fundedAt;
     }
 
-    public void setFunded_at(LocalDateTime funded_at) {
-        this.funded_at = funded_at;
+    public void setFundedAt(LocalDateTime fundedAt) {
+        this.fundedAt = fundedAt;
     }
 
 
@@ -313,13 +313,13 @@ public class ProjectDTO extends RepresentationModel<ProjectDTO> implements IServ
                 Objects.equals(this.goal, projectDTO.goal) &&
                 Objects.equals(this.investedIn, projectDTO.investedIn) &&
                 Objects.equals(this.reached, projectDTO.reached) &&
-                Objects.equals(this.created_at, projectDTO.created_at) &&
-                Objects.equals(this.funded_at, projectDTO.funded_at);
+                Objects.equals(this.createdAt, projectDTO.createdAt) &&
+                Objects.equals(this.fundedAt, projectDTO.fundedAt);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(projectId, employeeId, link, title, description, goal, investedIn, reached, imageId, created_at, funded_at);
+        return Objects.hash(projectId, employeeId, link, title, description, goal, investedIn, reached, imageId, createdAt, fundedAt);
     }
 
 
@@ -337,8 +337,8 @@ public class ProjectDTO extends RepresentationModel<ProjectDTO> implements IServ
         sb.append("    invested_in: ").append(toIndentedString(investedIn)).append("\n");
         sb.append("    reached: ").append(toIndentedString(reached)).append("\n");
         sb.append("    image: ").append(toIndentedString(imageId)).append("\n");
-        sb.append("    created_at: ").append(toIndentedString(created_at)).append("\n");
-        sb.append("    funded_at: ").append(toIndentedString(funded_at)).append("\n");
+        sb.append("    created_at: ").append(toIndentedString(createdAt)).append("\n");
+        sb.append("    funded_at: ").append(toIndentedString(fundedAt)).append("\n");
         sb.append("}");
         return sb.toString();
     }

@@ -16,6 +16,14 @@ public class EmployeeDTO extends RepresentationModel<EmployeeDTO> implements ISe
     private Long employeeId = null;
     private Long company;
 
+    private Boolean admin = false;
+    private String email = null;
+    private BigDecimal balance = null;
+    private String token = null;
+    private String firstname = null;
+    private String lastname = null;
+    private String nickname = null;
+
     public EmployeeDTO(Employee employee) {
         employeeId = employee.getId();
         company = employee.getCompany().getId();
@@ -25,27 +33,13 @@ public class EmployeeDTO extends RepresentationModel<EmployeeDTO> implements ISe
         firstname = employee.getFirstname();
         lastname = employee.getLastname();
         nickname = employee.getNickname();
-        isAdmin = employee.is_admin();
+        admin = employee.is_admin();
     }
 
     @Override
     public Long getId() {
         return employeeId;
     }
-
-    private String email = null;
-
-    private BigDecimal balance = null;
-
-    private String token = null;
-
-    private String firstname = null;
-
-    private String lastname = null;
-
-    private String nickname = null;
-
-    private Boolean isAdmin = false;
 
     public EmployeeDTO() {
 
@@ -202,7 +196,7 @@ public class EmployeeDTO extends RepresentationModel<EmployeeDTO> implements ISe
     }
 
     public EmployeeDTO isAdmin(Boolean isAdmin) {
-        this.isAdmin = isAdmin;
+        this.admin = isAdmin;
         return this;
     }
 
@@ -211,12 +205,12 @@ public class EmployeeDTO extends RepresentationModel<EmployeeDTO> implements ISe
      *
      * @return is_admin
      **/
-    public Boolean isIsAdmin() {
-        return isAdmin;
+    public Boolean isAdmin() {
+        return admin;
     }
 
-    public void setIs_admin(Boolean is_admin) {
-        this.isAdmin = is_admin;
+    public void setIsAdmin(Boolean is_admin) {
+        this.admin = is_admin;
     }
 
 
@@ -237,31 +231,30 @@ public class EmployeeDTO extends RepresentationModel<EmployeeDTO> implements ISe
                 Objects.equals(this.firstname, employeeRest.firstname) &&
                 Objects.equals(this.lastname, employeeRest.lastname) &&
                 Objects.equals(this.nickname, employeeRest.nickname) &&
-                Objects.equals(this.isAdmin, employeeRest.isAdmin);
+                Objects.equals(this.admin, employeeRest.admin);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(employeeId, company, email, balance, token, firstname, lastname, nickname, isAdmin);
+        return Objects.hash(employeeId, company, email, balance, token, firstname, lastname, nickname, admin);
     }
 
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class EmployeeRest {\n");
 
-        sb.append("    employee_id: ").append(toIndentedString(employeeId)).append("\n");
-        sb.append("    company: ").append(toIndentedString(company)).append("\n");
-        sb.append("    email: ").append(toIndentedString(email)).append("\n");
-        sb.append("    balance: ").append(toIndentedString(balance)).append("\n");
-        sb.append("    token: ").append(toIndentedString(token)).append("\n");
-        sb.append("    firstname: ").append(toIndentedString(firstname)).append("\n");
-        sb.append("    lastname: ").append(toIndentedString(lastname)).append("\n");
-        sb.append("    nickname: ").append(toIndentedString(nickname)).append("\n");
-        sb.append("    is_admin: ").append(toIndentedString(isAdmin)).append("\n");
-        sb.append("}");
-        return sb.toString();
+        String sb = "class EmployeeRest {\n" +
+                "    employee_id: " + toIndentedString(employeeId) + "\n" +
+                "    company: " + toIndentedString(company) + "\n" +
+                "    email: " + toIndentedString(email) + "\n" +
+                "    balance: " + toIndentedString(balance) + "\n" +
+                "    token: " + toIndentedString(token) + "\n" +
+                "    firstname: " + toIndentedString(firstname) + "\n" +
+                "    lastname: " + toIndentedString(lastname) + "\n" +
+                "    nickname: " + toIndentedString(nickname) + "\n" +
+                "    is_admin: " + toIndentedString(admin) + "\n" +
+                "}";
+        return sb;
     }
 
     /**

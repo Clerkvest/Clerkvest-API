@@ -38,6 +38,7 @@ public class ProjectController implements DTOConverter<Project,ProjectDTO> {
 
         @PostMapping(value = "/create")
         public ResponseEntity<ProjectDTO> createProject(@Valid @RequestBody ProjectDTO fresh) throws ParseException {
+                fresh.setId(-1L);
                 Project converted = convertToEntity(fresh);
                 service.save(converted);
                 return ResponseEntity.ok().body(convertToDto(converted));
@@ -97,7 +98,15 @@ public class ProjectController implements DTOConverter<Project,ProjectDTO> {
                 Project post = modelMapper.map(postDto, Project.class);
                 if (postDto.getId() != null) {
                         Optional<Project> oldPost = service.getById(postDto.getId());
-                        //oldPost.ifPresent(value -> {post.setNickname(value.getNickname());});
+                        if (oldPost.isPresent()) {
+                                Project val = oldPost.get();
+                                val.setTitle(postDto.getTitle());
+                                val.setDescription(postDto.getDescription());
+                                val.setGoal(postDto.getGoal());
+                                val.setInvestedIn(postDto.getInvestedIn());
+                                val.setReached(postDto.isReached());
+                                return val;
+                        }
                 }
                 return post;
         }

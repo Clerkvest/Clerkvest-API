@@ -39,6 +39,7 @@ public class EmployeeController implements DTOConverter<Employee,EmployeeDTO> {
 
     @PostMapping(value = "/create")
     public ResponseEntity<EmployeeDTO> createEmployee(@Valid @RequestBody EmployeeDTO fresh) throws ParseException {
+        fresh.setId(-1L);
         Employee converted = convertToEntity(fresh);
         service.save(converted);
         return ResponseEntity.ok().body(convertToDto(converted));
@@ -101,7 +102,15 @@ public class EmployeeController implements DTOConverter<Employee,EmployeeDTO> {
         Employee post = modelMapper.map(postDto, Employee.class);
         if (postDto.getEmployeeId() != null) {
             Optional<Employee> oldPost = service.getById(postDto.getEmployeeId());
-            //oldPost.ifPresent(value -> {post.setNickname(value.getNickname());});
+            if (oldPost.isPresent()) {
+                Employee val = oldPost.get();
+                val.setNickname(postDto.getNickname());
+                val.setFirstname(postDto.getFirstname());
+                val.setLastname(postDto.getLastname());
+                val.setBalance(postDto.getBalance());
+                val.set_admin(postDto.isAdmin());
+                return val;
+            }
         }
         return post;
     }

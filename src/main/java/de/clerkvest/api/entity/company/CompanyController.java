@@ -46,14 +46,15 @@ public class CompanyController implements DTOConverter<Company,CompanyDTO> {
     }
 
     @PutMapping(value = "/update")
-    public ResponseEntity<String> updateCompany(@Valid @RequestBody CompanyDTO updated) throws ParseException {
+    public ResponseEntity<CompanyDTO> updateCompany(@Valid @RequestBody CompanyDTO updated) throws ParseException {
         Company converted = convertToEntity(updated);
         service.update(converted);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().body(convertToDto(converted));
     }
 
     @PostMapping(value = "/create")
     public ResponseEntity<CompanyDTO> createCompany(@Valid @RequestBody CompanyDTO fresh, @RequestParam String mail) throws ParseException {
+        fresh.setId(-1L);
         Company converted = convertToEntity(fresh);
         service.save(converted);
         return ResponseEntity.ok().body(convertToDto(converted));
@@ -75,7 +76,14 @@ public class CompanyController implements DTOConverter<Company,CompanyDTO> {
         Company post = modelMapper.map(postDto, Company.class);
         if (postDto.getId() != null) {
             Optional<Company> oldPost = service.getById(postDto.getId());
-            //oldPost.ifPresent(value -> {post.setNickname(value.getNickname());});
+            if (oldPost.isPresent()) {
+                Company val = oldPost.get();
+                val.setPayInterval(postDto.getPayInterval());
+                val.setPayAmount(postDto.getPayAmount());
+                val.setInviteOnly(postDto.getInviteOnly());
+                val.setName(postDto.getName());
+                return val;
+            }
         }
         return post;
     }

@@ -35,11 +35,11 @@ public class ProjectComment extends RepresentationModel<ProjectComment> implemen
 
     @ManyToOne(cascade = CascadeType.MERGE, targetEntity = Employee.class)
     @JoinColumn(name = "employee_id")
-    private Employee employeeId;
+    private Employee employee;
 
     @ManyToOne(cascade = CascadeType.MERGE, targetEntity = Project.class)
     @JoinColumn(name = "project_id")
-    private Project projectId;
+    private Project project;
 
     @NotNull
     private String title;

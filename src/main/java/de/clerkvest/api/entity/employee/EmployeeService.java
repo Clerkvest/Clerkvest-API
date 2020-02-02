@@ -1,7 +1,5 @@
 package de.clerkvest.api.entity.employee;
 
-import de.clerkvest.api.common.hateoas.constants.HateoasLink;
-import de.clerkvest.api.common.hateoas.link.LinkBuilder;
 import de.clerkvest.api.exception.ClerkEntityNotFoundException;
 import de.clerkvest.api.implement.service.IService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +29,7 @@ public class EmployeeService implements IService<Employee> {
 
     @Override
     public void save (Employee employee) {
-        if (repository.existsById(employee.getId())) {
+        if (employee.getId() != null && repository.existsById(employee.getId())) {
             return;
         }
         repository.save(employee);

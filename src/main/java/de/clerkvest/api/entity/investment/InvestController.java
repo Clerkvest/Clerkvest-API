@@ -38,6 +38,7 @@ public class InvestController implements DTOConverter<Invest,InvestDTO> {
 
     @PostMapping(value = "/create")
     public ResponseEntity<InvestDTO> createInvestment(@Valid @RequestBody InvestDTO fresh) throws ParseException {
+        fresh.setId(-1L);
         Invest converted = convertToEntity(fresh);
         service.save(converted);
         return ResponseEntity.ok().body(convertToDto(converted));
@@ -101,7 +102,11 @@ public class InvestController implements DTOConverter<Invest,InvestDTO> {
         Invest post = modelMapper.map(postDto, Invest.class);
         if (postDto.getId() != null) {
             Optional<Invest> oldPost = service.getById(postDto.getId());
-            //oldPost.ifPresent(value -> {post.setNickname(value.getNickname());});
+            if (oldPost.isPresent()) {
+                Invest val = oldPost.get();
+                val.setInvestment(postDto.getInvestment());
+                return val;
+            }
         }
         return post;
     }

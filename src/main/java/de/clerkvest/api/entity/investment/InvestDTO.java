@@ -44,8 +44,8 @@ public class InvestDTO extends RepresentationModel<InvestDTO> implements IServic
 
     public InvestDTO(Invest investIn) {
         investId = investIn.getId();
-        projectId = investIn.getProjectId().getId();
-        employeeId = investIn.getEmployeeId().getId();
+        projectId = investIn.getProject().getId();
+        employeeId = investIn.getEmployee().getId();
         investment = investIn.getInvestment();
     }
 
