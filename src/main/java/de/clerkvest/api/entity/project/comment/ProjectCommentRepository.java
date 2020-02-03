@@ -18,7 +18,7 @@ import java.util.Optional;
 public interface ProjectCommentRepository extends JpaRepository<ProjectComment, Long> {
 
 
-    @Query(value = "SELECT * FROM PROJECT_COMMENT c WHERE c.PROJECT_ID = ?1", nativeQuery = true)
+    @Query(value = "SELECT * FROM project_comment c WHERE c.project_id = ?1", nativeQuery = true)
     Optional<List<ProjectComment>> getProjectCommentsByProjectId(Long id);
 
 }

@@ -6,9 +6,12 @@ import de.clerkvest.api.entity.employee.EmployeeService;
 import de.clerkvest.api.entity.project.ProjectService;
 import de.clerkvest.api.exception.ClerkEntityNotFoundException;
 import de.clerkvest.api.implement.DTOConverter;
+import de.clerkvest.api.security.EmployeeUserDetails;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -42,23 +45,26 @@ public class ProjectCommentController implements DTOConverter<ProjectComment, Pr
         this.modelMapper = modelMapper;
     }
 
+    @PreAuthorize("hasRole('ROLE_USER') and (@projectService.getById(#fresh.projectId).isPresent() ? @projectService.getById(#fresh.projectId).get().company.id.equals(#auth.companyId): true) and #fresh.employeeId.equals(#auth.employeeId)")
     @PostMapping(value = "/create")
-    public ResponseEntity<ProjectCommentDTO> createProjectComment(@Valid @RequestBody ProjectCommentDTO fresh) throws ParseException {
+    public ResponseEntity<ProjectCommentDTO> createProjectComment(@Valid @RequestBody ProjectCommentDTO fresh, @AuthenticationPrincipal EmployeeUserDetails auth) throws ParseException {
         fresh.setId(-1L);
         ProjectComment converted = convertToEntity(fresh);
         service.save(converted);
         return ResponseEntity.ok().body(convertToDto(converted));
     }
 
+    @PreAuthorize("hasRole('ROLE_USER') and #updated.employeeId.equals(#auth.employeeId)")
     @PutMapping(value = "/update")
-    public ResponseEntity<String> updatedEmployee(@Valid @RequestBody ProjectCommentDTO updated) throws ParseException {
+    public ResponseEntity<String> updatedEmployee(@Valid @RequestBody ProjectCommentDTO updated, @AuthenticationPrincipal EmployeeUserDetails auth) throws ParseException {
         ProjectComment converted = convertToEntity(updated);
         service.update(converted);
         return ResponseEntity.ok().build();
     }
 
+    @PreAuthorize("hasRole('ROLE_USER') and (@projectCommentService.getById(#id).isPresent() ? @projectCommentService.getById(#id).get().employee.id.equals(#auth.employeeId) : true)")
     @DeleteMapping(value = "/delete/{id}")
-    public ResponseEntity<String> deleteProjectComment(@PathVariable long id) {
+    public ResponseEntity<String> deleteProjectComment(@PathVariable long id, @AuthenticationPrincipal EmployeeUserDetails auth) {
         Optional<ProjectComment> employee = service.getById(id);
         employee.ifPresentOrElse(service::delete, () -> {
             throw new ClerkEntityNotFoundException("ProjectComment not found");
@@ -66,8 +72,9 @@ public class ProjectCommentController implements DTOConverter<ProjectComment, Pr
         return ResponseEntity.ok().build();
     }
 
+    @PreAuthorize("hasRole('ROLE_USER') and (@projectService.getById(#id).isPresent() ? @projectService.getById(#id).get().company.id.equals(#auth.companyId): true)")
     @GetMapping(value = "/{id}/comments")
-    public ResponseEntity<List<ProjectCommentDTO>> getAllCommentsForProject(@PathVariable long id) {
+    public ResponseEntity<List<ProjectCommentDTO>> getAllCommentsForProject(@PathVariable long id, @AuthenticationPrincipal EmployeeUserDetails auth) {
         Optional<List<ProjectComment>> projects = service.getByProjectId(id);
         List<ProjectCommentDTO> projectDTOs = new ArrayList<>();
         projects.ifPresent(presentProjects -> presentProjects.forEach(project -> projectDTOs.add(convertToDto(project))));

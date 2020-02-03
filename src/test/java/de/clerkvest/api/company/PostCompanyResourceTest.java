@@ -13,8 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 
 import static io.restassured.RestAssured.given;
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
-import static org.springframework.http.HttpStatus.OK;
+import static org.springframework.http.HttpStatus.*;
 
 @SpringBootTest(classes = Application.class,
         webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
@@ -95,7 +94,7 @@ public class PostCompanyResourceTest {
         company = CompanyDTO.builder().name("titCompany").domain("tit.com").inviteOnly(false).payAmount(BigDecimal.valueOf(1)).payInterval(1).build();
         ValidatableResponse response = given().body(company).contentType(ContentType.JSON).post(HateoasLink.COMPANY_CREATE + "?mail=test@tit.com").then().statusCode(OK.value());
         company = CompanyDTO.builder().name("titCompany").domain("tit.com").inviteOnly(false).payAmount(BigDecimal.valueOf(1)).payInterval(1).build();
-        response = given().body(company).contentType(ContentType.JSON).post(HateoasLink.COMPANY_CREATE + "?mail=test@tit.com").then().statusCode(BAD_REQUEST.value());
+        response = given().body(company).contentType(ContentType.JSON).post(HateoasLink.COMPANY_CREATE + "?mail=test@tit.com").then().statusCode(CONFLICT.value());
 
     }
 

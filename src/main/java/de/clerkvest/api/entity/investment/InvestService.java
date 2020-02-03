@@ -1,6 +1,7 @@
 package de.clerkvest.api.entity.investment;
 
 import de.clerkvest.api.exception.ClerkEntityNotFoundException;
+import de.clerkvest.api.exception.ViolatedConstraintException;
 import de.clerkvest.api.implement.service.IService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,7 +20,7 @@ import java.util.Optional;
  */
 @Service
 public class InvestService implements IService<Invest> {
-
+    private static final int BALANCE_SMALLER_INVESTMENT = -1;
     private final InvestRepository repository;
 
     @Autowired
@@ -29,6 +30,11 @@ public class InvestService implements IService<Invest> {
 
     @Override
     public void save(Invest invest) {
+        if (invest.getProject().isReached()) {
+            throw new ViolatedConstraintException("Project is already Closed");
+        } else if (invest.getEmployee().getBalance().compareTo(invest.getInvestment()) == BALANCE_SMALLER_INVESTMENT) {
+            throw new ViolatedConstraintException("Not enough Balance");
+        }
         repository.save(invest);
     }
 
@@ -52,6 +58,7 @@ public class InvestService implements IService<Invest> {
         return repository.findAll();
     }
 
+
     @Override
     public Optional<Invest> getById(long id) {
         return repository.findById(id);
@@ -64,5 +71,9 @@ public class InvestService implements IService<Invest> {
 
     public Optional<List<Invest>> getByEmployeeId(long id) {
         return repository.getByEmployeeId(id);
+    }
+
+    public List<Invest> getByProjectId(Long id) {
+        return repository.getByProjectId(id);
     }
 }

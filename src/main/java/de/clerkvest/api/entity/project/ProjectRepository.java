@@ -1,6 +1,9 @@
 package de.clerkvest.api.entity.project;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+
+import java.util.List;
 
 /**
  * api <p>
@@ -13,4 +16,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 public interface ProjectRepository extends JpaRepository<Project, Long> {
 
+    @Query(value = "SELECT * FROM project c WHERE c.company_id = ?1", nativeQuery = true)
+    List<Project> getByCompanyId(Long companyId);
 }

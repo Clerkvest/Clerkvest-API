@@ -17,6 +17,9 @@ import java.util.Optional;
  */
 public interface InvestRepository extends JpaRepository<Invest, Long> {
 
-    @Query(value = "SELECT * FROM Invest i WHERE i.employeeId = ?1", nativeQuery = true)
+    @Query(value = "SELECT * FROM invest_in i WHERE i.employee_id = ?1", nativeQuery = true)
     Optional<List<Invest>> getByEmployeeId(Long id);
+
+    @Query(value = "SELECT * FROM invest_in i WHERE i.project_id = ?1", nativeQuery = true)
+    List<Invest> getByProjectId(Long id);
 }

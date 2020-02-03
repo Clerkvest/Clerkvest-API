@@ -3,11 +3,13 @@ package de.clerkvest.api.entity.employee;
 import de.clerkvest.api.entity.company.Company;
 import de.clerkvest.api.implement.service.IServiceEntity;
 import lombok.*;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
+import java.util.HashSet;
 
 /**
  * api <p>
@@ -47,6 +49,9 @@ public class Employee implements IServiceEntity {
 
     private String token;
 
+    @Column(name = "login_token")
+    private String loginToken;
+
     @NotNull
     @Builder.Default
     private String firstname = "FirstName";
@@ -69,6 +74,15 @@ public class Employee implements IServiceEntity {
     @Override
     public void setId(Long id) {
         setEmployeeId(id);
+    }
+
+    public HashSet<SimpleGrantedAuthority> getAuthorities() {
+        HashSet<SimpleGrantedAuthority> authorities = new HashSet<>();
+        authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
+        if (isAdmin) {
+            authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+        }
+        return authorities;
     }
 
     @Override

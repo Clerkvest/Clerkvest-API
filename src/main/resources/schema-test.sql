@@ -23,15 +23,16 @@ CREATE TABLE IF NOT EXISTS email_token
 CREATE TABLE IF NOT EXISTS employee
 (
     employee_id BIGINT auto_increment PRIMARY KEY,
-    company_id  bigint                                                       NOT NULL,
-    email       varchar(255)                                       NOT NULL,
-    balance     DECIMAL                                                      NOT NULL,
+    company_id  bigint       NOT NULL,
+    email       varchar(255) NOT NULL,
+    balance     DECIMAL      NOT NULL,
     token       varchar(255),
-    firstname   varchar(255)                                       NOT NULL,
-    lastname    varchar(255)                                       NOT NULL,
-    nickname    varchar(255)                                       NOT NULL,
-    is_admin    boolean                                                      NOT NULL,
-    CHECK ( balance >= 0 )
+    login_token varchar(255),
+    firstname   varchar(255) NOT NULL,
+    lastname    varchar(255) NOT NULL,
+    nickname    varchar(255) NOT NULL,
+    is_admin    boolean      NOT NULL,
+    CHECK (balance >= 0)
 );
 
 

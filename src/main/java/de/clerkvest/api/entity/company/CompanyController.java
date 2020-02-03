@@ -4,9 +4,12 @@ import de.clerkvest.api.common.hateoas.constants.HateoasLink;
 import de.clerkvest.api.common.hateoas.link.LinkBuilder;
 import de.clerkvest.api.exception.ClerkEntityNotFoundException;
 import de.clerkvest.api.implement.DTOConverter;
+import de.clerkvest.api.security.EmployeeUserDetails;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -35,18 +38,20 @@ public class CompanyController implements DTOConverter<Company,CompanyDTO> {
         this.modelMapper = modelMapper;
     }
 
+    @PreAuthorize("hasRole('ROLE_USER') and #auth.companyId.equals(#id)")
     @GetMapping(value = "/get/{id}")
-    public ResponseEntity<CompanyDTO> getSingleCompany(@PathVariable long id) {
+    public ResponseEntity<CompanyDTO> getSingleCompany(@PathVariable long id, @AuthenticationPrincipal EmployeeUserDetails auth) {
         Optional<Company> company = service.getById(id);
-        if(company.isPresent()){
+        if (company.isPresent()) {
             return ResponseEntity.ok(convertToDto(company.get()));
-        }else{
+        } else {
             throw new ClerkEntityNotFoundException("Company not found");
         }
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN') and #auth.companyId.equals(#updated.id)")
     @PutMapping(value = "/update")
-    public ResponseEntity<CompanyDTO> updateCompany(@Valid @RequestBody CompanyDTO updated) throws ParseException {
+    public ResponseEntity<CompanyDTO> updateCompany(@Valid @RequestBody CompanyDTO updated, @AuthenticationPrincipal EmployeeUserDetails auth) throws ParseException {
         Company converted = convertToEntity(updated);
         service.update(converted);
         return ResponseEntity.ok().body(convertToDto(converted));

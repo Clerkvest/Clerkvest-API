@@ -11,7 +11,7 @@ import java.util.List;
 
 import static de.clerkvest.api.config.TestConfig.REST_BASE_URL;
 import static io.restassured.RestAssured.given;
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.HttpStatus.OK;
 
 @SpringBootTest(classes = Application.class,
@@ -24,21 +24,21 @@ public class GetCommentResourceTest {
 
     @Test
     public void getProjectCommentsAsSelf() {
-        List employee0Comment = given().header("X-API-Key", "exampleToken0").get(REST_ENDPOINT_URL + 0 + "/comments").then().statusCode(OK.value()).extract().body().jsonPath().getList(".", ProjectCommentDTO.class);
+        List employee0Comment = given().header("Authorization", "Bearer exampleToken0").get(REST_ENDPOINT_URL + 0 + "/comments").then().statusCode(OK.value()).extract().body().jsonPath().getList(".", ProjectCommentDTO.class);
     }
 
     @Test
     public void getProjectCommentsAsEmployee() {
-        List employee0Comment = given().header("X-API-Key", "exampleToken1").get(REST_ENDPOINT_URL + 0 + "/comments").then().statusCode(OK.value()).extract().body().jsonPath().getList(".", ProjectCommentDTO.class);
+        List employee0Comment = given().header("Authorization", "Bearer exampleToken1").get(REST_ENDPOINT_URL + 0 + "/comments").then().statusCode(OK.value()).extract().body().jsonPath().getList(".", ProjectCommentDTO.class);
     }
 
     @Test
     public void getProjectCommentsAsForeign() {
-        ValidatableResponse employee0Comment = given().header("X-API-Key", "exampleToken2").get(REST_ENDPOINT_URL + 0 + "/comments").then().statusCode(BAD_REQUEST.value());
+        ValidatableResponse employee0Comment = given().header("Authorization", "Bearer exampleToken2").get(REST_ENDPOINT_URL + 0 + "/comments").then().statusCode(FORBIDDEN.value());
     }
 
     @Test
     public void postProjectCommentsAsForeignAdmin() {
-        ValidatableResponse employee0Comment = given().header("X-API-Key", "exampleToken3").get(REST_ENDPOINT_URL + 0 + "/comments").then().statusCode(BAD_REQUEST.value());
+        ValidatableResponse employee0Comment = given().header("Authorization", "Bearer exampleToken3").get(REST_ENDPOINT_URL + 0 + "/comments").then().statusCode(FORBIDDEN.value());
     }
 }

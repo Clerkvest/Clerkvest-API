@@ -18,7 +18,7 @@ import java.math.BigDecimal;
 import static de.clerkvest.api.config.TestConfig.REST_BASE_URL;
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.HttpStatus.OK;
 
 @SpringBootTest(classes = Application.class,
@@ -35,34 +35,34 @@ public class GetInvestmentResourceTest {
 
     @Test
     public void getInvestment_0() {
-        InvestDTO rest = given().header("X-API-Key", "exampleToken0").get(HateoasLink.INVEST_SINGLE + 0).then().statusCode(OK.value()).extract().as(InvestDTO.class);
-        EmployeeDTO restEmployee = given().header("X-API-Key", "exampleToken0").get(HateoasLink.EMPLOYEE_SINGLE + 0).then().statusCode(OK.value()).extract().as(EmployeeDTO.class);
-        ProjectDTO restProject = given().header("X-API-Key", "exampleToken0").get(HateoasLink.PROJECT_SINGLE + 0).then().statusCode(OK.value()).extract().as(ProjectDTO.class);
+        InvestDTO rest = given().header("Authorization", "Bearer exampleToken0").get(HateoasLink.INVEST_SINGLE + 0).then().statusCode(OK.value()).extract().as(InvestDTO.class);
+        EmployeeDTO restEmployee = given().header("Authorization", "Bearer exampleToken0").get(HateoasLink.EMPLOYEE_SINGLE + 0).then().statusCode(OK.value()).extract().as(EmployeeDTO.class);
+        ProjectDTO restProject = given().header("Authorization", "Bearer exampleToken0").get(HateoasLink.PROJECT_SINGLE + 0).then().statusCode(OK.value()).extract().as(ProjectDTO.class);
         InvestDTO investMent0 = InvestDTO.builder().employeeId(restEmployee.getId()).investment(BigDecimal.valueOf(5)).projectId(restProject.getId()).investId(0L).build();
         assertThat(investMent0).isEqualTo(rest);
     }
 
     @Test
     public void getInvestment_1() {
-        InvestDTO rest = given().header("X-API-Key", "exampleToken1").get(HateoasLink.INVEST_SINGLE + 1).then().statusCode(OK.value()).extract().as(InvestDTO.class);
-        EmployeeDTO restEmployee = given().header("X-API-Key", "exampleToken1").get(HateoasLink.EMPLOYEE_SINGLE + 1).then().statusCode(OK.value()).extract().as(EmployeeDTO.class);
-        ProjectDTO restProject = given().header("X-API-Key", "exampleToken1").get(HateoasLink.PROJECT_SINGLE + 0).then().statusCode(OK.value()).extract().as(ProjectDTO.class);
+        InvestDTO rest = given().header("Authorization", "Bearer exampleToken1").get(HateoasLink.INVEST_SINGLE + 1).then().statusCode(OK.value()).extract().as(InvestDTO.class);
+        EmployeeDTO restEmployee = given().header("Authorization", "Bearer exampleToken1").get(HateoasLink.EMPLOYEE_SINGLE + 1).then().statusCode(OK.value()).extract().as(EmployeeDTO.class);
+        ProjectDTO restProject = given().header("Authorization", "Bearer exampleToken1").get(HateoasLink.PROJECT_SINGLE + 0).then().statusCode(OK.value()).extract().as(ProjectDTO.class);
         InvestDTO investMent0 = InvestDTO.builder().employeeId(restEmployee.getId()).investment(BigDecimal.valueOf(5)).projectId(restProject.getId()).investId(1L).build();
         assertThat(investMent0).isEqualTo(rest);
     }
 
     @Test
     public void getInvestment_2() {
-        InvestDTO rest = given().header("X-API-Key", "exampleToken2").get(HateoasLink.INVEST_SINGLE + 2).then().statusCode(OK.value()).extract().as(InvestDTO.class);
-        EmployeeDTO restEmployee = given().header("X-API-Key", "exampleToken2").get(HateoasLink.EMPLOYEE_SINGLE + 2).then().statusCode(OK.value()).extract().as(EmployeeDTO.class);
-        ProjectDTO restProject = given().header("X-API-Key", "exampleToken2").get(HateoasLink.PROJECT_SINGLE + 1).then().statusCode(OK.value()).extract().as(ProjectDTO.class);
+        InvestDTO rest = given().header("Authorization", "Bearer exampleToken2").get(HateoasLink.INVEST_SINGLE + 2).then().statusCode(OK.value()).extract().as(InvestDTO.class);
+        EmployeeDTO restEmployee = given().header("Authorization", "Bearer exampleToken2").get(HateoasLink.EMPLOYEE_SINGLE + 2).then().statusCode(OK.value()).extract().as(EmployeeDTO.class);
+        ProjectDTO restProject = given().header("Authorization", "Bearer exampleToken2").get(HateoasLink.PROJECT_SINGLE + 1).then().statusCode(OK.value()).extract().as(ProjectDTO.class);
         InvestDTO investMent0 = InvestDTO.builder().employeeId(restEmployee.getId()).investment(BigDecimal.valueOf(5)).projectId(restProject.getId()).investId(2L).build();
         assertThat(investMent0).isEqualTo(rest);
     }
 
     @Test
     public void getInvestmentFromOtherCompany() {
-        ValidatableResponse rest = given().header("X-API-Key", "exampleToken0").get(HateoasLink.INVEST_SINGLE + 2).then().statusCode(BAD_REQUEST.value());
+        ValidatableResponse rest = given().header("Authorization", "Bearer exampleToken0").get(HateoasLink.INVEST_SINGLE + 2).then().statusCode(FORBIDDEN.value());
 
     }
 }

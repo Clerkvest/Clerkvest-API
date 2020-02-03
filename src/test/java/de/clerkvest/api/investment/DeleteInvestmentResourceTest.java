@@ -20,29 +20,29 @@ public class DeleteInvestmentResourceTest {
 
     @Test
     public void deleteInvestmentAsSelf() {
-        ValidatableResponse updated = given().header("X-API-Key", "exampleToken0").delete(REST_ENDPOINT_URL + 0).then().statusCode(OK.value());
-        ValidatableResponse rest = given().header("X-API-Key", "exampleToken0").get(REST_ENDPOINT_URL + 0).then().statusCode(NOT_FOUND.value());
+        ValidatableResponse updated = given().header("Authorization", "Bearer exampleToken0").delete(REST_ENDPOINT_URL + 0).then().statusCode(OK.value());
+        ValidatableResponse rest = given().header("Authorization", "Bearer exampleToken0").get(REST_ENDPOINT_URL + 0).then().statusCode(NOT_FOUND.value());
     }
 
 
     @Test
     public void deleteInvestmentAsAdmin() {
-        ValidatableResponse updated = given().header("X-API-Key", "exampleToken1").delete(REST_ENDPOINT_URL + 0).then().statusCode(BAD_REQUEST.value());
-        //ValidatableResponse rest = given().header("X-API-Key","exampleToken0").get(REST_ENDPOINT_URL+"/0").then().statusCode(NOT_FOUND.getStatusCode());
+        ValidatableResponse updated = given().header("Authorization", "Bearer exampleToken1").delete(REST_ENDPOINT_URL + 0).then().statusCode(FORBIDDEN.value());
+        //ValidatableResponse rest = given().header("Authorization","exampleToken0").get(REST_ENDPOINT_URL+"/0").then().statusCode(NOT_FOUND.getStatusCode());
     }
 
     @Test
     public void deleteInvestmentAsNonAdmin() {
-        ValidatableResponse updated = given().header("X-API-Key", "exampleToken0").delete(REST_ENDPOINT_URL + 0).then().statusCode(BAD_REQUEST.value());
+        ValidatableResponse updated = given().header("Authorization", "Bearer exampleToken0").delete(REST_ENDPOINT_URL + 1).then().statusCode(FORBIDDEN.value());
     }
 
     @Test
     public void deleteInvestmentAsForeignAdmin() {
-        ValidatableResponse updated = given().header("X-API-Key", "exampleToken3").delete(REST_ENDPOINT_URL + 0).then().statusCode(BAD_REQUEST.value());
+        ValidatableResponse updated = given().header("Authorization", "Bearer exampleToken3").delete(REST_ENDPOINT_URL + 0).then().statusCode(FORBIDDEN.value());
     }
 
     @Test
     public void deleteInvestmentForeignEmployee() {
-        ValidatableResponse updated = given().header("X-API-Key", "exampleToken2").delete(REST_ENDPOINT_URL + 0).then().statusCode(BAD_REQUEST.value());
+        ValidatableResponse updated = given().header("Authorization", "Bearer exampleToken2").delete(REST_ENDPOINT_URL + 0).then().statusCode(FORBIDDEN.value());
     }
 }

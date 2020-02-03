@@ -37,11 +37,11 @@ public class Project extends RepresentationModel<Project> implements IServiceEnt
     private Long projectId;
 
     @ManyToOne(cascade = CascadeType.MERGE, targetEntity = Employee.class)
-    @JoinColumn(name = "employee_id")
+    @JoinColumn(name = "employee_id", nullable = false, updatable = false)
     private Employee employee;
 
     @ManyToOne(cascade = CascadeType.MERGE, targetEntity = Company.class)
-    @JoinColumn(name = "company_id")
+    @JoinColumn(name = "company_id", nullable = false, updatable = false)
     private Company company;
 
     @NotNull

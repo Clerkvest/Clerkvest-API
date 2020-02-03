@@ -31,6 +31,7 @@ CREATE TABLE employee
   email       character varying(255)                                       NOT NULL,
   balance     DECIMAL                                                      NOT NULL,
   token       character varying(255),
+  login_token  character varying(255),
   firstname   character varying(255)                                       NOT NULL,
   lastname    character varying(255)                                       NOT NULL,
   nickname    character varying(255)                                       NOT NULL,

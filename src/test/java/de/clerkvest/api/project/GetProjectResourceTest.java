@@ -9,7 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import static io.restassured.RestAssured.given;
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.HttpStatus.OK;
 
 @SpringBootTest(classes = Application.class,
@@ -22,16 +22,16 @@ public class GetProjectResourceTest {
 
     @Test
     public void getProject_0() {
-        ProjectDTO rest = given().header("X-API-Key", "exampleToken1").get(REST_ENDPOINT_URL + 0).then().statusCode(OK.value()).extract().as(ProjectDTO.class);
+        ProjectDTO rest = given().header("Authorization", "Bearer exampleToken1").get(REST_ENDPOINT_URL + 0).then().statusCode(OK.value()).extract().as(ProjectDTO.class);
     }
 
     @Test
     public void getProject_1() {
-        ProjectDTO rest = given().header("X-API-Key", "exampleToken2").get(REST_ENDPOINT_URL + 1).then().statusCode(OK.value()).extract().as(ProjectDTO.class);
+        ProjectDTO rest = given().header("Authorization", "Bearer exampleToken2").get(REST_ENDPOINT_URL + 1).then().statusCode(OK.value()).extract().as(ProjectDTO.class);
     }
 
     @Test
     public void getEmployeeFromOtherCompany() {
-        ValidatableResponse rest = given().header("X-API-Key", "exampleToken1").get(REST_ENDPOINT_URL + 1).then().statusCode(BAD_REQUEST.value());
+        ValidatableResponse rest = given().header("Authorization", "Bearer exampleToken1").get(REST_ENDPOINT_URL + 1).then().statusCode(FORBIDDEN.value());
     }
 }

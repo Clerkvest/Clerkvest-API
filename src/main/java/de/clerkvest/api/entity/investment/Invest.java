@@ -35,11 +35,11 @@ public class Invest extends RepresentationModel<Invest> implements IServiceEntit
     private Long investInId;
 
     @ManyToOne(targetEntity = Project.class)
-    @JoinColumn(name = "project_id")
+    @JoinColumn(name = "project_id", nullable = false, updatable = false)
     private Project project;
 
     @ManyToOne(targetEntity = Employee.class)
-    @JoinColumn(name = "employee_id")
+    @JoinColumn(name = "employee_id", nullable = false, updatable = false)
     private Employee employee;
 
     @NotNull

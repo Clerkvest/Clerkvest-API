@@ -22,11 +22,11 @@ import static org.springframework.http.HttpStatus.OK;
 @Transactional
 public class GetInvestmentsResourceTest {
 
-    private final static String REST_ENDPOINT_URL = HateoasLink.INVEST_ALL;
+    private final static String REST_ENDPOINT_URL = HateoasLink.BASE_ENDPOINT;
 
     @Test
-    public void getInvestments_0() {
-        List rest = given().header("X-API-Key", "exampleToken0").get(REST_ENDPOINT_URL).then().statusCode(OK.value()).extract().body().jsonPath().getList(".", InvestDTO.class);
+    public void getInvestmentsByEmployee() {
+        List rest = given().header("Authorization", "Bearer exampleToken0").get(REST_ENDPOINT_URL + "/invest/all/0").then().statusCode(OK.value()).extract().body().jsonPath().getList(".", InvestDTO.class);
         assertThat(rest.isEmpty()).isFalse();
     }
 
@@ -34,7 +34,7 @@ public class GetInvestmentsResourceTest {
     @Disabled("Disabled")
     @Test
     public void getInvestmentsFromOtherCompany() {
-        ValidatableResponse rest = given().header("X-API-Key", "exampleToken0").get(REST_ENDPOINT_URL + 2).then().statusCode(BAD_REQUEST.value());
+        ValidatableResponse rest = given().header("Authorization", "Bearer exampleToken0").get(REST_ENDPOINT_URL + 2).then().statusCode(BAD_REQUEST.value());
 
     }
 }

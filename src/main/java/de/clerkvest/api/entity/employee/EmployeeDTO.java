@@ -11,7 +11,7 @@ import java.util.Objects;
 
 @Builder
 @AllArgsConstructor
-@JsonIgnoreProperties({"token", "employee_id", "_links"})
+@JsonIgnoreProperties(value = {"token", "employeeId"}, ignoreUnknown = true)
 public class EmployeeDTO extends RepresentationModel<EmployeeDTO> implements IServiceEntity {
     private Long employeeId = null;
     private Long company;

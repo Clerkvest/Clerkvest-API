@@ -1,6 +1,7 @@
 package de.clerkvest.api.entity.project;
 
 import de.clerkvest.api.exception.ClerkEntityNotFoundException;
+import de.clerkvest.api.exception.ViolatedConstraintException;
 import de.clerkvest.api.implement.service.IService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,11 +30,29 @@ public class ProjectService implements IService<Project> {
 
     @Override
     public void save(Project project) {
+        if (project.getGoal().intValue() < 1) {
+            throw new ViolatedConstraintException("Goal can't be below 1");
+        }
+        if (project.getGoal().compareTo(project.getInvestedIn()) == -1) {
+            throw new ViolatedConstraintException("Goal can't be below InvestedIn");
+        }
+        if (project.getInvestedIn().intValue() < 0) {
+            throw new ViolatedConstraintException("InvestedIn can't be below 0");
+        }
         repository.save(project);
     }
 
     @Override
     public void update(Project project) {
+        if (project.getGoal().intValue() < 0) {
+            throw new ViolatedConstraintException("Goal can't be below 1");
+        }
+        if (project.getGoal().compareTo(project.getInvestedIn()) == -1) {
+            throw new ViolatedConstraintException("Goal can't be below InvestedIn");
+        }
+        if (project.getInvestedIn().intValue() < 0) {
+            throw new ViolatedConstraintException("InvestedIn can't be below 0");
+        }
         //Check if company is new
         Optional<Project> existingProject = repository.findById(project.getId());
         existingProject.ifPresentOrElse(
@@ -54,13 +73,17 @@ public class ProjectService implements IService<Project> {
         return repository.findAll();
     }
 
+    public List<Project> getAllByCompany(Long companyId) {
+        return repository.getByCompanyId(companyId);
+    }
+
     @Override
     public Optional<Project> getById(long id) {
         return repository.findById(id);
     }
 
     @Override
-    public void delete (Project project) {
+    public void delete(Project project) {
         repository.delete(project);
     }
 }

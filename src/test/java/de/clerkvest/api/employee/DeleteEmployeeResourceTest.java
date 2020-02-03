@@ -19,29 +19,29 @@ public class DeleteEmployeeResourceTest {
 
     @Test
     public void deleteEmployeeAsSelf() {
-        ValidatableResponse updated = given().header("X-API-Key", "exampleToken0").delete(REST_ENDPOINT_URL + 0).then().statusCode(OK.value());
-        ValidatableResponse rest = given().header("X-API-Key", "exampleToken1").get(REST_ENDPOINT_URL + 0).then().statusCode(NOT_FOUND.value());
+        ValidatableResponse updated = given().header("Authorization", "Bearer exampleToken0").delete(REST_ENDPOINT_URL + 0).then().statusCode(OK.value());
+        ValidatableResponse rest = given().header("Authorization", "Bearer exampleToken1").get(REST_ENDPOINT_URL + 0).then().statusCode(NOT_FOUND.value());
     }
 
 
     @Test
     public void deleteEmployeeAsAdmin() {
-        ValidatableResponse updated = given().header("X-API-Key", "exampleToken1").delete(REST_ENDPOINT_URL + 0).then().statusCode(OK.value());
-        ValidatableResponse rest = given().header("X-API-Key", "exampleToken1").get(REST_ENDPOINT_URL + 0).then().statusCode(NOT_FOUND.value());
+        ValidatableResponse updated = given().header("Authorization", "Bearer exampleToken1").delete(REST_ENDPOINT_URL + 0).then().statusCode(OK.value());
+        ValidatableResponse rest = given().header("Authorization", "Bearer exampleToken1").get(REST_ENDPOINT_URL + 0).then().statusCode(NOT_FOUND.value());
     }
 
     @Test
     public void deleteEmployeeAsNonAdmin() {
-        ValidatableResponse updated = given().header("X-API-Key", "exampleToken0").delete(REST_ENDPOINT_URL + 1).then().statusCode(BAD_REQUEST.value());
+        ValidatableResponse updated = given().header("Authorization", "Bearer exampleToken0").delete(REST_ENDPOINT_URL + 1).then().statusCode(FORBIDDEN.value());
     }
 
     @Test
     public void deleteEmployeeAsForeignAdmin() {
-        ValidatableResponse updated = given().header("X-API-Key", "exampleToken3").delete(REST_ENDPOINT_URL + 0).then().statusCode(BAD_REQUEST.value());
+        ValidatableResponse updated = given().header("Authorization", "Bearer exampleToken3").delete(REST_ENDPOINT_URL + 0).then().statusCode(FORBIDDEN.value());
     }
 
     @Test
     public void deleteEmployeeAsForeignEmployee() {
-        ValidatableResponse updated = given().header("X-API-Key", "exampleToken2").delete(REST_ENDPOINT_URL + 0).then().statusCode(BAD_REQUEST.value());
+        ValidatableResponse updated = given().header("Authorization", "Bearer exampleToken2").delete(REST_ENDPOINT_URL + 0).then().statusCode(FORBIDDEN.value());
     }
 }

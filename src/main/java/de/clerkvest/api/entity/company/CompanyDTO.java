@@ -30,7 +30,7 @@ import java.util.Objects;
 @Builder
 @AllArgsConstructor
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaJerseyServerCodegen", date = "2019-04-26T13:56:04.987Z")
-@JsonIgnoreProperties({"company_id", "_links"})
+@JsonIgnoreProperties(value = {"companyId"}, ignoreUnknown = true)
 public class CompanyDTO extends RepresentationModel<CompanyDTO> implements IServiceEntity {
     private Long companyId = null;
 

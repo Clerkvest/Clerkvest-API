@@ -2,17 +2,13 @@ package de.clerkvest.api.project;
 
 import de.clerkvest.api.Application;
 import de.clerkvest.api.common.hateoas.constants.HateoasLink;
-import de.clerkvest.api.entity.project.Project;
 import de.clerkvest.api.entity.project.ProjectDTO;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static de.clerkvest.api.config.TestConfig.REST_BASE_URL;
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.http.HttpStatus.OK;
@@ -29,13 +25,13 @@ public class GetProjectsResourceTest {
 
     @Test
     public void getProject_0() {
-        List rest = given().header("X-API-Key", "exampleToken1").get(REST_ENDPOINT_URL).then().statusCode(OK.value()).extract().body().jsonPath().getList(".", ProjectDTO.class);
+        List rest = given().header("Authorization", "Bearer exampleToken1").get(REST_ENDPOINT_URL).then().statusCode(OK.value()).extract().body().jsonPath().getList(".", ProjectDTO.class);
         assertThat(rest.isEmpty()).isFalse();
     }
 
     @Test
     public void getProject_1() {
-        List rest = given().header("X-API-Key", "exampleToken2").get(REST_ENDPOINT_URL).then().statusCode(OK.value()).extract().body().jsonPath().getList(".", ProjectDTO.class);
+        List rest = given().header("Authorization", "Bearer exampleToken2").get(REST_ENDPOINT_URL).then().statusCode(OK.value()).extract().body().jsonPath().getList(".", ProjectDTO.class);
         assertThat(rest.isEmpty()).isFalse();
     }
 

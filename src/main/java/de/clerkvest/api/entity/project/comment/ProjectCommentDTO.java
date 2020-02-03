@@ -30,7 +30,7 @@ import java.util.Objects;
 @AllArgsConstructor
 @NoArgsConstructor
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaJerseyServerCodegen", date = "2019-04-26T13:56:04.987Z")
-@JsonIgnoreProperties({"project_comment_id", "_links"})
+@JsonIgnoreProperties(value = {"projectCommentId"}, ignoreUnknown = true)
 public class ProjectCommentDTO extends RepresentationModel<ProjectCommentDTO> implements IServiceEntity {
     private Long projectCommentId = null;
 

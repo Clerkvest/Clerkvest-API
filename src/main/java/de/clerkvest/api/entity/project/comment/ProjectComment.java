@@ -30,15 +30,15 @@ public class ProjectComment extends RepresentationModel<ProjectComment> implemen
     @Id
     @SequenceGenerator(name = "project_comment_gen", sequenceName = "project_comment_project_comment_id_seq", allocationSize = 1)
     @GeneratedValue(generator = "project_comment_gen", strategy = GenerationType.SEQUENCE)
-    @Column(name = "project_comment_id", updatable = false)
+    @Column(name = "project_comment_id", nullable = false, updatable = false)
     private Long projectCommentId;
 
     @ManyToOne(cascade = CascadeType.MERGE, targetEntity = Employee.class)
-    @JoinColumn(name = "employee_id")
+    @JoinColumn(name = "employee_id", nullable = false, insertable = false)
     private Employee employee;
 
     @ManyToOne(cascade = CascadeType.MERGE, targetEntity = Project.class)
-    @JoinColumn(name = "project_id")
+    @JoinColumn(name = "project_id", nullable = false, insertable = false)
     private Project project;
 
     @NotNull

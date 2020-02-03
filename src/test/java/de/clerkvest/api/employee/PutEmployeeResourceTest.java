@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.HttpStatus.OK;
 
 @SpringBootTest(classes = Application.class,
@@ -25,9 +25,9 @@ public class PutEmployeeResourceTest {
     @Test
     public void updateEmployeeAsSelf() {
         String name = "TEST NAME";
-        EmployeeDTO rest = given().header("X-API-Key", "exampleToken0").get(HateoasLink.EMPLOYEE_SINGLE + 0).then().statusCode(OK.value()).extract().as(EmployeeDTO.class);
+        EmployeeDTO rest = given().header("Authorization", "Bearer exampleToken0").get(HateoasLink.EMPLOYEE_SINGLE + 0).then().statusCode(OK.value()).extract().as(EmployeeDTO.class);
         rest.setNickname(name);
-        EmployeeDTO updated = given().header("X-API-Key", "exampleToken0").body(rest).contentType(ContentType.JSON).put(REST_ENDPOINT_URL).then().statusCode(OK.value()).extract().as(EmployeeDTO.class);
+        EmployeeDTO updated = given().header("Authorization", "Bearer exampleToken0").body(rest).contentType(ContentType.JSON).put(REST_ENDPOINT_URL).then().statusCode(OK.value()).extract().as(EmployeeDTO.class);
         assertThat(rest.getEmployeeId()).isEqualTo(updated.getEmployeeId());
         assertThat(name).isEqualTo(updated.getNickname());
     }
@@ -35,36 +35,35 @@ public class PutEmployeeResourceTest {
     @Test
     public void updateEmployeeAsAdmin() {
         String name = "TEST NAME";
-        EmployeeDTO rest = given().header("X-API-Key", "exampleToken0").get(HateoasLink.EMPLOYEE_SINGLE + 0).then().statusCode(OK.value()).extract().as(EmployeeDTO.class);
+        EmployeeDTO rest = given().header("Authorization", "Bearer exampleToken0").get(HateoasLink.EMPLOYEE_SINGLE + 0).then().statusCode(OK.value()).extract().as(EmployeeDTO.class);
         rest.setNickname(name);
-        EmployeeDTO updated = given().header("X-API-Key", "exampleToken1").body(rest).contentType(ContentType.JSON).put(REST_ENDPOINT_URL).then().statusCode(OK.value()).extract().as(EmployeeDTO.class);
-        assertThat(rest.getEmployeeId()).isEqualTo(updated.getEmployeeId());
-        assertThat(name).isEqualTo(updated.getNickname());
+        ValidatableResponse updated = given().header("Authorization", "Bearer exampleToken1").body(rest).contentType(ContentType.JSON).put(REST_ENDPOINT_URL).then().statusCode(FORBIDDEN.value());
+
     }
 
     @Test
     public void updateEmployeeAsNonAdmin() {
         String name = "TEST NAME";
-        EmployeeDTO rest = given().header("X-API-Key", "exampleToken1").get(HateoasLink.EMPLOYEE_SINGLE + 1).then().statusCode(OK.value()).extract().as(EmployeeDTO.class);
+        EmployeeDTO rest = given().header("Authorization", "Bearer exampleToken1").get(HateoasLink.EMPLOYEE_SINGLE + 1).then().statusCode(OK.value()).extract().as(EmployeeDTO.class);
         rest.setNickname(name);
-        ValidatableResponse updated = given().header("X-API-Key", "exampleToken0").body(rest).contentType(ContentType.JSON).put(REST_ENDPOINT_URL).then().statusCode(BAD_REQUEST.value());
+        ValidatableResponse updated = given().header("Authorization", "Bearer exampleToken0").body(rest).contentType(ContentType.JSON).put(REST_ENDPOINT_URL).then().statusCode(FORBIDDEN.value());
     }
 
     @Test
     public void updateEmployeeAsForeignAdmin() {
         String name = "TEST NAME";
-        EmployeeDTO rest = given().header("X-API-Key", "exampleToken0").get(HateoasLink.EMPLOYEE_SINGLE + 0).then().statusCode(OK.value()).extract().as(EmployeeDTO.class);
+        EmployeeDTO rest = given().header("Authorization", "Bearer exampleToken0").get(HateoasLink.EMPLOYEE_SINGLE + 0).then().statusCode(OK.value()).extract().as(EmployeeDTO.class);
         rest.setNickname(name);
-        ValidatableResponse updated = given().header("X-API-Key", "exampleToken3").body(rest).contentType(ContentType.JSON).put(REST_ENDPOINT_URL).then().statusCode(BAD_REQUEST.value());
+        ValidatableResponse updated = given().header("Authorization", "Bearer exampleToken3").body(rest).contentType(ContentType.JSON).put(REST_ENDPOINT_URL).then().statusCode(FORBIDDEN.value());
 
     }
 
     @Test
     public void updateEmployeeAsForeignEmployee() {
         String name = "TEST NAME";
-        EmployeeDTO rest = given().header("X-API-Key", "exampleToken0").get(HateoasLink.EMPLOYEE_SINGLE + 0).then().statusCode(OK.value()).extract().as(EmployeeDTO.class);
+        EmployeeDTO rest = given().header("Authorization", "Bearer exampleToken0").get(HateoasLink.EMPLOYEE_SINGLE + 0).then().statusCode(OK.value()).extract().as(EmployeeDTO.class);
         rest.setNickname(name);
-        ValidatableResponse updated = given().header("X-API-Key", "exampleToken2").body(rest).contentType(ContentType.JSON).put(REST_ENDPOINT_URL).then().statusCode(BAD_REQUEST.value());
+        ValidatableResponse updated = given().header("Authorization", "Bearer exampleToken2").body(rest).contentType(ContentType.JSON).put(REST_ENDPOINT_URL).then().statusCode(FORBIDDEN.value());
     }
 
 }
