@@ -2,7 +2,6 @@ package de.clerkvest.api.entity.company;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -17,6 +16,6 @@ import java.util.Optional;
 public interface CompanyRepository extends JpaRepository<Company, Long> {
 
     // @Query(value = "SELECT * FROM COMPANY c WHERE c.name = ?1", nativeQuery = true)
-    Optional<List<Company>> getByName(String name);
+    Optional<Company> findCompaniesByDomain(String domain);
 
 }

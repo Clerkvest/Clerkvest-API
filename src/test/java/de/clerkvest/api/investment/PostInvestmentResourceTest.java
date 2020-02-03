@@ -1,43 +1,38 @@
 package de.clerkvest.api.investment;
 
 import de.clerkvest.api.Application;
-import de.clerkvest.api.entity.employee.Employee;
-import de.clerkvest.api.entity.investment.Invest;
-import de.clerkvest.api.entity.project.Project;
+import de.clerkvest.api.common.hateoas.constants.HateoasLink;
+import de.clerkvest.api.entity.employee.EmployeeDTO;
+import de.clerkvest.api.entity.investment.InvestDTO;
+import de.clerkvest.api.entity.project.ProjectDTO;
 import io.restassured.http.ContentType;
 import io.restassured.response.ValidatableResponse;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 
-import static de.clerkvest.api.config.TestConfig.REST_BASE_URL;
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
-import static org.springframework.http.HttpStatus.OK;
+import static org.springframework.http.HttpStatus.*;
 
 @SpringBootTest(classes = Application.class,
         webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 
 @Transactional
 public class PostInvestmentResourceTest {
-
-
-    private final static String REST_ENDPOINT_URL = REST_BASE_URL + "/invest";
+    private final static String REST_ENDPOINT_URL = HateoasLink.INVEST_CREATE;
 
     @Test
     public void postInvestment_Open_Project() {
         BigDecimal invest = BigDecimal.valueOf(5);
-        Employee employee0 = given().header("X-API-Key", "exampleToken0").get(REST_BASE_URL + "/employee/0").then().statusCode(OK.value()).extract().as(Employee.class);
-        Project projectRest = given().header("X-API-Key", "exampleToken0").get(REST_BASE_URL + "/project/0").then().statusCode(OK.value()).extract().as(Project.class);
-        Invest inRest = Invest.builder().employeeId(employee0).investment(invest).projectId(projectRest).build();
-        ValidatableResponse rest = given().header("X-API-Key", "exampleToken0").body(inRest).contentType(ContentType.JSON).post(REST_ENDPOINT_URL).then().statusCode(OK.value());
-        Employee employee0changed = given().header("X-API-Key", "exampleToken0").get(REST_BASE_URL + "/employee/0").then().statusCode(OK.value()).extract().as(Employee.class);
-        Project projectRestchanged = given().header("X-API-Key", "exampleToken0").get(REST_BASE_URL + "/project/0").then().statusCode(OK.value()).extract().as(Project.class);
+        EmployeeDTO employee0 = given().header("Authorization", "Bearer exampleToken0").get(HateoasLink.EMPLOYEE_SINGLE + 0).then().statusCode(OK.value()).extract().as(EmployeeDTO.class);
+        ProjectDTO projectRest = given().header("Authorization", "Bearer exampleToken0").get(HateoasLink.PROJECT_SINGLE + 0).then().statusCode(OK.value()).extract().as(ProjectDTO.class);
+        InvestDTO inRest = InvestDTO.builder().employeeId(employee0.getId()).investment(invest).projectId(projectRest.getId()).build();
+        ValidatableResponse rest = given().header("Authorization", "Bearer exampleToken0").body(inRest).contentType(ContentType.JSON).post(REST_ENDPOINT_URL).then().statusCode(OK.value());
+        EmployeeDTO employee0changed = given().header("Authorization", "Bearer exampleToken0").get(HateoasLink.EMPLOYEE_SINGLE + 0).then().statusCode(OK.value()).extract().as(EmployeeDTO.class);
+        ProjectDTO projectRestchanged = given().header("Authorization", "Bearer exampleToken0").get(HateoasLink.PROJECT_SINGLE + 0).then().statusCode(OK.value()).extract().as(ProjectDTO.class);
         assertThat(employee0.getBalance().subtract(invest)).isEqualTo(employee0changed.getBalance());
         assertThat(projectRest.getInvestedIn().add(invest)).isEqualTo(projectRestchanged.getInvestedIn());
     }
@@ -45,37 +40,37 @@ public class PostInvestmentResourceTest {
     @Test
     public void postInvestment_Open_Project_Invalid_Balance() {
         BigDecimal invest = BigDecimal.valueOf(6);
-        Employee employee0 = given().header("X-API-Key", "exampleToken0").get(REST_BASE_URL + "/employee/0").then().statusCode(OK.value()).extract().as(Employee.class);
-        Project projectRest = given().header("X-API-Key", "exampleToken0").get(REST_BASE_URL + "/project/0").then().statusCode(OK.value()).extract().as(Project.class);
-        Invest inRest = Invest.builder().employeeId(employee0).investment(invest).projectId(projectRest).build();
-        ValidatableResponse rest = given().header("X-API-Key", "exampleToken0").body(inRest).contentType(ContentType.JSON).post(REST_ENDPOINT_URL).then().statusCode(BAD_REQUEST.value());
+        EmployeeDTO employee0 = given().header("Authorization", "Bearer exampleToken0").get(HateoasLink.EMPLOYEE_SINGLE + 0).then().statusCode(OK.value()).extract().as(EmployeeDTO.class);
+        ProjectDTO projectRest = given().header("Authorization", "Bearer exampleToken0").get(HateoasLink.PROJECT_SINGLE + 0).then().statusCode(OK.value()).extract().as(ProjectDTO.class);
+        InvestDTO inRest = InvestDTO.builder().employeeId(employee0.getId()).investment(invest).projectId(projectRest.getId()).build();
+        ValidatableResponse rest = given().header("Authorization", "Bearer exampleToken0").body(inRest).contentType(ContentType.JSON).post(REST_ENDPOINT_URL).then().statusCode(CONFLICT.value());
     }
 
     @Test
     public void postInvestment_Closed_Project() {
         BigDecimal invest = BigDecimal.valueOf(5);
-        Employee employee2 = given().header("X-API-Key", "exampleToken2").get(REST_BASE_URL + "/employee/2").then().statusCode(OK.value()).extract().as(Employee.class);
-        Project projectRest = given().header("X-API-Key", "exampleToken2").get(REST_BASE_URL + "/project/1").then().statusCode(OK.value()).extract().as(Project.class);
-        Invest inRest = Invest.builder().employeeId(employee2).investment(invest).projectId(projectRest).build();
-        ValidatableResponse rest = given().header("X-API-Key", "exampleToken2").body(inRest).contentType(ContentType.JSON).post(REST_ENDPOINT_URL).then().statusCode(BAD_REQUEST.value());
+        EmployeeDTO employee2 = given().header("Authorization", "Bearer exampleToken2").get(HateoasLink.EMPLOYEE_SINGLE + 2).then().statusCode(OK.value()).extract().as(EmployeeDTO.class);
+        ProjectDTO projectRest = given().header("Authorization", "Bearer exampleToken2").get(HateoasLink.PROJECT_SINGLE + 1).then().statusCode(OK.value()).extract().as(ProjectDTO.class);
+        InvestDTO inRest = InvestDTO.builder().employeeId(employee2.getId()).investment(invest).projectId(projectRest.getId()).build();
+        ValidatableResponse rest = given().header("Authorization", "Bearer exampleToken2").body(inRest).contentType(ContentType.JSON).post(REST_ENDPOINT_URL).then().statusCode(CONFLICT.value());
     }
 
     @Test
     public void postInvestment_Foreign() {
         BigDecimal invest = BigDecimal.valueOf(5);
-        Employee employee0 = given().header("X-API-Key", "exampleToken2").get(REST_BASE_URL + "/employee/2").then().statusCode(OK.value()).extract().as(Employee.class);
-        Project projectRest = given().header("X-API-Key", "exampleToken0").get(REST_BASE_URL + "/project/0").then().statusCode(OK.value()).extract().as(Project.class);
-        Invest inRest = Invest.builder().employeeId(employee0).investment(invest).projectId(projectRest).build();
-        ValidatableResponse rest = given().header("X-API-Key", "exampleToken2").body(inRest).contentType(ContentType.JSON).post(REST_ENDPOINT_URL).then().statusCode(BAD_REQUEST.value());
+        EmployeeDTO employee0 = given().header("Authorization", "Bearer exampleToken2").get(HateoasLink.EMPLOYEE_SINGLE + 2).then().statusCode(OK.value()).extract().as(EmployeeDTO.class);
+        ProjectDTO projectRest = given().header("Authorization", "Bearer exampleToken0").get(HateoasLink.PROJECT_SINGLE + 0).then().statusCode(OK.value()).extract().as(ProjectDTO.class);
+        InvestDTO inRest = InvestDTO.builder().employeeId(employee0.getId()).investment(invest).projectId(projectRest.getId()).build();
+        ValidatableResponse rest = given().header("Authorization", "Bearer exampleToken2").body(inRest).contentType(ContentType.JSON).post(REST_ENDPOINT_URL).then().statusCode(FORBIDDEN.value());
     }
 
     @Test
     public void postInvestment_Fake_Sender() {
         BigDecimal invest = BigDecimal.valueOf(5);
-        Employee employee0 = given().header("X-API-Key", "exampleToken0").get(REST_BASE_URL + "/employee/0").then().statusCode(OK.value()).extract().as(Employee.class);
-        Project projectRest = given().header("X-API-Key", "exampleToken0").get(REST_BASE_URL + "/project/0").then().statusCode(OK.value()).extract().as(Project.class);
-        Invest inRest = Invest.builder().employeeId(employee0).investment(invest).projectId(projectRest).build();
-        ValidatableResponse rest = given().header("X-API-Key", "exampleToken2").body(inRest).contentType(ContentType.JSON).post(REST_ENDPOINT_URL).then().statusCode(BAD_REQUEST.value());
+        EmployeeDTO employee0 = given().header("Authorization", "Bearer exampleToken0").get(HateoasLink.EMPLOYEE_SINGLE + 0).then().statusCode(OK.value()).extract().as(EmployeeDTO.class);
+        ProjectDTO projectRest = given().header("Authorization", "Bearer exampleToken0").get(HateoasLink.PROJECT_SINGLE + 0).then().statusCode(OK.value()).extract().as(ProjectDTO.class);
+        InvestDTO inRest = InvestDTO.builder().employeeId(employee0.getId()).investment(invest).projectId(projectRest.getId()).build();
+        ValidatableResponse rest = given().header("Authorization", "Bearer exampleToken2").body(inRest).contentType(ContentType.JSON).post(REST_ENDPOINT_URL).then().statusCode(FORBIDDEN.value());
     }
 
 }

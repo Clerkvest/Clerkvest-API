@@ -1,19 +1,17 @@
 package de.clerkvest.api.project;
 
 import de.clerkvest.api.Application;
-import de.clerkvest.api.entity.project.Project;
+import de.clerkvest.api.common.hateoas.constants.HateoasLink;
+import de.clerkvest.api.entity.project.ProjectDTO;
 import io.restassured.http.ContentType;
 import io.restassured.response.ValidatableResponse;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.transaction.annotation.Transactional;
 
-import static de.clerkvest.api.config.TestConfig.REST_BASE_URL;
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.HttpStatus.OK;
 
 @SpringBootTest(classes = Application.class,
@@ -22,27 +20,27 @@ import static org.springframework.http.HttpStatus.OK;
 @Transactional
 public class PutProjectResourceTest {
 
-    private final static String REST_ENDPOINT_URL = REST_BASE_URL + "/project";
+    private final static String REST_ENDPOINT_URL = HateoasLink.PROJECT_UPDATE;
 
     @Test
     public void updateProjectAsSelf() {
         String name = "TEST DESC";
-        Project rest = given().header("X-API-Key", "exampleToken0").get(REST_ENDPOINT_URL + "/0").then().statusCode(OK.value()).extract().as(Project.class);
+        ProjectDTO rest = given().header("Authorization", "Bearer exampleToken0").get(HateoasLink.PROJECT_SINGLE + 0).then().statusCode(OK.value()).extract().as(ProjectDTO.class);
         rest.setDescription(name);
-        Project updated = given().header("X-API-Key", "exampleToken0").body(rest).contentType(ContentType.JSON).put(REST_ENDPOINT_URL).then().statusCode(OK.value()).extract().as(Project.class);
+        ProjectDTO updated = given().header("Authorization", "Bearer exampleToken0").body(rest).contentType(ContentType.JSON).put(REST_ENDPOINT_URL).then().statusCode(OK.value()).extract().as(ProjectDTO.class);
         assertThat(rest).isEqualTo(updated);
         assertThat(name).isEqualTo(updated.getDescription());
     }
 
     @Test
     public void updateProjectAsAdmin() {
-        Project rest = given().header("X-API-Key", "exampleToken1").get(REST_ENDPOINT_URL + "/0").then().statusCode(OK.value()).extract().as(Project.class);
-        ValidatableResponse updated = given().header("X-API-Key", "exampleToken1").body(rest).contentType(ContentType.JSON).put(REST_ENDPOINT_URL).then().statusCode(BAD_REQUEST.value());
+        ProjectDTO rest = given().header("Authorization", "Bearer exampleToken1").get(HateoasLink.PROJECT_SINGLE + 0).then().statusCode(OK.value()).extract().as(ProjectDTO.class);
+        ValidatableResponse updated = given().header("Authorization", "Bearer exampleToken1").body(rest).contentType(ContentType.JSON).put(REST_ENDPOINT_URL).then().statusCode(FORBIDDEN.value());
     }
 
     @Test
     public void updateProjectAsForeignAdmin() {
-        Project rest = given().header("X-API-Key", "exampleToken0").get(REST_ENDPOINT_URL + "/0").then().statusCode(OK.value()).extract().as(Project.class);
-        ValidatableResponse updated = given().header("X-API-Key", "exampleToken3").body(rest).contentType(ContentType.JSON).put(REST_ENDPOINT_URL).then().statusCode(BAD_REQUEST.value());
+        ProjectDTO rest = given().header("Authorization", "Bearer exampleToken0").get(HateoasLink.PROJECT_SINGLE + 0).then().statusCode(OK.value()).extract().as(ProjectDTO.class);
+        ValidatableResponse updated = given().header("Authorization", "Bearer exampleToken3").body(rest).contentType(ContentType.JSON).put(REST_ENDPOINT_URL).then().statusCode(FORBIDDEN.value());
     }
 }

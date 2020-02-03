@@ -1,18 +1,15 @@
 package de.clerkvest.api.entity.employee;
 
-import com.fasterxml.jackson.annotation.JsonValue;
 import de.clerkvest.api.entity.company.Company;
 import de.clerkvest.api.implement.service.IServiceEntity;
 import lombok.*;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.rest.core.annotation.RestResource;
-import org.springframework.data.rest.core.config.Projection;
-import org.springframework.hateoas.RepresentationModel;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
+import java.util.HashSet;
 
 /**
  * api <p>
@@ -52,6 +49,9 @@ public class Employee implements IServiceEntity {
 
     private String token;
 
+    @Column(name = "login_token")
+    private String loginToken;
+
     @NotNull
     @Builder.Default
     private String firstname = "FirstName";
@@ -64,7 +64,7 @@ public class Employee implements IServiceEntity {
     @Builder.Default
     private String nickname = "NickName";
 
-    private boolean is_admin;
+    private boolean isAdmin;
 
     @Override
     public Long getId() {
@@ -74,6 +74,15 @@ public class Employee implements IServiceEntity {
     @Override
     public void setId(Long id) {
         setEmployeeId(id);
+    }
+
+    public HashSet<SimpleGrantedAuthority> getAuthorities() {
+        HashSet<SimpleGrantedAuthority> authorities = new HashSet<>();
+        authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
+        if (isAdmin) {
+            authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+        }
+        return authorities;
     }
 
     @Override

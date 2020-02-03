@@ -6,15 +6,7 @@ import de.clerkvest.api.implement.service.IServiceEntity;
 import lombok.*;
 import org.springframework.hateoas.RepresentationModel;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
@@ -43,12 +35,12 @@ public class Invest extends RepresentationModel<Invest> implements IServiceEntit
     private Long investInId;
 
     @ManyToOne(targetEntity = Project.class)
-    @JoinColumn(name = "project_id")
-    private Project projectId;
+    @JoinColumn(name = "project_id", nullable = false, updatable = false)
+    private Project project;
 
     @ManyToOne(targetEntity = Employee.class)
-    @JoinColumn(name = "employee_id")
-    private Employee employeeId;
+    @JoinColumn(name = "employee_id", nullable = false, updatable = false)
+    private Employee employee;
 
     @NotNull
     private BigDecimal investment;

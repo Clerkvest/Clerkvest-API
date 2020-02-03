@@ -3,6 +3,8 @@ package de.clerkvest.api.entity.company;
 import de.clerkvest.api.common.hateoas.constants.HateoasLink;
 import de.clerkvest.api.common.hateoas.link.LinkBuilder;
 import de.clerkvest.api.exception.ClerkEntityNotFoundException;
+import de.clerkvest.api.exception.DuplicateEntityException;
+import de.clerkvest.api.exception.ViolatedConstraintException;
 import de.clerkvest.api.implement.service.IService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -40,7 +42,15 @@ public class CompanyService implements IService<Company> {
         if (repository.existsById(company.getId())) {
             return;
         }
-
+        repository.findCompaniesByDomain(company.getDomain()).ifPresent(c -> {
+            throw new DuplicateEntityException("A Company for " + c.getDomain() + " already exists");
+        });
+        if (company.getPayAmount().intValue() < 1) {
+            throw new ViolatedConstraintException("Pay Amount can't be below 1");
+        }
+        if (company.getPayInterval() < 1) {
+            throw new ViolatedConstraintException("Pay Interval can't be below 1");
+        }
         repository.save(company);
     }
 

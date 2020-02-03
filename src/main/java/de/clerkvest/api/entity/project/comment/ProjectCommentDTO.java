@@ -14,8 +14,10 @@
 package de.clerkvest.api.entity.project.comment;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import de.clerkvest.api.entity.employee.EmployeeDTO;
 import de.clerkvest.api.implement.service.IServiceEntity;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
 import org.springframework.hateoas.RepresentationModel;
 
 import java.util.Date;
@@ -24,14 +26,17 @@ import java.util.Objects;
 /**
  * ProjectCommentRest
  */
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaJerseyServerCodegen", date = "2019-04-26T13:56:04.987Z")
-@JsonIgnoreProperties({"project_comment_id"})
+@JsonIgnoreProperties(value = {"projectCommentId"}, ignoreUnknown = true)
 public class ProjectCommentDTO extends RepresentationModel<ProjectCommentDTO> implements IServiceEntity {
-    private Long project_comment_id = null;
+    private Long projectCommentId = null;
 
-    private Long employee_id;
+    private Long employeeId;
 
-    private Long project_id;
+    private Long projectId;
 
     private String title = null;
 
@@ -39,21 +44,17 @@ public class ProjectCommentDTO extends RepresentationModel<ProjectCommentDTO> im
 
     private Date date = null;
 
-    public ProjectCommentDTO() {
-
-    }
-
     public ProjectCommentDTO(ProjectComment item) {
-        project_comment_id = item.getId();
-        employee_id = item.getEmployeeId().getId();
-        project_id = item.getProjectId().getId();
+        projectCommentId = item.getId();
+        employeeId = item.getEmployee().getId();
+        projectId = item.getProject().getId();
         title = item.getTitle();
         text = item.getText();
         date = item.getDate();
     }
 
     public ProjectCommentDTO projectCommentId(Long projectCommentId) {
-        this.project_comment_id = projectCommentId;
+        this.projectCommentId = projectCommentId;
         return this;
     }
 
@@ -62,16 +63,16 @@ public class ProjectCommentDTO extends RepresentationModel<ProjectCommentDTO> im
      *
      * @return project_comment_id
      **/
-    public Long getProject_comment_id() {
-        return project_comment_id;
+    public Long getProjectCommentId() {
+        return projectCommentId;
     }
 
-    public void setProject_comment_id(Long project_comment_id) {
-        this.project_comment_id = project_comment_id;
+    public void setProjectCommentId(Long projectCommentId) {
+        this.projectCommentId = projectCommentId;
     }
 
     public ProjectCommentDTO employeeId(long employeeRestId) {
-        this.employee_id = employeeRestId;
+        this.employeeId = employeeRestId;
         return this;
     }
 
@@ -80,16 +81,16 @@ public class ProjectCommentDTO extends RepresentationModel<ProjectCommentDTO> im
      *
      * @return employee_id
      **/
-    public long getEmployee_id() {
-        return employee_id;
+    public Long getEmployeeId() {
+        return employeeId;
     }
 
-    public void setEmployee_id(Long employee_id) {
-        this.employee_id = employee_id;
+    public void setEmployeeId(Long employeeId) {
+        this.employeeId = employeeId;
     }
 
     public ProjectCommentDTO projectId(long projectRestId) {
-        this.project_id = projectRestId;
+        this.projectId = projectRestId;
         return this;
     }
 
@@ -98,12 +99,12 @@ public class ProjectCommentDTO extends RepresentationModel<ProjectCommentDTO> im
      *
      * @return project_id
      **/
-    public long getProject_id() {
-        return project_id;
+    public Long getProjectId() {
+        return projectId;
     }
 
-    public void setProject_id(Long project_id) {
-        this.project_id = project_id;
+    public void setProjectId(Long projectId) {
+        this.projectId = projectId;
     }
 
     public ProjectCommentDTO title(String title) {
@@ -170,9 +171,9 @@ public class ProjectCommentDTO extends RepresentationModel<ProjectCommentDTO> im
             return false;
         }
         ProjectCommentDTO projectCommentDTO = (ProjectCommentDTO) o;
-        return Objects.equals(this.project_comment_id, projectCommentDTO.project_comment_id) &&
-                Objects.equals(this.employee_id, projectCommentDTO.employee_id) &&
-                Objects.equals(this.project_id, projectCommentDTO.project_id) &&
+        return Objects.equals(this.projectCommentId, projectCommentDTO.projectCommentId) &&
+                Objects.equals(this.employeeId, projectCommentDTO.employeeId) &&
+                Objects.equals(this.projectId, projectCommentDTO.projectId) &&
                 Objects.equals(this.title, projectCommentDTO.title) &&
                 Objects.equals(this.text, projectCommentDTO.text) &&
                 Objects.equals(this.date, projectCommentDTO.date);
@@ -180,7 +181,7 @@ public class ProjectCommentDTO extends RepresentationModel<ProjectCommentDTO> im
 
     @Override
     public int hashCode() {
-        return Objects.hash(project_comment_id, employee_id, project_id, title, text, date);
+        return Objects.hash(projectCommentId, employeeId, projectId, title, text, date);
     }
 
 
@@ -189,9 +190,9 @@ public class ProjectCommentDTO extends RepresentationModel<ProjectCommentDTO> im
         StringBuilder sb = new StringBuilder();
         sb.append("class ProjectCommentRest {\n");
 
-        sb.append("    project_comment_id: ").append(toIndentedString(project_comment_id)).append("\n");
-        sb.append("    employee_id: ").append(toIndentedString(employee_id)).append("\n");
-        sb.append("    project_id: ").append(toIndentedString(project_id)).append("\n");
+        sb.append("    project_comment_id: ").append(toIndentedString(projectCommentId)).append("\n");
+        sb.append("    employee_id: ").append(toIndentedString(employeeId)).append("\n");
+        sb.append("    project_id: ").append(toIndentedString(projectId)).append("\n");
         sb.append("    title: ").append(toIndentedString(title)).append("\n");
         sb.append("    text: ").append(toIndentedString(text)).append("\n");
         sb.append("    date: ").append(toIndentedString(date)).append("\n");
@@ -212,12 +213,12 @@ public class ProjectCommentDTO extends RepresentationModel<ProjectCommentDTO> im
 
     @Override
     public Long getId() {
-        return project_comment_id;
+        return projectCommentId;
     }
 
     @Override
     public void setId(Long id) {
-        project_comment_id = id;
+        projectCommentId = id;
     }
 }
 

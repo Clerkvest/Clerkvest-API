@@ -1,14 +1,14 @@
 package de.clerkvest.api.entity.employee;
 
-import de.clerkvest.api.common.hateoas.constants.HateoasLink;
-import de.clerkvest.api.common.hateoas.link.LinkBuilder;
 import de.clerkvest.api.exception.ClerkEntityNotFoundException;
 import de.clerkvest.api.implement.service.IService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 /**
  * api <p>
@@ -31,7 +31,7 @@ public class EmployeeService implements IService<Employee> {
 
     @Override
     public void save (Employee employee) {
-        if (repository.existsById(employee.getId())) {
+        if (employee.getId() != null && repository.existsById(employee.getId())) {
             return;
         }
         repository.save(employee);
@@ -43,7 +43,7 @@ public class EmployeeService implements IService<Employee> {
         Optional<Employee> existingEmployee = repository.findById(employee.getId());
         existingEmployee.ifPresentOrElse(
                 value -> {
-                    value.set_admin(employee.is_admin());
+                    value.setAdmin(employee.isAdmin());
                     value.setBalance(employee.getBalance());
                     value.setFirstname(employee.getFirstname());
                     value.setLastname(employee.getLastname());
@@ -68,7 +68,33 @@ public class EmployeeService implements IService<Employee> {
     }
 
     @Override
-    public void delete (Employee employee) {
+    public void delete(Employee employee) {
         repository.delete(employee);
+    }
+
+    public String login(String loginToken) {
+        Optional<Employee> employee = repository.login(loginToken);
+        if (employee.isPresent()) {
+            String token = UUID.randomUUID().toString();
+            Employee custom = employee.get();
+            custom.setToken(token);
+            repository.save(custom);
+            return token;
+        }
+
+        return StringUtils.EMPTY;
+    }
+
+    public Optional<Employee> findByToken(String token) {
+        Optional<Employee> employee = repository.findByToken(token);
+        if (employee.isPresent()) {
+            Employee employee1 = employee.get();
+            return Optional.of(employee1);
+        }
+        return Optional.empty();
+    }
+
+    public List<Employee> getAllForCompany(Long companyId) {
+        return repository.findAllByCompany(companyId);
     }
 }

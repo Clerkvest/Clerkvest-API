@@ -23,15 +23,16 @@ CREATE TABLE IF NOT EXISTS email_token
 CREATE TABLE IF NOT EXISTS employee
 (
     employee_id BIGINT auto_increment PRIMARY KEY,
-    company_id  bigint                                                       NOT NULL,
-    email       varchar(255)                                       NOT NULL,
-    balance     DECIMAL                                                      NOT NULL,
+    company_id  bigint       NOT NULL,
+    email       varchar(255) NOT NULL,
+    balance     DECIMAL      NOT NULL,
     token       varchar(255),
-    firstname   varchar(255)                                       NOT NULL,
-    lastname    varchar(255)                                       NOT NULL,
-    nickname    varchar(255)                                       NOT NULL,
-    is_admin    boolean                                                      NOT NULL,
-    CHECK ( balance >= 0 )
+    login_token varchar(255),
+    firstname   varchar(255) NOT NULL,
+    lastname    varchar(255) NOT NULL,
+    nickname    varchar(255) NOT NULL,
+    is_admin    boolean      NOT NULL,
+    CHECK (balance >= 0)
 );
 
 
@@ -137,14 +138,18 @@ VALUES (0, 'Clerk GmbH', 'clerkvest.de', null, 25, 1, true);
 INSERT INTO company(company_id, name, domain, image_id, pay_amount, pay_interval, invite_only)
 VALUES (1, 'Company GmbH', 'company.de', null, 15, 30, false);
 
-INSERT INTO employee(employee_id, company_id, email, balance, token, firstname, lastname, nickname, is_admin)
-VALUES (0, 0, 'user1@clerkvest.de', 10, 'exampleToken0', 'Mike', 'User', 'User1ClerkNonAdmin', false);
-INSERT INTO employee(employee_id, company_id, email, balance, token, firstname, lastname, nickname, is_admin)
-VALUES (1, 0, 'user2@clerkvest.de', 11, 'exampleToken1', 'Bike', 'User2', 'User2ClerkAdmin', true);
-INSERT INTO employee(employee_id, company_id, email, balance, token, firstname, lastname, nickname, is_admin)
-VALUES (2, 1, 'user1@company.de', 12, 'exampleToken2', 'Mike', 'User', 'User1CompanyNonAdmin', false);
-INSERT INTO employee(employee_id, company_id, email, balance, token, firstname, lastname, nickname, is_admin)
-VALUES (3, 1, 'user2@company.de', 13, 'exampleToken3', 'Bike', 'User2', 'User2CompanyAdmin', true);
+INSERT INTO employee(employee_id, company_id, email, balance, token, login_token, firstname, lastname, nickname,
+                     is_admin)
+VALUES (0, 0, 'user1@clerkvest.de', 10, 'exampleToken0', null, 'Mike', 'User', 'User1ClerkNonAdmin', false);
+INSERT INTO employee(employee_id, company_id, email, balance, token, login_token, firstname, lastname, nickname,
+                     is_admin)
+VALUES (1, 0, 'user2@clerkvest.de', 11, 'exampleToken1', null, 'Bike', 'User2', 'User2ClerkAdmin', true);
+INSERT INTO employee(employee_id, company_id, email, balance, token, login_token, firstname, lastname, nickname,
+                     is_admin)
+VALUES (2, 1, 'user1@company.de', 12, 'exampleToken2', null, 'Mike', 'User', 'User1CompanyNonAdmin', false);
+INSERT INTO employee(employee_id, company_id, email, balance, token, login_token, firstname, lastname, nickname,
+                     is_admin)
+VALUES (3, 1, 'user2@company.de', 13, 'exampleToken3', null, 'Bike', 'User2', 'User2CompanyAdmin', true);
 
 INSERT INTO project(project_id, employee_id, company_id, link, name, description, goal, invested_in, reached,
                     image_id, funded_at)

@@ -1,7 +1,10 @@
 package de.clerkvest.api.entity.employee;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.rest.core.annotation.RepositoryRestResource;
+import org.springframework.data.jpa.repository.Query;
+
+import java.util.List;
+import java.util.Optional;
 
 /**
  * api <p>
@@ -13,4 +16,12 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
  * @since 21 Dec 2019 17:14
  */
 public interface EmployeeRepository extends JpaRepository<Employee, Long> {
+
+    @Query(value = "SELECT u FROM Employee u where u.loginToken = ?1", nativeQuery = true)
+    Optional<Employee> login(String loginToken);
+
+    Optional<Employee> findByToken(String token);
+
+    List<Employee> findAllByCompany(Long companyId);
+
 }

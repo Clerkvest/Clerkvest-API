@@ -2,13 +2,14 @@ package de.clerkvest.api.entity.company;
 
 import de.clerkvest.api.common.hateoas.constants.HateoasLink;
 import de.clerkvest.api.common.hateoas.link.LinkBuilder;
-import de.clerkvest.api.entity.employee.Employee;
-import de.clerkvest.api.entity.employee.EmployeeDTO;
 import de.clerkvest.api.exception.ClerkEntityNotFoundException;
 import de.clerkvest.api.implement.DTOConverter;
+import de.clerkvest.api.security.EmployeeUserDetails;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -37,26 +38,31 @@ public class CompanyController implements DTOConverter<Company,CompanyDTO> {
         this.modelMapper = modelMapper;
     }
 
+    @PreAuthorize("hasRole('ROLE_USER') and #auth.companyId.equals(#id)")
     @GetMapping(value = "/get/{id}")
-    public ResponseEntity<CompanyDTO> getSingleCompany(@PathVariable long id) {
+    public ResponseEntity<CompanyDTO> getSingleCompany(@PathVariable long id, @AuthenticationPrincipal EmployeeUserDetails auth) {
         Optional<Company> company = service.getById(id);
-        if(company.isPresent()){
+        if (company.isPresent()) {
             return ResponseEntity.ok(convertToDto(company.get()));
-        }else{
+        } else {
             throw new ClerkEntityNotFoundException("Company not found");
         }
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN') and #auth.companyId.equals(#updated.id)")
     @PutMapping(value = "/update")
-    public ResponseEntity<String> updateCompany(@Valid @RequestBody Company updated) {
-        service.update(updated);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<CompanyDTO> updateCompany(@Valid @RequestBody CompanyDTO updated, @AuthenticationPrincipal EmployeeUserDetails auth) throws ParseException {
+        Company converted = convertToEntity(updated);
+        service.update(converted);
+        return ResponseEntity.ok().body(convertToDto(converted));
     }
 
     @PostMapping(value = "/create")
-    public ResponseEntity<CompanyDTO> createCompany(@Valid @RequestBody Company fresh) {
-        service.save(fresh);
-        return ResponseEntity.ok().body(convertToDto(fresh));
+    public ResponseEntity<CompanyDTO> createCompany(@Valid @RequestBody CompanyDTO fresh, @RequestParam String mail) throws ParseException {
+        fresh.setId(-1L);
+        Company converted = convertToEntity(fresh);
+        service.save(converted);
+        return ResponseEntity.ok().body(convertToDto(converted));
     }
 
     @Override
@@ -75,7 +81,14 @@ public class CompanyController implements DTOConverter<Company,CompanyDTO> {
         Company post = modelMapper.map(postDto, Company.class);
         if (postDto.getId() != null) {
             Optional<Company> oldPost = service.getById(postDto.getId());
-            //oldPost.ifPresent(value -> {post.setNickname(value.getNickname());});
+            if (oldPost.isPresent()) {
+                Company val = oldPost.get();
+                val.setPayInterval(postDto.getPayInterval());
+                val.setPayAmount(postDto.getPayAmount());
+                val.setInviteOnly(postDto.getInviteOnly());
+                val.setName(postDto.getName());
+                return val;
+            }
         }
         return post;
     }

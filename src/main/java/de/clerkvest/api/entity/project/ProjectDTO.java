@@ -14,9 +14,10 @@
 package de.clerkvest.api.entity.project;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import de.clerkvest.api.entity.image.Image;
 import de.clerkvest.api.implement.service.IServiceEntity;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import org.springframework.hateoas.RepresentationModel;
 
 import java.math.BigDecimal;
@@ -26,13 +27,14 @@ import java.util.Objects;
 /**
  * ProjectRest
  */
+@Builder
+@AllArgsConstructor
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaJerseyServerCodegen", date = "2019-04-26T13:56:04.987Z")
-@JsonIgnoreProperties({"project_id"})
+@JsonIgnoreProperties(value = {"projectId"}, ignoreUnknown = true)
 public class ProjectDTO extends RepresentationModel<ProjectDTO> implements IServiceEntity {
-    @JsonProperty("projectId")
-    private Long project_id = null;
-    @JsonProperty("employeeId")
-    private Long employee_id;
+    private Long projectId = null;
+
+    private Long employeeId;
 
     private Long companyId;
 
@@ -48,37 +50,37 @@ public class ProjectDTO extends RepresentationModel<ProjectDTO> implements IServ
 
     private Boolean reached = null;
 
-    @JsonProperty("imageId")
-    private Long image_id = null;
+    private Long imageId = null;
 
-    private LocalDateTime created_at = null;
+    private LocalDateTime createdAt = null;
 
-    private LocalDateTime funded_at = null;
+    private LocalDateTime fundedAt = null;
 
-    public ProjectDTO(){
+    public ProjectDTO() {
 
     }
-    public ProjectDTO(Project project_id) {
-        this.project_id = project_id.getId();
-        employee_id = project_id.getEmployeeId().getId();
-        companyId = project_id.getCompanyId().getId();
-        title = project_id.getTitle();
-        link = project_id.getLink();
-        description = project_id.getDescription();
-        goal = project_id.getGoal();
-        investedIn = project_id.getInvestedIn();
-        reached = project_id.isReached();
 
-        Image projectImage = project_id.getImageId();
+    public ProjectDTO(Project projectId) {
+        this.projectId = projectId.getId();
+        employeeId = projectId.getEmployee().getId();
+        companyId = projectId.getCompany().getId();
+        title = projectId.getTitle();
+        link = projectId.getLink();
+        description = projectId.getDescription();
+        goal = projectId.getGoal();
+        investedIn = projectId.getInvestedIn();
+        reached = projectId.isReached();
+
+        Image projectImage = projectId.getImage();
         if (projectImage != null) {
-            image_id = projectImage.getImageId();
+            imageId = projectImage.getImageId();
         }
-        created_at = project_id.getCreatedAt();
-        funded_at = project_id.getFundedAt();
+        createdAt = projectId.getCreatedAt();
+        fundedAt = projectId.getFundedAt();
     }
 
     public ProjectDTO projectId(Long projectId) {
-        this.project_id = projectId;
+        this.projectId = projectId;
         return this;
     }
 
@@ -87,12 +89,12 @@ public class ProjectDTO extends RepresentationModel<ProjectDTO> implements IServ
      *
      * @return project_id
      **/
-    public Long getProject_id() {
-        return project_id;
+    public Long getProjectId() {
+        return projectId;
     }
 
-    public void setProject_id(Long project_id) {
-        this.project_id = project_id;
+    public void setProjectId(Long projectId) {
+        this.projectId = projectId;
     }
 
     /**
@@ -100,7 +102,7 @@ public class ProjectDTO extends RepresentationModel<ProjectDTO> implements IServ
      *
      * @return company_id
      **/
-    public long getCompanyId() {
+    public Long getCompanyId() {
         return companyId;
     }
 
@@ -118,16 +120,16 @@ public class ProjectDTO extends RepresentationModel<ProjectDTO> implements IServ
      *
      * @return employee_id
      **/
-    public long getEmployee_id() {
-        return employee_id;
+    public Long getEmployeeId() {
+        return employeeId;
     }
 
-    public void setEmployee_id(Long employee_id) {
-        this.employee_id = employee_id;
+    public void setEmployeeId(Long employeeId) {
+        this.employeeId = employeeId;
     }
 
     public ProjectDTO employeeId(long employeeRestId) {
-        this.employee_id = employeeRestId;
+        this.employeeId = employeeRestId;
         return this;
     }
 
@@ -240,7 +242,7 @@ public class ProjectDTO extends RepresentationModel<ProjectDTO> implements IServ
     }
 
     public ProjectDTO image(Long image) {
-        this.image_id = image;
+        this.imageId = image;
         return this;
     }
 
@@ -250,15 +252,15 @@ public class ProjectDTO extends RepresentationModel<ProjectDTO> implements IServ
      * @return image
      **/
     public Long getImage() {
-        return image_id;
+        return imageId;
     }
 
     public void setImage(Long image) {
-        this.image_id = image;
+        this.imageId = image;
     }
 
     public ProjectDTO createdAt(LocalDateTime createdAt) {
-        this.created_at = createdAt;
+        this.createdAt = createdAt;
         return this;
     }
 
@@ -267,16 +269,16 @@ public class ProjectDTO extends RepresentationModel<ProjectDTO> implements IServ
      *
      * @return created_at
      **/
-    public LocalDateTime getCreated_at() {
-        return created_at;
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 
-    public void setCreated_at(LocalDateTime created_at) {
-        this.created_at = created_at;
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 
     public ProjectDTO fundedAt(LocalDateTime fundedAt) {
-        this.funded_at = fundedAt;
+        this.fundedAt = fundedAt;
         return this;
     }
 
@@ -285,12 +287,12 @@ public class ProjectDTO extends RepresentationModel<ProjectDTO> implements IServ
      *
      * @return funded_at
      **/
-    public LocalDateTime getFunded_at() {
-        return funded_at;
+    public LocalDateTime getFundedAt() {
+        return fundedAt;
     }
 
-    public void setFunded_at(LocalDateTime funded_at) {
-        this.funded_at = funded_at;
+    public void setFundedAt(LocalDateTime fundedAt) {
+        this.fundedAt = fundedAt;
     }
 
 
@@ -303,21 +305,21 @@ public class ProjectDTO extends RepresentationModel<ProjectDTO> implements IServ
             return false;
         }
         ProjectDTO projectDTO = (ProjectDTO) o;
-        return Objects.equals(this.project_id, projectDTO.project_id) &&
-                Objects.equals(this.employee_id, projectDTO.employee_id) &&
+        return Objects.equals(this.projectId, projectDTO.projectId) &&
+                Objects.equals(this.employeeId, projectDTO.employeeId) &&
                 Objects.equals(this.link, projectDTO.link) &&
                 Objects.equals(this.title, projectDTO.title) &&
                 Objects.equals(this.description, projectDTO.description) &&
                 Objects.equals(this.goal, projectDTO.goal) &&
                 Objects.equals(this.investedIn, projectDTO.investedIn) &&
                 Objects.equals(this.reached, projectDTO.reached) &&
-                Objects.equals(this.created_at, projectDTO.created_at) &&
-                Objects.equals(this.funded_at, projectDTO.funded_at);
+                Objects.equals(this.createdAt, projectDTO.createdAt) &&
+                Objects.equals(this.fundedAt, projectDTO.fundedAt);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(project_id, employee_id, link, title, description, goal, investedIn, reached, image_id, created_at, funded_at);
+        return Objects.hash(projectId, employeeId, link, title, description, goal, investedIn, reached, imageId, createdAt, fundedAt);
     }
 
 
@@ -326,17 +328,17 @@ public class ProjectDTO extends RepresentationModel<ProjectDTO> implements IServ
         StringBuilder sb = new StringBuilder();
         sb.append("class ProjectRest {\n");
 
-        sb.append("    project_id: ").append(toIndentedString(project_id)).append("\n");
-        sb.append("    employee_id: ").append(toIndentedString(employee_id)).append("\n");
+        sb.append("    project_id: ").append(toIndentedString(projectId)).append("\n");
+        sb.append("    employee_id: ").append(toIndentedString(employeeId)).append("\n");
         sb.append("    link: ").append(toIndentedString(link)).append("\n");
         sb.append("    title: ").append(toIndentedString(title)).append("\n");
         sb.append("    description: ").append(toIndentedString(description)).append("\n");
         sb.append("    goal: ").append(toIndentedString(goal)).append("\n");
         sb.append("    invested_in: ").append(toIndentedString(investedIn)).append("\n");
         sb.append("    reached: ").append(toIndentedString(reached)).append("\n");
-        sb.append("    image: ").append(toIndentedString(image_id)).append("\n");
-        sb.append("    created_at: ").append(toIndentedString(created_at)).append("\n");
-        sb.append("    funded_at: ").append(toIndentedString(funded_at)).append("\n");
+        sb.append("    image: ").append(toIndentedString(imageId)).append("\n");
+        sb.append("    created_at: ").append(toIndentedString(createdAt)).append("\n");
+        sb.append("    funded_at: ").append(toIndentedString(fundedAt)).append("\n");
         sb.append("}");
         return sb.toString();
     }
@@ -354,12 +356,12 @@ public class ProjectDTO extends RepresentationModel<ProjectDTO> implements IServ
 
     @Override
     public Long getId() {
-        return project_id;
+        return projectId;
     }
 
     @Override
     public void setId(Long id) {
-        project_id = id;
+        projectId = id;
     }
 }
 
