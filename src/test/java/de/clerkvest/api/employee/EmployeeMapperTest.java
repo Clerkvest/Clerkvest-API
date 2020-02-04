@@ -4,6 +4,7 @@ import de.clerkvest.api.Application;
 import de.clerkvest.api.entity.employee.Employee;
 import de.clerkvest.api.entity.employee.EmployeeDTO;
 import de.clerkvest.api.entity.employee.EmployeeRepository;
+import io.zonky.test.db.AutoConfigureEmbeddedDatabase;
 import org.junit.jupiter.api.Test;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(classes = Application.class,
         webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
+@AutoConfigureEmbeddedDatabase
 public class EmployeeMapperTest {
 
     @Autowired

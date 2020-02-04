@@ -5,9 +5,9 @@ import de.clerkvest.api.common.hateoas.constants.HateoasLink;
 import de.clerkvest.api.entity.company.CompanyDTO;
 import io.restassured.http.ContentType;
 import io.restassured.response.ValidatableResponse;
+import io.zonky.test.db.AutoConfigureEmbeddedDatabase;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
 
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -16,8 +16,7 @@ import static org.springframework.http.HttpStatus.OK;
 
 @SpringBootTest(classes = Application.class,
         webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
-
-@Transactional
+@AutoConfigureEmbeddedDatabase
 public class PutCompanyResourceTest {
 
     private final static String REST_ENDPOINT_URL = HateoasLink.COMPANY_UPDATE;

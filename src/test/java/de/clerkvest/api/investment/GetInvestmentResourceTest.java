@@ -8,10 +8,10 @@ import de.clerkvest.api.entity.investment.InvestDTO;
 import de.clerkvest.api.entity.project.ProjectDTO;
 import de.clerkvest.api.entity.project.ProjectService;
 import io.restassured.response.ValidatableResponse;
+import io.zonky.test.db.AutoConfigureEmbeddedDatabase;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 
@@ -23,8 +23,7 @@ import static org.springframework.http.HttpStatus.OK;
 
 @SpringBootTest(classes = Application.class,
         webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
-
-@Transactional
+@AutoConfigureEmbeddedDatabase
 public class GetInvestmentResourceTest {
 
     private final static String REST_ENDPOINT_URL = REST_BASE_URL + "/invest/";

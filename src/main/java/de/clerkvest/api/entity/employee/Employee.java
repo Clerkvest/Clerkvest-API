@@ -40,7 +40,7 @@ public class Employee implements IServiceEntity {
 
     @NotNull
     @Email
-    @Column(updatable = false)
+    @Column(updatable = false, unique = true)
     private String email;
 
     @NotNull

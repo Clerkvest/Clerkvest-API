@@ -4,9 +4,9 @@ import de.clerkvest.api.Application;
 import de.clerkvest.api.common.hateoas.constants.HateoasLink;
 import de.clerkvest.api.entity.project.ProjectDTO;
 import io.restassured.response.ValidatableResponse;
+import io.zonky.test.db.AutoConfigureEmbeddedDatabase;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
 
 import static io.restassured.RestAssured.given;
 import static org.springframework.http.HttpStatus.FORBIDDEN;
@@ -14,8 +14,7 @@ import static org.springframework.http.HttpStatus.OK;
 
 @SpringBootTest(classes = Application.class,
         webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
-
-@Transactional
+@AutoConfigureEmbeddedDatabase
 public class GetProjectResourceTest {
     private final static String REST_ENDPOINT_URL = HateoasLink.PROJECT_SINGLE;
 

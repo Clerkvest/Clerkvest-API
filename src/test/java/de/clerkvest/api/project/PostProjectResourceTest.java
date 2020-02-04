@@ -7,9 +7,10 @@ import de.clerkvest.api.entity.employee.EmployeeDTO;
 import de.clerkvest.api.entity.project.ProjectDTO;
 import io.restassured.http.ContentType;
 import io.restassured.response.ValidatableResponse;
+import io.zonky.test.db.AutoConfigureEmbeddedDatabase;
+import org.flywaydb.test.annotation.FlywayTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 
@@ -18,8 +19,8 @@ import static org.springframework.http.HttpStatus.*;
 
 @SpringBootTest(classes = Application.class,
         webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
-
-@Transactional
+@AutoConfigureEmbeddedDatabase
+@FlywayTest(locationsForMigrate = "test/db/migration")
 public class PostProjectResourceTest {
     private final static String REST_ENDPOINT_URL = HateoasLink.PROJECT_CREATE;
 

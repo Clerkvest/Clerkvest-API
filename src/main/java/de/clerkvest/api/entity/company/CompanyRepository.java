@@ -18,4 +18,5 @@ public interface CompanyRepository extends JpaRepository<Company, Long> {
     // @Query(value = "SELECT * FROM COMPANY c WHERE c.name = ?1", nativeQuery = true)
     Optional<Company> findCompaniesByDomain(String domain);
 
+    Optional<Company> getCompanyByDomain(String domain);
 }
