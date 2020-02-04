@@ -32,7 +32,7 @@ import java.util.Optional;
  */
 @RestController
 @RequestMapping("/employee")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "*")
 public class EmployeeController implements DTOConverter<Employee,EmployeeDTO> {
 
     private final EmployeeService service;

@@ -31,7 +31,7 @@ import java.util.Optional;
  */
 @RestController
 @RequestMapping("/comment")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "*")
 public class ProjectCommentController implements DTOConverter<ProjectComment, ProjectCommentDTO> {
     private final ProjectCommentService service;
     private final EmployeeService employeeService;

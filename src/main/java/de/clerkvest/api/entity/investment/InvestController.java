@@ -31,7 +31,7 @@ import java.util.Optional;
  */
 @RestController
 @RequestMapping("/invest")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "*")
 public class InvestController implements DTOConverter<Invest, InvestDTO> {
     private final InvestService service;
     private final EmployeeService employeeService;

@@ -31,7 +31,7 @@ import java.util.Optional;
  */
 @RestController
 @RequestMapping("/project")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "*")
 public class ProjectController implements DTOConverter<Project, ProjectDTO> {
     private final ProjectService service;
     private final CompanyService companyService;
