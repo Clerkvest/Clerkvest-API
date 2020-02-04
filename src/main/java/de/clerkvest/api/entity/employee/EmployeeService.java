@@ -67,6 +67,10 @@ public class EmployeeService implements IService<Employee> {
         return repository.findById(id);
     }
 
+    public Optional<Employee> getByMail(String mail) {
+        return repository.getByEmail(mail);
+    }
+
     @Override
     public void delete(Employee employee) {
         repository.delete(employee);
@@ -78,12 +82,13 @@ public class EmployeeService implements IService<Employee> {
             String token = UUID.randomUUID().toString();
             Employee custom = employee.get();
             custom.setToken(token);
+            custom.setLoginToken(null);
             repository.save(custom);
             return token;
         }
-
         return StringUtils.EMPTY;
     }
+
 
     public Optional<Employee> findByToken(String token) {
         Optional<Employee> employee = repository.findByToken(token);

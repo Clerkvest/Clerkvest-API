@@ -91,8 +91,12 @@ public class CompanyService implements IService<Company> {
         return optionalCompany;
     }
 
+    public Optional<Company> getByDomain(String domain) {
+        return repository.getCompanyByDomain(domain);
+    }
+
     @Override
-    public void delete (Company company) {
+    public void delete(Company company) {
         repository.delete(company);
     }
 }

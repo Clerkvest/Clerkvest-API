@@ -17,11 +17,12 @@ import java.util.Optional;
  */
 public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 
-    @Query(value = "SELECT u FROM Employee u where u.loginToken = ?1", nativeQuery = true)
+    @Query(value = "SELECT * FROM employee u where u.login_token = ?1", nativeQuery = true)
     Optional<Employee> login(String loginToken);
 
     Optional<Employee> findByToken(String token);
 
     List<Employee> findAllByCompany(Long companyId);
 
+    Optional<Employee> getByEmail(String mail);
 }
