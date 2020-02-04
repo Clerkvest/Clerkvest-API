@@ -27,6 +27,7 @@ import java.util.Optional;
  */
 @RestController
 @RequestMapping("/company")
+@CrossOrigin(origins = "http://localhost:4200")
 public class CompanyController implements DTOConverter<Company,CompanyDTO> {
 
     private final CompanyService service;
