@@ -42,7 +42,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(final WebSecurity webSecurity) {
-        webSecurity.ignoring().antMatchers("/token/**", "/company/create", "/login");
+        webSecurity.ignoring().antMatchers("/token/**", "/company/create", "/login", "/swagger-ui.html", "/webjars/**", "/swagger-resources/**", "/v2/**");
     }
 
     @Override
@@ -56,7 +56,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
                 .authenticationProvider(provider)
                 .addFilterBefore(authenticationFilter(), BasicAuthenticationFilter.class)
-                .authorizeRequests()
+                .authorizeRequests().antMatchers("/swagger-ui.html").permitAll()
+                .antMatchers("/webjars/**").permitAll()
+                .antMatchers("/swagger-resources/**").permitAll()
+                .antMatchers("/v2/**").permitAll()
                 .requestMatchers(PROTECTED_URLS)
                 .authenticated()
                 .and()
