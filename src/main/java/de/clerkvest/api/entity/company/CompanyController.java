@@ -80,7 +80,7 @@ public class CompanyController implements DTOConverter<Company,CompanyDTO> {
     @Override
     public Company convertToEntity(CompanyDTO postDto) throws ParseException {
         Company post = modelMapper.map(postDto, Company.class);
-        if (postDto.getId() != null) {
+        if (postDto.getId() != null && postDto.getId() != -1) {
             Optional<Company> oldPost = service.getById(postDto.getId());
             if (oldPost.isPresent()) {
                 Company val = oldPost.get();

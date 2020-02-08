@@ -34,11 +34,11 @@ public class ProjectComment extends RepresentationModel<ProjectComment> implemen
     private Long projectCommentId;
 
     @ManyToOne(cascade = CascadeType.MERGE, targetEntity = Employee.class)
-    @JoinColumn(name = "employee_id", nullable = false, insertable = false)
+    @JoinColumn(name = "employee_id", nullable = false, updatable = false)
     private Employee employee;
 
     @ManyToOne(cascade = CascadeType.MERGE, targetEntity = Project.class)
-    @JoinColumn(name = "project_id", nullable = false, insertable = false)
+    @JoinColumn(name = "project_id", nullable = false, updatable = false)
     private Project project;
 
     @NotNull
@@ -47,7 +47,7 @@ public class ProjectComment extends RepresentationModel<ProjectComment> implemen
     @NotNull
     private String text;
 
-    @NotNull
+    @Column(updatable = false)
     private Timestamp date;
 
     @Override

@@ -43,23 +43,23 @@ CREATE TABLE IF NOT EXISTS employee_comment
     employee_id         bigint                                                                                            NOT NULL,
     commenter_id        bigint                                                                                            NOT NULL,
     comment             varchar(255)                                                                            NOT NULL,
-    date                timestamp DEFAULT now()                                                         NOT NULL
+    date timestamp DEFAULT now()
 );
 
 
 CREATE TABLE IF NOT EXISTS project
 (
     project_id  BIGINT auto_increment PRIMARY KEY,
-    employee_id bigint                                                                          NOT NULL,
-    company_id  bigint                                                                          NOT NULL,
-    link        varchar(255)                                                          NOT NULL,
-    name        varchar(255)                                                          NOT NULL,
-    description varchar(255)                                                          NOT NULL,
-    goal        DECIMAL                                                                         NOT NULL,
-    invested_in DECIMAL                                                                         NOT NULL,
-    reached     boolean                                                                         NOT NULL,
-    image_id  bigint                                                                            ,
-    created_at  timestamp DEFAULT now()                                       NOT NULL,
+    employee_id bigint       NOT NULL,
+    company_id  bigint       NOT NULL,
+    link        varchar(255) NOT NULL,
+    name        varchar(255) NOT NULL,
+    description varchar(255) NOT NULL,
+    goal        DECIMAL      NOT NULL,
+    invested_in DECIMAL      NOT NULL,
+    reached     boolean      NOT NULL,
+    image_id    bigint,
+    created_at  timestamp DEFAULT now(),
     funded_at   timestamp
 );
 
@@ -80,7 +80,7 @@ CREATE TABLE IF NOT EXISTS project_comment
     project_id         bigint                                                                                          NOT NULL,
     title              varchar(255)                                                                          NOT NULL,
     text               varchar(255)                                                                          NOT NULL,
-    date               timestamp DEFAULT now()                                                       NOT NULL
+    date timestamp DEFAULT now()
 );
 
 CREATE TABLE IF NOT EXISTS image

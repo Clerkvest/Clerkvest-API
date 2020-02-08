@@ -119,7 +119,7 @@ public class InvestController implements DTOConverter<Invest, InvestDTO> {
         Invest post = modelMapper.map(postDto, Invest.class);
         if (postDto.getId() != null && post.getId() != -1L) {
             Optional<Invest> oldPost = service.getById(postDto.getId());
-            if (oldPost.isPresent()) {
+            if (oldPost.isPresent() && postDto.getId() != -1) {
                 Invest val = oldPost.get();
                 val.setInvestment(postDto.getInvestment());
                 return val;

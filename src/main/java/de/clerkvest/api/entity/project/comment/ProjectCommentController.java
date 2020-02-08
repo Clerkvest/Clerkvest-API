@@ -78,7 +78,11 @@ public class ProjectCommentController implements DTOConverter<ProjectComment, Pr
     public ResponseEntity<List<ProjectCommentDTO>> getAllCommentsForProject(@PathVariable long id, @AuthenticationPrincipal EmployeeUserDetails auth) {
         Optional<List<ProjectComment>> projects = service.getByProjectId(id);
         List<ProjectCommentDTO> projectDTOs = new ArrayList<>();
-        projects.ifPresent(presentProjects -> presentProjects.forEach(project -> projectDTOs.add(convertToDto(project))));
+        projects.ifPresentOrElse(presentProjects -> {
+            presentProjects.forEach(project -> projectDTOs.add(convertToDto(project)));
+        }, () -> {
+            throw new ClerkEntityNotFoundException("Project not found");
+        });
         return ResponseEntity.ok(projectDTOs);
     }
 
@@ -96,7 +100,7 @@ public class ProjectCommentController implements DTOConverter<ProjectComment, Pr
     @Override
     public ProjectComment convertToEntity(ProjectCommentDTO postDto) throws ParseException {
         ProjectComment post = modelMapper.map(postDto, ProjectComment.class);
-        if (postDto.getId() != null) {
+        if (postDto.getId() != null && post.getId() != -1) {
             Optional<ProjectComment> oldPost = service.getById(postDto.getId());
             if (oldPost.isPresent()) {
                 ProjectComment val = oldPost.get();

@@ -67,7 +67,7 @@ CREATE TABLE project
   invested_in DECIMAL                                                                         NOT NULL,
   reached     boolean                                                                         NOT NULL,
   image_id  bigint                                                                            ,
-  created_at  timestamp WITHOUT TIME ZONE DEFAULT now()                                       NOT NULL,
+  created_at  timestamp WITHOUT TIME ZONE DEFAULT now()                                       ,
   funded_at   timestamp WITHOUT TIME ZONE
 );
 
@@ -92,7 +92,7 @@ CREATE TABLE project_comment
   project_id         bigint                                                                                          NOT NULL,
   title              character varying(255)                                                                          NOT NULL,
   text               character varying(255)                                                                          NOT NULL,
-  date               timestamp WITHOUT TIME ZONE DEFAULT now()                                                       NOT NULL
+  date               timestamp WITHOUT TIME ZONE DEFAULT now()
 );
 
 CREATE TABLE image

@@ -114,7 +114,7 @@ public class EmployeeController implements DTOConverter<Employee,EmployeeDTO> {
 
     public Employee convertToEntity(EmployeeDTO postDto) throws ParseException {
         Employee post = modelMapper.map(postDto, Employee.class);
-        if (postDto.getEmployeeId() != null) {
+        if (postDto.getEmployeeId() != null && postDto.getId() != -1) {
             Optional<Employee> oldPost = service.getById(postDto.getEmployeeId());
             if (oldPost.isPresent()) {
                 Employee val = oldPost.get();

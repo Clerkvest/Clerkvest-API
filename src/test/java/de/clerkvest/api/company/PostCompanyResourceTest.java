@@ -9,6 +9,7 @@ import io.zonky.test.db.AutoConfigureEmbeddedDatabase;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 
@@ -17,6 +18,7 @@ import static org.springframework.http.HttpStatus.*;
 
 @SpringBootTest(classes = Application.class,
         webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
+@Transactional
 @AutoConfigureEmbeddedDatabase
 public class PostCompanyResourceTest {
     private CompanyDTO company;
@@ -74,7 +76,7 @@ public class PostCompanyResourceTest {
     @Test
     public void createInvalidCompanyPayAmountBelow_1() {
         company = CompanyDTO.builder().name("titCompany").domain("tit.com").inviteOnly(false).payAmount(BigDecimal.valueOf(-1)).payInterval(1).build();
-        ValidatableResponse response = given().body(company).contentType(ContentType.JSON).post(HateoasLink.COMPANY_CREATE + "?mail=test@tit.com").then().statusCode(BAD_REQUEST.value());
+        ValidatableResponse response = given().body(company).contentType(ContentType.JSON).post(HateoasLink.COMPANY_CREATE + "?mail=test@tit.com").then().statusCode(CONFLICT.value());
         //EmployeeRest employeeRest = response.extract().as(EmployeeRest.class);
         //Assert.assertTrue(response. != null);
         //ResponseMessage.EMPLOYEE_OTHER_COMPANY
@@ -83,7 +85,7 @@ public class PostCompanyResourceTest {
     @Test
     public void createInvalidCompanyPayIntervalBelow_1() {
         company = CompanyDTO.builder().name("titCompany").domain("tit.com").inviteOnly(false).payAmount(BigDecimal.valueOf(Long.MIN_VALUE)).payInterval(1).build();
-        ValidatableResponse response = given().body(company).contentType(ContentType.JSON).post(HateoasLink.COMPANY_CREATE + "?mail=test@tit.com").then().statusCode(BAD_REQUEST.value());
+        ValidatableResponse response = given().body(company).contentType(ContentType.JSON).post(HateoasLink.COMPANY_CREATE + "?mail=test@tit.com").then().statusCode(CONFLICT.value());
         //EmployeeRest employeeRest = response.extract().as(EmployeeRest.class);
         //Assert.assertTrue(response. != null);
         //ResponseMessage.EMPLOYEE_OTHER_COMPANY

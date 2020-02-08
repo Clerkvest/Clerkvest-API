@@ -6,6 +6,7 @@ import io.zonky.test.db.AutoConfigureEmbeddedDatabase;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import static de.clerkvest.api.config.TestConfig.REST_BASE_URL;
 import static io.restassured.RestAssured.get;
@@ -14,6 +15,7 @@ import static org.springframework.http.HttpStatus.OK;
 
 @SpringBootTest(classes = Application.class,
         webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
+@Transactional
 @AutoConfigureEmbeddedDatabase
 @Disabled
 public class GetLoginResourceTest {

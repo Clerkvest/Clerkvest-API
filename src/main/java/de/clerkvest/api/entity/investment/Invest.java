@@ -29,7 +29,7 @@ import java.math.BigDecimal;
 public class Invest extends RepresentationModel<Invest> implements IServiceEntity {
 
     @Id
-    @SequenceGenerator(name = "invest_gen", sequenceName = "invest_invest_id_seq", allocationSize = 1)
+    @SequenceGenerator(name = "invest_gen", sequenceName = "invest_in_invest_in_id_seq", allocationSize = 1)
     @GeneratedValue(generator = "invest_gen", strategy = GenerationType.SEQUENCE)
     @Column(name = "invest_in_id", updatable = false)
     private Long investInId;
