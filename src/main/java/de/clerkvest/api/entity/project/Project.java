@@ -65,7 +65,7 @@ public class Project extends RepresentationModel<Project> implements IServiceEnt
     @JoinColumn(name = "image_id")
     private Image image;
 
-    private LocalDateTime createdAt;
+    private LocalDateTime createdAt = LocalDateTime.now();
 
     private LocalDateTime fundedAt;
 
