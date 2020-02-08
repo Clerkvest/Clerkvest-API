@@ -46,7 +46,7 @@ public class ProjectController implements DTOConverter<Project, ProjectDTO> {
         this.modelMapper = modelMapper;
     }
 
-    @PreAuthorize("hasRole('ROLE_USER') and #fresh.employeeId.equals(#auth.employeeId) and #fresh.companyId.equals(#auth.companyId)")
+    @PreAuthorize("hasRole('ROLE_USER') and #auth.employeeId.equals(#fresh.employeeId) and #auth.companyId.equals(#fresh.companyId)")
     @PostMapping(value = "/create")
     public ResponseEntity<ProjectDTO> createProject(@Valid @RequestBody ProjectDTO fresh, @AuthenticationPrincipal EmployeeUserDetails auth) throws ParseException {
         fresh.setId(-1L);
@@ -55,7 +55,7 @@ public class ProjectController implements DTOConverter<Project, ProjectDTO> {
         return ResponseEntity.ok().body(convertToDto(converted));
     }
 
-    @PreAuthorize("hasRole('ROLE_USER') and #updated.employeeId.equals(#auth.employeeId)")
+    @PreAuthorize("hasRole('ROLE_USER') and #auth.employeeId.equals(#updated.employeeId)")
     @PutMapping(value = "/update")
     public ResponseEntity<ProjectDTO> updatedProject(@Valid @RequestBody ProjectDTO updated, @AuthenticationPrincipal EmployeeUserDetails auth) throws ParseException {
         Project converted = convertToEntity(updated);
@@ -111,7 +111,7 @@ public class ProjectController implements DTOConverter<Project, ProjectDTO> {
     @Override
     public Project convertToEntity(ProjectDTO postDto) throws ParseException {
         Project post = modelMapper.map(postDto, Project.class);
-        if (postDto.getId() != null) {
+        if (postDto.getId() != null && postDto.getId() != -1) {
             Optional<Project> oldPost = service.getById(postDto.getId());
             if (oldPost.isPresent()) {
                 Project val = oldPost.get();
@@ -127,7 +127,7 @@ public class ProjectController implements DTOConverter<Project, ProjectDTO> {
                 employeeService.getById(postDto.getEmployeeId()).ifPresent(post::setEmployee);
             }
             if (postDto.getCompanyId() != null) {
-                companyService.getById(postDto.getProjectId()).ifPresent(post::setCompany);
+                companyService.getById(postDto.getCompanyId()).ifPresent(post::setCompany);
             }
         }
         return post;
