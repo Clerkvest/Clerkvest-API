@@ -1,4 +1,5 @@
 
+
 <p align="center">
   <a href="https://github.com/clerkvest">
     <img alt="Clerkvest" title="Clerkvest" src=".github/images/Clerkvest_Github_Readme.png" width="350">
@@ -15,9 +16,9 @@
 ### Getting Started [![clerkvest](https://img.shields.io/badge/Java-Spring-blue?logo=java&logoColor=White)](https://github.com/clerkvest/clerkvest-api) [![Clerkvest](https://img.shields.io/github/license/clerkvest/clerkvest-api)](https://github.com/clerkvest/clerkvest-api) [![clerkvest](https://img.shields.io/github/v/release/clerkvest/clerkvest-api?label=stable)](https://github.com/clerkvest/clerkvest-api) [![clerkvest](https://img.shields.io/github/v/release/clerkvest/clerkvest?include_prereleases&label=beta)](https://github.com/clerkvest/clerkvest-api)
 > These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See     deployment for notes on how to deploy the project on a live system.
 
-Build the Project: `mvn -B package --file pom.xml -Dmaven.test.skip=true`
-Switch to the target folder: `cd target`
-Run the Jar: `java -jar api-<version>.jar`
+- Build the Project: `mvn -B package --file pom.xml -Dmaven.test.skip=true`
+- Switch to the target folder: `cd target`
+- Run the Jar: `java -jar api-<version>.jar`
 > #### Warning - Currently the dev Profile is static only. This is due to incompatibilities between PostgreSQL and H2
 >  - Deleting
 >  - Creating
