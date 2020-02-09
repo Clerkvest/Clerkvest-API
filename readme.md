@@ -1,3 +1,4 @@
+
 <p align="center">
   <a href="https://github.com/clerkvest">
     <img alt="Clerkvest" title="Clerkvest" src=".github/images/Clerkvest_Github_Readme.png" width="350">
@@ -11,12 +12,104 @@
   </a>
 </p>
 
-## Table of Contents
+### Getting Started [![clerkvest](https://img.shields.io/badge/Java-Spring-blue?logo=java&logoColor=White)](https://github.com/clerkvest/clerkvest-api) [![Clerkvest](https://img.shields.io/github/license/clerkvest/clerkvest-api)](https://github.com/clerkvest/clerkvest-api) [![clerkvest](https://img.shields.io/github/v/release/clerkvest/clerkvest-api?label=stable)](https://github.com/clerkvest/clerkvest-api) [![clerkvest](https://img.shields.io/github/v/release/clerkvest/clerkvest?include_prereleases&label=beta)](https://github.com/clerkvest/clerkvest-api)
+> These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See     deployment for notes on how to deploy the project on a live system.
 
-- [Introduction](#introduction)
-- [Features](#features)
+Build the Project: `mvn -B package --file pom.xml -Dmaven.test.skip=true`
+Switch to the target folder: `cd target`
+Run the Jar: `java -jar api-<version>.jar`
+> #### Warning - Currently the dev Profile is static only. This is due to incompatibilities between PostgreSQL and H2
+>  - Deleting
+>  - Creating
+> 
+> of Entities fails, due to missing Sequence Generators and Delete Triggers.
 
-## Introduction [![clerkvest](https://img.shields.io/badge/Java-Spring-blue?logo=java&logoColor=White)](https://github.com/clerkvest/clerkvest-api) [![Clerkvest](https://img.shields.io/github/license/clerkvest/clerkvest-api)](https://github.com/clerkvest/clerkvest-api) [![clerkvest](https://img.shields.io/github/v/release/clerkvest/clerkvest-api?label=stable)](https://github.com/clerkvest/clerkvest-api) [![clerkvest](https://img.shields.io/github/v/release/clerkvest/clerkvest?include_prereleases&label=beta)](https://github.com/clerkvest/clerkvest-api)
-> Spring Boot 2.2 Application 
+### Prerequisites
+> Prerequisites to building and running this software
 
-## Features
+```
+Java >= 11
+Maven
+```
+
+### Deployment
+
+> A step by step series of examples that tell you how to get a live System running
+> #### Warning - Currently only PostgreSQL is supported, if you want to use another DB anyway you need to adjust the Sequence Generators in the Entites.
+
+To Deploy the System you will have to configure the Spring Application trough the application.properties. Create a new Application Profile and set the application.properties to the newly created Profile, this will tell Spring Boot to use that Profile.
+#### Example  Profile 
+```
+spring.datasource.url = jdbc:postgresql://localhost:5432/dbname -- Required
+spring.datasource.username = dbuser
+spring.datasource.password = dbpassword
+server.port=8080  
+server.servlet.context-path=/api
+  
+spring.jpa.hibernate.ddl-auto = none  
+spring.datasource.data=classpath:data-prod.sql  
+spring.datasource.schema=classpath:schema-prod.sql
+
+*sendgrid.api.key = API_KEY -- Required
+```
+
+Using the Test Data a call to the GET Project Endpoint results in following Response:
+```json
+{
+    "employeeId": 0,
+    "companyId": 0,
+    "link": "google.de",
+    "title": "Google",
+    "description": "Lets buy google",
+    "goal": 100000,
+    "investedIn": 10,
+    "reached": false,
+    "createdAt": "2020-02-04T17:38:31.582971",
+    "fundedAt": null,
+    "id": 0,
+    "image": null,
+    "_links": {
+        "self": {
+            "href": "http://localhost:8080/api/project/get/0"
+        },
+        "all": {
+            "href": "http://localhost:8080/api/project/all"
+        },
+        "delete": {
+            "href": "http://localhost:8080/api/project/delete/0"
+        },
+        "create": {
+            "href": "http://localhost:8080/api/project/create"
+        },
+        "update": {
+            "href": "http://localhost:8080/api/project/update"
+        }
+    }
+}
+```
+## Running the tests
+> How to run the automated tests for this system
+
+    mvn test
+
+## Built With
+
+* [Spring Boot](https://docs.spring.io/spring-boot/docs/2.2.4.RELEASE/reference/html/) - The Rest framework used
+* [Maven](https://maven.apache.org/) - Dependency Management
+* [Sendgrid](https://sendgrid.com/) - Used to Send Login Mails
+* [PostgreSQL](https://www.postgresql.org/docs/) - Database
+
+## Contributing
+
+Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
+
+## Authors
+
+* **Michael** - *Initial work* - [Voxen4]([https://github.com/Voxen4](https://github.com/Voxen4))
+* **Danny** - *Initial work* - [Voxen4]([[https://github.com/Qu1oX](https://github.com/Qu1oX)](https://github.com/Voxen4))
+
+See also the list of [contributors]([https://github.com/Clerkvest/Clerkvest-API/graphs/contributors](https://github.com/Clerkvest/Clerkvest-API/graphs/contributors)) who participated in this project.
+
+## License
+
+This project is licensed under the GPL-3.0 License - see the [LICENSE.md](LICENSE.md) file for details
