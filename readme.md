@@ -107,7 +107,7 @@ Using the Test Data a call to the GET Project Endpoint results in following Resp
 ## Authors
 
 * **Michael** - *Initial work* - [Voxen4]([https://github.com/Voxen4](https://github.com/Voxen4))
-* **Danny** - *Initial work* - [Voxen4]([[https://github.com/Qu1oX](https://github.com/Qu1oX)](https://github.com/Voxen4))
+* **Danny** - *Initial work* - [Qu1oX]([[https://github.com/Qu1oX](https://github.com/Qu1oX)](https://github.com/Qu1oX))
 
 See also the list of [contributors]([https://github.com/Clerkvest/Clerkvest-API/graphs/contributors](https://github.com/Clerkvest/Clerkvest-API/graphs/contributors)) who participated in this project.
 
