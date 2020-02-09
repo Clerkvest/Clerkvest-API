@@ -37,7 +37,7 @@ public class EmployeeMapperTest {
 
         assertThat(employeeDTO.getId()).isEqualTo(employee.getId());
         assertThat(employeeDTO.getToken()).isEqualTo(employee.getToken());
-        assertThat(employeeDTO.getCompany()).isEqualTo(employee.getCompany().getId());
+        assertThat(employeeDTO.getCompanyId()).isEqualTo(employee.getCompany().getId());
         assertThat(employeeDTO.getBalance()).isEqualTo(employee.getBalance());
         assertThat(employeeDTO.getNickname()).isEqualTo(employee.getNickname());
         assertThat(employeeDTO.getFirstname()).isEqualTo(employee.getFirstname());
@@ -50,7 +50,7 @@ public class EmployeeMapperTest {
     public void whenConvertPostDtoToPostEntity_thenCorrect() {
         EmployeeDTO employeeDTO = new EmployeeDTO();
         employeeDTO.setId(0L);
-        employeeDTO.setCompany(0L);
+        employeeDTO.setCompanyId(0L);
         employeeDTO.setEmail("user1@clerkvest.de");
         employeeDTO.setBalance(BigDecimal.valueOf(10));
         employeeDTO.setToken("exampleToken0");

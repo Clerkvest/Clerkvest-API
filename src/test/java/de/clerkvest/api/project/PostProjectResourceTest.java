@@ -29,14 +29,14 @@ public class PostProjectResourceTest {
     @Test
     public void addProject_ToOwnCompany_Admin() {
         EmployeeDTO employee1 = given().header("Authorization", "Bearer exampleToken1").get(HateoasLink.EMPLOYEE_SINGLE + 1).as(EmployeeDTO.class);
-        ProjectDTO project = ProjectDTO.builder().companyId(employee1.getCompany()).employeeId(employee1.getId()).link("ExampleLink").title("Title").description("Description").goal(BigDecimal.valueOf(1337)).investedIn(BigDecimal.valueOf(0)).reached(false).build();
+        ProjectDTO project = ProjectDTO.builder().companyId(employee1.getCompanyId()).employeeId(employee1.getId()).link("ExampleLink").title("Title").description("Description").goal(BigDecimal.valueOf(1337)).investedIn(BigDecimal.valueOf(0)).reached(false).build();
         ValidatableResponse rest = given().header("Authorization", "Bearer exampleToken1").contentType(ContentType.JSON).body(project).post(REST_ENDPOINT_URL).then().statusCode(OK.value());
     }
 
     @Test
     public void addProject_ToOwnCompany_NonAdmin() {
         EmployeeDTO employee0 = given().header("Authorization", "Bearer exampleToken0").get(HateoasLink.EMPLOYEE_SINGLE + 0).as(EmployeeDTO.class);
-        ProjectDTO project = ProjectDTO.builder().companyId(employee0.getCompany()).employeeId(employee0.getId()).link("ExampleLink").title("Title").description("Description").goal(BigDecimal.valueOf(1337)).investedIn(BigDecimal.valueOf(0)).reached(false).build();
+        ProjectDTO project = ProjectDTO.builder().companyId(employee0.getCompanyId()).employeeId(employee0.getId()).link("ExampleLink").title("Title").description("Description").goal(BigDecimal.valueOf(1337)).investedIn(BigDecimal.valueOf(0)).reached(false).build();
         ValidatableResponse rest = given().header("Authorization", "Bearer exampleToken0").contentType(ContentType.JSON).body(project).post(REST_ENDPOINT_URL).then().statusCode(OK.value());
     }
 
@@ -51,7 +51,7 @@ public class PostProjectResourceTest {
     @Test
     public void addProject_ToCompany_FakeEmployee() {
         EmployeeDTO employee0 = given().header("Authorization", "Bearer exampleToken0").get(HateoasLink.EMPLOYEE_SINGLE + 0).as(EmployeeDTO.class);
-        ProjectDTO project = ProjectDTO.builder().companyId(employee0.getCompany()).employeeId(employee0.getId()).link("ExampleLink").title("Title").description("Description").goal(BigDecimal.valueOf(1337)).investedIn(BigDecimal.valueOf(0)).reached(false).build();
+        ProjectDTO project = ProjectDTO.builder().companyId(employee0.getCompanyId()).employeeId(employee0.getId()).link("ExampleLink").title("Title").description("Description").goal(BigDecimal.valueOf(1337)).investedIn(BigDecimal.valueOf(0)).reached(false).build();
         ValidatableResponse rest = given().header("Authorization", "Bearer exampleToken1").contentType(ContentType.JSON).body(project).post(REST_ENDPOINT_URL).then().statusCode(FORBIDDEN.value());
     }
 
@@ -66,7 +66,7 @@ public class PostProjectResourceTest {
     @Test
     public void addProject_ToCompany_NegativGoal() {
         EmployeeDTO employee0 = given().header("Authorization", "Bearer exampleToken0").get(HateoasLink.EMPLOYEE_SINGLE + 0).as(EmployeeDTO.class);
-        ProjectDTO project = ProjectDTO.builder().companyId(employee0.getCompany()).employeeId(employee0.getId()).link("ExampleLink").title("Title").description("Description").goal(BigDecimal.valueOf(-1)).investedIn(BigDecimal.valueOf(0)).reached(false).build();
+        ProjectDTO project = ProjectDTO.builder().companyId(employee0.getCompanyId()).employeeId(employee0.getId()).link("ExampleLink").title("Title").description("Description").goal(BigDecimal.valueOf(-1)).investedIn(BigDecimal.valueOf(0)).reached(false).build();
         ValidatableResponse rest = given().header("Authorization", "Bearer exampleToken0").contentType(ContentType.JSON).body(project).post(REST_ENDPOINT_URL).then().statusCode(CONFLICT.value());
     }
 

@@ -46,7 +46,7 @@ public class EmployeeController implements DTOConverter<Employee,EmployeeDTO> {
         this.modelMapper = modelMapper;
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN') and #fresh.company.equals(#auth.companyId)")
+    @PreAuthorize("hasRole('ROLE_ADMIN') and #fresh.companyId.equals(#auth.companyId)")
     @PostMapping(value = "/create")
     public ResponseEntity<EmployeeDTO> createEmployee(@Valid @RequestBody EmployeeDTO fresh, @AuthenticationPrincipal EmployeeUserDetails auth) throws ParseException {
         fresh.setId(-1L);
@@ -126,8 +126,8 @@ public class EmployeeController implements DTOConverter<Employee,EmployeeDTO> {
                 return val;
             }
         } else {
-            if (postDto.getCompany() != null) {
-                companyService.getById(postDto.getCompany()).ifPresent(post::setCompany);
+            if (postDto.getCompanyId() != null) {
+                companyService.getById(postDto.getCompanyId()).ifPresent(post::setCompany);
             }
         }
         return post;

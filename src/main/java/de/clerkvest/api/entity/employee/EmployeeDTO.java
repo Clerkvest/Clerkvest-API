@@ -14,7 +14,7 @@ import java.util.Objects;
 @JsonIgnoreProperties(value = {"token", "employeeId"}, ignoreUnknown = true)
 public class EmployeeDTO extends RepresentationModel<EmployeeDTO> implements IServiceEntity {
     private Long employeeId = null;
-    private Long company;
+    private Long companyId;
 
     private Boolean admin = false;
     private String email = null;
@@ -26,7 +26,7 @@ public class EmployeeDTO extends RepresentationModel<EmployeeDTO> implements ISe
 
     public EmployeeDTO(Employee employee) {
         employeeId = employee.getId();
-        company = employee.getCompany().getId();
+        companyId = employee.getCompany().getId();
         email = employee.getEmail();
         balance = employee.getBalance();
         //token = employee.getToken();
@@ -70,7 +70,7 @@ public class EmployeeDTO extends RepresentationModel<EmployeeDTO> implements ISe
 
 
     public EmployeeDTO company(long companyRest) {
-        this.company = companyRest;
+        this.companyId = companyRest;
         return this;
     }
 
@@ -79,12 +79,12 @@ public class EmployeeDTO extends RepresentationModel<EmployeeDTO> implements ISe
      *
      * @return company
      **/
-    public Long getCompany() {
-        return company;
+    public Long getCompanyId() {
+        return companyId;
     }
 
-    public void setCompany(Long company) {
-        this.company = company;
+    public void setCompanyId(Long companyId) {
+        this.companyId = companyId;
     }
 
     public EmployeeDTO email(String email) {
@@ -224,7 +224,7 @@ public class EmployeeDTO extends RepresentationModel<EmployeeDTO> implements ISe
         }
         EmployeeDTO employeeRest = (EmployeeDTO) o;
         return Objects.equals(this.employeeId, employeeRest.employeeId) &&
-                Objects.equals(this.company, employeeRest.company) &&
+                Objects.equals(this.companyId, employeeRest.companyId) &&
                 Objects.equals(this.email, employeeRest.email) &&
                 Objects.equals(this.balance, employeeRest.balance) &&
                 Objects.equals(this.token, employeeRest.token) &&
@@ -236,7 +236,7 @@ public class EmployeeDTO extends RepresentationModel<EmployeeDTO> implements ISe
 
     @Override
     public int hashCode() {
-        return Objects.hash(employeeId, company, email, balance, token, firstname, lastname, nickname, admin);
+        return Objects.hash(employeeId, companyId, email, balance, token, firstname, lastname, nickname, admin);
     }
 
 
@@ -245,7 +245,7 @@ public class EmployeeDTO extends RepresentationModel<EmployeeDTO> implements ISe
 
         return "class EmployeeRest {\n" +
                 "    employee_id: " + toIndentedString(employeeId) + "\n" +
-                "    company: " + toIndentedString(company) + "\n" +
+                "    company: " + toIndentedString(companyId) + "\n" +
                 "    email: " + toIndentedString(email) + "\n" +
                 "    balance: " + toIndentedString(balance) + "\n" +
                 "    token: " + toIndentedString(token) + "\n" +
