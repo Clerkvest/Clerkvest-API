@@ -3,6 +3,10 @@ package de.clerkvest.api;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.scheduling.annotation.EnableScheduling;
+
+import java.sql.Timestamp;
+import java.time.Instant;
 
 /**
  * api <p>
@@ -17,6 +21,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @since 21 Dec 2019 18:11
  */
 @SpringBootApplication
+@EnableScheduling
 public class Application implements CommandLineRunner {
 
     /**
