@@ -78,10 +78,8 @@ public class ProjectCommentController implements DTOConverter<ProjectComment, Pr
     public ResponseEntity<List<ProjectCommentDTO>> getAllCommentsForProject(@PathVariable long id, @AuthenticationPrincipal EmployeeUserDetails auth) {
         Optional<List<ProjectComment>> projects = service.getByProjectId(id);
         List<ProjectCommentDTO> projectDTOs = new ArrayList<>();
-        projects.ifPresentOrElse(presentProjects -> {
+        projects.ifPresent(presentProjects -> {
             presentProjects.forEach(project -> projectDTOs.add(convertToDto(project)));
-        }, () -> {
-            throw new ClerkEntityNotFoundException("Project not found");
         });
         return ResponseEntity.ok(projectDTOs);
     }
