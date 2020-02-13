@@ -1,4 +1,4 @@
-package de.clerkvest.api;
+package de.clerkvest.api.config;
 
 import com.sendgrid.SendGrid;
 import org.springframework.beans.factory.annotation.Value;

@@ -5,15 +5,7 @@ import de.clerkvest.api.implement.service.IServiceEntity;
 import lombok.*;
 import org.springframework.hateoas.RepresentationModel;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
@@ -53,7 +45,7 @@ public class Company extends RepresentationModel<Company> implements IServiceEnt
 
     @OneToOne(targetEntity = Image.class)
     @JoinColumn(name = "image_id")
-    private Image imageId;
+    private Image image;
 
     @NotNull
     @Min(value = 0)

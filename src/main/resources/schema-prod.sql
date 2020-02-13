@@ -98,8 +98,8 @@ CREATE TABLE project_comment
 CREATE TABLE image
 (
   image_id   BIGSERIAL PRIMARY KEY,
-  fileName   character varying(255)                                     NOT NULL,
-  path       character varying(255)                                     NOT NULL
+    content_Id character varying(255) NOT NULL,
+    content_Length bigint
 );
 
 ALTER TABLE company

@@ -1,11 +1,11 @@
 package de.clerkvest.api.entity.image;
 
-import de.clerkvest.api.exception.ClerkEntityNotFoundException;
-import de.clerkvest.api.implement.service.IService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Optional;
 
 /**
@@ -18,48 +18,53 @@ import java.util.Optional;
  * @since 21 Dec 2019 19:11
  */
 @Service
-public class ImageService implements IService<Image> {
+public class ImageService {
 
     private final ImageRepository repository;
+    private final ImageContentStore imageContentStore;
 
     @Autowired
-    public ImageService(ImageRepository repository) {
+    public ImageService(ImageRepository repository, ImageContentStore imageContentStore) {
         this.repository = repository;
+        this.imageContentStore = imageContentStore;
     }
 
-    @Override
-    public void save(Image image) {
+    public Image addImage(MultipartFile file) throws IOException {
+        Image image = new Image();
+        imageContentStore.setContent(image, file.getInputStream());
         repository.save(image);
+        return image;
     }
 
-    @Override
-    public void update(Image image) {
+
+  /*  public void update(Long id, String filename, MultipartFile file) throws IOException {
         //Check if company is new
-        Optional<Image> existingImage = repository.findById(image.getId());
+        Optional<Image> existingImage = repository.findById(id);
         existingImage.ifPresentOrElse(
                 value -> {
-                    value.setFilename(image.getFilename());
-                    value.setPath(image.getPath());
+                    value.setFilename(filename);
+                    try {
+                        value.setImage(new Binary(BsonBinarySubType.BINARY,file.getBytes()));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                     repository.save(value);
                 },
                 () -> {
                     throw new ClerkEntityNotFoundException("Image can't be updated, not saved yet.");
                 }
         );
-    }
+    }*/
 
-    @Override
-    public List<Image> getAll() {
-        return repository.findAll();
-    }
-
-    @Override
     public Optional<Image> getById(long id) {
         return repository.findById(id);
     }
 
-    @Override
-    public void delete (Image image) {
+    public InputStream getContent(Image image) {
+        return imageContentStore.getContent(image);
+    }
+
+    public void delete(Image image) {
         repository.delete(image);
     }
 }

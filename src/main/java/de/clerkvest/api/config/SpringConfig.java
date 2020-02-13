@@ -1,4 +1,4 @@
-package de.clerkvest.api;
+package de.clerkvest.api.config;
 
 import de.clerkvest.api.entity.company.Company;
 import de.clerkvest.api.entity.company.CompanyDTO;
@@ -15,9 +15,17 @@ import org.modelmapper.TypeMap;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.multipart.MultipartResolver;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 @Configuration
 public class SpringConfig {
+
+    @Bean
+    public MultipartResolver multipartResolver() {
+        return new CommonsMultipartResolver();
+    }
+
     @Bean
     public ModelMapper modelMapper() {
         ModelMapper mapper = new CustomModelMapper();
