@@ -53,7 +53,7 @@ public class CompanyDTO extends RepresentationModel<CompanyDTO> implements IServ
         companyId = createdCompany.getId();
         name = createdCompany.getName();
         domain = createdCompany.getDomain();
-        Image companyImage = createdCompany.getImageId();
+        Image companyImage = createdCompany.getImage();
         if (companyImage != null) {
             imageId = companyImage.getImageId();
         }

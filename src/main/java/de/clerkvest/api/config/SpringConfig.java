@@ -42,8 +42,8 @@ public class SpringConfig {
         companyMap.addMapping(Company::isInviteOnly, CompanyDTO::setInviteOnly);
         companyMap.addMapping(Company::getPayInterval, CompanyDTO::setPayInterval);
         companyMap.addMapping(Company::getCompanyId, CompanyDTO::setCompanyId);
-        companyMap.addMapping(Company::getImageId, CompanyDTO::setImage);
-        companyMap.addMapping(src -> src.getImageId().getId(), CompanyDTO::setImage);
+        companyMap.addMapping(Company::getImage, CompanyDTO::setImage);
+        companyMap.addMapping(src -> src.getImage().getId(), CompanyDTO::setImage);
         companyMap.addMappings(map -> map.skip(CompanyDTO::setCompanyId));
 
         //mapper.createTypeMap(Image.class, ImageDTO.class);

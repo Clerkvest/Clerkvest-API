@@ -60,7 +60,7 @@ public class TokenController {
             Optional<Company> company = companyService.getByDomain(domain);
             Employee employee = Employee.builder().employeeId(-1L).balance(BigDecimal.ONE).company(null).email(mail).firstname(firstname).lastname(lastname).isAdmin(false).loginToken(token).nickname(firstname + " " + lastname).build();
             company.ifPresentOrElse(employee::setCompany, () -> {
-                Company newCompany = Company.builder().companyId(-1L).domain(domain).inviteOnly(true).imageId(null).name(name).payAmount(BigDecimal.TEN).payInterval(30).build();
+                Company newCompany = Company.builder().companyId(-1L).domain(domain).inviteOnly(true).image(null).name(name).payAmount(BigDecimal.TEN).payInterval(30).build();
                 companyService.save(newCompany);
                 employee.setCompany(newCompany);
                 employee.setAdmin(true);

@@ -61,7 +61,7 @@ public class CompanyService implements IService<Company> {
         existingCompany.ifPresentOrElse(
                 value -> {
                     value.setName(company.getName());
-                    value.setImageId(company.getImageId());
+                    value.setImage(company.getImage());
                     value.setInviteOnly(company.isInviteOnly());
                     value.setPayAmount(company.getPayAmount());
                     value.setPayInterval(company.getPayInterval());
