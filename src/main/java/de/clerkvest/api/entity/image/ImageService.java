@@ -64,6 +64,7 @@ public class ImageService {
     }
 
     public void delete(Image image) {
+        imageContentStore.unsetContent(image);
         repository.delete(image);
     }
 }

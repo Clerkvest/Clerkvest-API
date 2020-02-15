@@ -13,12 +13,14 @@ import de.clerkvest.api.entity.project.comment.ProjectCommentDTO;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeMap;
 import org.modelmapper.convention.MatchingStrategies;
+import org.springframework.content.fs.config.EnableFilesystemStores;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 @Configuration
+@EnableFilesystemStores
 public class SpringConfig {
 
     @Bean

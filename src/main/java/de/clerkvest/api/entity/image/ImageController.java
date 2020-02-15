@@ -92,6 +92,9 @@ public class ImageController {
         if (image.isPresent()) {
             InputStream content = service.getContent(image.get());
             //StringResponse response = new StringResponse(Base64.getEncoder().encodeToString(content.readAllBytes()));
+            if (content == null || content.available() == 0) {
+                throw new ClerkEntityNotFoundException("Image not found");
+            }
             return ResponseEntity.ok(Base64.getEncoder().encodeToString(content.readAllBytes()));
         } else {
             throw new ClerkEntityNotFoundException("Image not found");
@@ -103,7 +106,11 @@ public class ImageController {
     public ResponseEntity<?> getImageStream(@PathVariable Long id, @AuthenticationPrincipal EmployeeUserDetails auth) throws IOException {
         Optional<Image> f = service.getById(id);
         if (f.isPresent()) {
-            InputStreamResource inputStreamResource = new InputStreamResource(service.getContent(f.get()));
+            InputStream content = service.getContent(f.get());
+            if (content == null || content.available() == 0) {
+                throw new ClerkEntityNotFoundException("Image not found");
+            }
+            InputStreamResource inputStreamResource = new InputStreamResource(content);
             HttpHeaders headers = new HttpHeaders();
             headers.setContentLength(f.get().getContentLength());
             headers.set("Content-Type", "image/jpeg");
