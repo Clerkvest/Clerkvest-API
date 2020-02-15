@@ -86,7 +86,7 @@ CREATE TABLE IF NOT EXISTS project_comment
 CREATE TABLE IF NOT EXISTS image
 (
     image_id       BIGINT auto_increment PRIMARY KEY,
-    content_Id     varchar NOT NULL,
+    content_Id     varchar,
     content_Length bigint
 );
 

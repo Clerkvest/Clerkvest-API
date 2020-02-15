@@ -98,7 +98,7 @@ CREATE TABLE project_comment
 CREATE TABLE image
 (
   image_id   BIGSERIAL PRIMARY KEY,
-    content_Id character varying(255) NOT NULL,
+    content_Id character varying(255),
     content_Length bigint
 );
 
