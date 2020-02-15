@@ -8,6 +8,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.util.HashSet;
 
@@ -41,27 +42,33 @@ public class Employee implements IServiceEntity {
     @NotNull
     @Email
     @Column(updatable = false, unique = true)
+    @Size(max = 255)
     private String email;
 
     @NotNull
     @Builder.Default
     private BigDecimal balance = new BigDecimal(0);
 
+    @Size(max = 255)
     private String token;
 
     @Column(name = "login_token")
+    @Size(max = 255)
     private String loginToken;
 
     @NotNull
     @Builder.Default
+    @Size(max = 255)
     private String firstname = "FirstName";
 
     @NotNull
     @Builder.Default
+    @Size(max = 255)
     private String lastname = "LastName";
 
     @NotNull
     @Builder.Default
+    @Size(max = 255)
     private String nickname = "NickName";
 
     private boolean isAdmin;

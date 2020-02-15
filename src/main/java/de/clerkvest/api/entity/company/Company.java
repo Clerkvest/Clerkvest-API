@@ -6,10 +6,7 @@ import lombok.*;
 import org.springframework.hateoas.RepresentationModel;
 
 import javax.persistence.*;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.*;
 import java.math.BigDecimal;
 
 /**
@@ -37,10 +34,12 @@ public class Company extends RepresentationModel<Company> implements IServiceEnt
     private Long companyId;
 
     @NotEmpty
+    @Size(max = 255)
     private String name;
 
     @Column(updatable = false)
     @NotBlank
+    @Size(max = 255)
     private String domain;
 
     @OneToOne(targetEntity = Image.class)

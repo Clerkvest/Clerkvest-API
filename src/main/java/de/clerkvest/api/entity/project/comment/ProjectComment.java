@@ -8,6 +8,7 @@ import org.springframework.hateoas.RepresentationModel;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.sql.Timestamp;
 
 /**
@@ -42,12 +43,14 @@ public class ProjectComment extends RepresentationModel<ProjectComment> implemen
     private Project project;
 
     @NotNull
+    @Size(max = 255)
     private String title;
 
     @NotNull
+    @Size(max = 2083)
     private String text;
 
-    @Column(updatable = false)
+    @NotNull
     private Timestamp date;
 
     @Override

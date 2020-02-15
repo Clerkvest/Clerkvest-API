@@ -19,33 +19,35 @@ public interface IService<T> {
      *
      * @param t Entity to save
      */
-    public void save(T t);
+    T save(T t);
 
     /**
      * Updates a existing entity database.
      *
      * @param t Entity to update
      */
-    public void update(T t);
+    T update(T t);
 
     /**
      * Gets all entities from the database
      *
      * @return A Optional list of the Entity
      */
-    public List<T> getAll();
+    List<T> getAll();
 
     /**
      * Gets the entity with the given id from the database
+     *
      * @param id Id to search for
      * @return The entity
      */
-    public Optional<T> getById(long id);
+    Optional<T> getById(long id);
 
     /**
      * Deletes the entity
+     *
      * @param t Entity to delete
      */
-    public void delete(T t);
+    void delete(T t);
 
 }

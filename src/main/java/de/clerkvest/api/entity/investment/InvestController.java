@@ -51,8 +51,7 @@ public class InvestController implements DTOConverter<Invest, InvestDTO> {
     public ResponseEntity<InvestDTO> createInvestment(@Valid @RequestBody InvestDTO fresh, @AuthenticationPrincipal EmployeeUserDetails auth) throws ParseException {
         fresh.setId(-1L);
         Invest converted = convertToEntity(fresh);
-        service.save(converted);
-        return ResponseEntity.ok().body(convertToDto(converted));
+        return ResponseEntity.ok().body(convertToDto(service.save(converted)));
     }
 
     @PreAuthorize("hasRole('ROLE_USER') and (@investService.getById(#id).isPresent() ? @investService.getById(#id).get().employee.company.id.equals(#auth.companyId) : true)")

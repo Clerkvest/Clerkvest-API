@@ -29,7 +29,7 @@ public class ProjectService implements IService<Project> {
     }
 
     @Override
-    public void save(Project project) {
+    public Project save(Project project) {
         if (project.getGoal().intValue() < 1) {
             throw new ViolatedConstraintException("Goal can't be below 1");
         }
@@ -39,11 +39,11 @@ public class ProjectService implements IService<Project> {
         if (project.getInvestedIn().intValue() < 0) {
             throw new ViolatedConstraintException("InvestedIn can't be below 0");
         }
-        repository.save(project);
+        return repository.save(project);
     }
 
     @Override
-    public void update(Project project) {
+    public Project update(Project project) {
         if (project.getGoal().intValue() < 0) {
             throw new ViolatedConstraintException("Goal can't be below 1");
         }
@@ -55,17 +55,15 @@ public class ProjectService implements IService<Project> {
         }
         //Check if company is new
         Optional<Project> existingProject = repository.findById(project.getId());
-        existingProject.ifPresentOrElse(
-                value -> {
-                    value.setDescription(project.getDescription());
-                    value.setTitle(project.getTitle());
-                    value.setImage(project.getImage());
-                    repository.save(value);
-                },
-                () -> {
-                    throw new ClerkEntityNotFoundException("Project can't be updated, not saved yet.");
-                }
-        );
+        if (existingProject.isPresent()) {
+            Project value = existingProject.get();
+            value.setDescription(project.getDescription());
+            value.setTitle(project.getTitle());
+            value.setImage(project.getImage());
+            return repository.save(value);
+        } else {
+            throw new ClerkEntityNotFoundException("Project can't be updated, not saved yet.");
+        }
     }
 
     @Override

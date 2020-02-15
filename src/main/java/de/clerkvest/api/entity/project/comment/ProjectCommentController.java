@@ -51,8 +51,7 @@ public class ProjectCommentController implements DTOConverter<ProjectComment, Pr
     public ResponseEntity<ProjectCommentDTO> createProjectComment(@Valid @RequestBody ProjectCommentDTO fresh, @AuthenticationPrincipal EmployeeUserDetails auth) throws ParseException {
         fresh.setId(-1L);
         ProjectComment converted = convertToEntity(fresh);
-        service.save(converted);
-        return ResponseEntity.ok().body(convertToDto(converted));
+        return ResponseEntity.ok().body(convertToDto(service.save(converted)));
     }
 
     @PreAuthorize("hasRole('ROLE_USER') and #updated.employeeId.equals(#auth.employeeId)")

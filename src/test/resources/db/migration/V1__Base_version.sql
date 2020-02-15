@@ -48,7 +48,7 @@ CREATE TABLE employee_comment
     employee_comment_id BIGSERIAL PRIMARY KEY,
     employee_id         bigint                                    NOT NULL,
     commenter_id        bigint                                    NOT NULL,
-    comment             character varying(255)                    NOT NULL,
+    comment             character varying(2083)                   NOT NULL,
     date                timestamp without time zone DEFAULT now() NOT NULL
 );
 
@@ -58,14 +58,14 @@ ALTER TABLE employee_comment
 CREATE TABLE project
 (
     project_id  BIGSERIAL PRIMARY KEY,
-    employee_id bigint                 NOT NULL,
-    company_id  bigint                 NOT NULL,
-    link        character varying(255) NOT NULL,
-    name        character varying(255) NOT NULL,
-    description character varying(255) NOT NULL,
-    goal        DECIMAL                NOT NULL,
-    invested_in DECIMAL                NOT NULL,
-    reached     boolean                NOT NULL,
+    employee_id bigint                  NOT NULL,
+    company_id  bigint                  NOT NULL,
+    link        character varying(2083) NOT NULL,
+    name        character varying(255)  NOT NULL,
+    description varchar                 NOT NULL,
+    goal        DECIMAL                 NOT NULL,
+    invested_in DECIMAL                 NOT NULL,
+    reached     boolean                 NOT NULL,
     image_id    bigint,
     created_at  timestamp WITHOUT TIME ZONE DEFAULT now(),
     funded_at   timestamp WITHOUT TIME ZONE
@@ -88,11 +88,11 @@ ALTER TABLE invest_in
 CREATE TABLE project_comment
 (
     project_comment_id BIGSERIAL PRIMARY KEY,
-    employee_id        bigint                                    NOT NULL,
-    project_id         bigint                                    NOT NULL,
-    title              character varying(255)                    NOT NULL,
-    text               character varying(255)                    NOT NULL,
-    date timestamp WITHOUT TIME ZONE DEFAULT now()
+    employee_id        bigint                  NOT NULL,
+    project_id         bigint                  NOT NULL,
+    title              character varying(255)  NOT NULL,
+    text               character varying(2083) NOT NULL,
+    date               timestamp WITHOUT TIME ZONE DEFAULT now()
 );
 
 CREATE TABLE image

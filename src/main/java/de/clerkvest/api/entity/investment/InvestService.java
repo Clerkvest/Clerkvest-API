@@ -29,28 +29,26 @@ public class InvestService implements IService<Invest> {
     }
 
     @Override
-    public void save(Invest invest) {
+    public Invest save(Invest invest) {
         if (invest.getProject().isReached()) {
             throw new ViolatedConstraintException("Project is already Closed");
         } else if (invest.getEmployee().getBalance().compareTo(invest.getInvestment()) == BALANCE_SMALLER_INVESTMENT) {
             throw new ViolatedConstraintException("Not enough Balance");
         }
-        repository.save(invest);
+        return repository.save(invest);
     }
 
     @Override
-    public void update(Invest invest) {
+    public Invest update(Invest invest) {
         //Check if company is new
         Optional<Invest> existingInvest = repository.findById(invest.getId());
-        existingInvest.ifPresentOrElse(
-                value -> {
-                    value.setInvestment(invest.getInvestment());
-                    repository.save(value);
-                },
-                () -> {
-                    throw new ClerkEntityNotFoundException("Invest can't be updated, not saved yet.");
-                }
-        );
+        if (existingInvest.isPresent()) {
+            Invest value = existingInvest.get();
+            value.setInvestment(invest.getInvestment());
+            return repository.save(value);
+        } else {
+            throw new ClerkEntityNotFoundException("Invest can't be updated, not saved yet.");
+        }
     }
 
     @Override

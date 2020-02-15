@@ -32,8 +32,7 @@ public class ImageService {
     public Image addImage(MultipartFile file) throws IOException {
         Image image = new Image();
         imageContentStore.setContent(image, file.getInputStream());
-        repository.save(image);
-        return image;
+        return repository.save(image);
     }
 
 

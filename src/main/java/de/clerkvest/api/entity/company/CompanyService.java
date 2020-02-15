@@ -32,7 +32,7 @@ public class CompanyService implements IService<Company> {
     }
 
     @Override
-    public void save(Company company) {
+    public Company save(Company company) {
         LinkBuilder<Company> linkBuilder = new LinkBuilder<Company>()
                 .withSelf(HateoasLink.COMPANY_SINGLE)
                 .withCreate(HateoasLink.COMPANY_CREATE)
@@ -40,7 +40,7 @@ public class CompanyService implements IService<Company> {
         linkBuilder.ifDesiredEmbed(company);
         //Check if the Company is already saved
         if (repository.existsById(company.getId())) {
-            return;
+            return company;
         }
         repository.findCompaniesByDomain(company.getDomain()).ifPresent(c -> {
             throw new DuplicateEntityException("A Company for " + c.getDomain() + " already exists");
@@ -51,26 +51,24 @@ public class CompanyService implements IService<Company> {
         if (company.getPayInterval() < 1) {
             throw new ViolatedConstraintException("Pay Interval can't be below 1");
         }
-        repository.save(company);
+        return repository.save(company);
     }
 
     @Override
-    public void update(Company company) {
+    public Company update(Company company) {
         //Check if company is new
         Optional<Company> existingCompany = repository.findById(company.getId());
-        existingCompany.ifPresentOrElse(
-                value -> {
-                    value.setName(company.getName());
-                    value.setImage(company.getImage());
-                    value.setInviteOnly(company.isInviteOnly());
-                    value.setPayAmount(company.getPayAmount());
-                    value.setPayInterval(company.getPayInterval());
-                    repository.save(value);
-                },
-                () -> {
-                    throw new ClerkEntityNotFoundException("Company can't be updated, not saved yet.");
-                }
-        );
+        if (existingCompany.isPresent()) {
+            Company value = existingCompany.get();
+            value.setName(company.getName());
+            value.setImage(company.getImage());
+            value.setInviteOnly(company.isInviteOnly());
+            value.setPayAmount(company.getPayAmount());
+            value.setPayInterval(company.getPayInterval());
+            return repository.save(value);
+        } else {
+            throw new ClerkEntityNotFoundException("Company can't be updated, not saved yet.");
+        }
     }
 
     @Override

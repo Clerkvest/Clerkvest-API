@@ -30,30 +30,28 @@ public class EmployeeService implements IService<Employee> {
     }
 
     @Override
-    public void save (Employee employee) {
+    public Employee save(Employee employee) {
         if (employee.getId() != null && repository.existsById(employee.getId())) {
-            return;
+            return employee;
         }
-        repository.save(employee);
+        return repository.save(employee);
     }
 
     @Override
-    public void update(Employee employee) {
+    public Employee update(Employee employee) {
         //Check if company is new
         Optional<Employee> existingEmployee = repository.findById(employee.getId());
-        existingEmployee.ifPresentOrElse(
-                value -> {
-                    value.setAdmin(employee.isAdmin());
-                    value.setBalance(employee.getBalance());
-                    value.setFirstname(employee.getFirstname());
-                    value.setLastname(employee.getLastname());
-                    value.setNickname(employee.getNickname());
-                    repository.save(value);
-                },
-                () -> {
-                    throw new ClerkEntityNotFoundException("Employee can't be updated, not saved yet.");
-                }
-        );
+        if (existingEmployee.isPresent()) {
+            Employee value = existingEmployee.get();
+            value.setAdmin(employee.isAdmin());
+            value.setBalance(employee.getBalance());
+            value.setFirstname(employee.getFirstname());
+            value.setLastname(employee.getLastname());
+            value.setNickname(employee.getNickname());
+            return repository.save(value);
+        } else {
+            throw new ClerkEntityNotFoundException("Employee can't be updated, not saved yet.");
+        }
     }
 
     @Override

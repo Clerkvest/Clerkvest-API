@@ -51,16 +51,14 @@ public class EmployeeController implements DTOConverter<Employee,EmployeeDTO> {
     public ResponseEntity<EmployeeDTO> createEmployee(@Valid @RequestBody EmployeeDTO fresh, @AuthenticationPrincipal EmployeeUserDetails auth) throws ParseException {
         fresh.setId(-1L);
         Employee converted = convertToEntity(fresh);
-        service.save(converted);
-        return ResponseEntity.ok().body(convertToDto(converted));
+        return ResponseEntity.ok().body(convertToDto(service.save(converted)));
     }
 
     @PreAuthorize("hasRole('ROLE_USER') and #updated.id.equals(#auth.employeeId)")
     @PutMapping(value = "/update")
     public ResponseEntity<EmployeeDTO> updatedEmployee(@Valid @RequestBody EmployeeDTO updated, @AuthenticationPrincipal EmployeeUserDetails auth) throws ParseException {
         Employee converted = convertToEntity(updated);
-        service.update(converted);
-        return ResponseEntity.ok().body(convertToDto(converted));
+        return ResponseEntity.ok().body(convertToDto(service.update(converted)));
     }
 
     /*@GetMapping(value = "findByNickname")

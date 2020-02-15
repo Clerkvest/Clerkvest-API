@@ -4,6 +4,8 @@ import de.clerkvest.api.common.hateoas.constants.HateoasLink;
 import de.clerkvest.api.common.hateoas.link.LinkBuilder;
 import de.clerkvest.api.entity.company.CompanyService;
 import de.clerkvest.api.entity.employee.EmployeeService;
+import de.clerkvest.api.entity.image.Image;
+import de.clerkvest.api.entity.image.ImageService;
 import de.clerkvest.api.exception.ClerkEntityNotFoundException;
 import de.clerkvest.api.implement.DTOConverter;
 import de.clerkvest.api.security.EmployeeUserDetails;
@@ -35,13 +37,15 @@ import java.util.Optional;
 public class ProjectController implements DTOConverter<Project, ProjectDTO> {
     private final ProjectService service;
     private final CompanyService companyService;
+    private final ImageService imageService;
     private final EmployeeService employeeService;
     private final ModelMapper modelMapper;
 
     @Autowired
-    public ProjectController(ProjectService service, CompanyService companyService, EmployeeService employeeService, ModelMapper modelMapper) {
+    public ProjectController(ProjectService service, CompanyService companyService, ImageService imageService, EmployeeService employeeService, ModelMapper modelMapper) {
         this.service = service;
         this.companyService = companyService;
+        this.imageService = imageService;
         this.employeeService = employeeService;
         this.modelMapper = modelMapper;
     }
@@ -51,16 +55,14 @@ public class ProjectController implements DTOConverter<Project, ProjectDTO> {
     public ResponseEntity<ProjectDTO> createProject(@Valid @RequestBody ProjectDTO fresh, @AuthenticationPrincipal EmployeeUserDetails auth) throws ParseException {
         fresh.setId(-1L);
         Project converted = convertToEntity(fresh);
-        service.save(converted);
-        return ResponseEntity.ok().body(convertToDto(converted));
+        return ResponseEntity.ok().body(convertToDto(service.save(converted)));
     }
 
     @PreAuthorize("hasRole('ROLE_USER') and #auth.employeeId.equals(#updated.employeeId)")
     @PutMapping(value = "/update")
     public ResponseEntity<ProjectDTO> updatedProject(@Valid @RequestBody ProjectDTO updated, @AuthenticationPrincipal EmployeeUserDetails auth) throws ParseException {
         Project converted = convertToEntity(updated);
-        service.update(converted);
-        return ResponseEntity.ok().body(convertToDto(converted));
+        return ResponseEntity.ok().body(convertToDto(service.update(converted)));
     }
 
     @PreAuthorize("hasRole('ROLE_USER') and (@projectService.getById(#id).isPresent()? @projectService.getById(#id).get().company.id.equals(#auth.companyId): true)")
@@ -120,6 +122,8 @@ public class ProjectController implements DTOConverter<Project, ProjectDTO> {
                 val.setGoal(postDto.getGoal());
                 val.setInvestedIn(postDto.getInvestedIn());
                 val.setReached(postDto.isReached());
+                Optional<Image> frshImage = imageService.getById(postDto.getId());
+                frshImage.ifPresent(val::setImage);
                 return val;
             }
         } else {
@@ -128,6 +132,9 @@ public class ProjectController implements DTOConverter<Project, ProjectDTO> {
             }
             if (postDto.getCompanyId() != null) {
                 companyService.getById(postDto.getCompanyId()).ifPresent(post::setCompany);
+            }
+            if (postDto.getImage() != null) {
+                imageService.getById(postDto.getId()).ifPresent(post::setImage);
             }
         }
         return post;

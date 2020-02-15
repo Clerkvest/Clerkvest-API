@@ -8,6 +8,7 @@ import de.clerkvest.api.entity.project.ProjectDTO;
 import io.restassured.http.ContentType;
 import io.restassured.response.ValidatableResponse;
 import io.zonky.test.db.AutoConfigureEmbeddedDatabase;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.flywaydb.test.annotation.FlywayTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -68,6 +69,21 @@ public class PostProjectResourceTest {
         EmployeeDTO employee0 = given().header("Authorization", "Bearer exampleToken0").get(HateoasLink.EMPLOYEE_SINGLE + 0).as(EmployeeDTO.class);
         ProjectDTO project = ProjectDTO.builder().companyId(employee0.getCompanyId()).employeeId(employee0.getId()).link("ExampleLink").title("Title").description("Description").goal(BigDecimal.valueOf(-1)).investedIn(BigDecimal.valueOf(0)).reached(false).build();
         ValidatableResponse rest = given().header("Authorization", "Bearer exampleToken0").contentType(ContentType.JSON).body(project).post(REST_ENDPOINT_URL).then().statusCode(CONFLICT.value());
+    }
+
+
+    @Test
+    public void addProject_ToOwnCompany_Too_LongUrl() {
+        EmployeeDTO employee1 = given().header("Authorization", "Bearer exampleToken1").get(HateoasLink.EMPLOYEE_SINGLE + 1).as(EmployeeDTO.class);
+        ProjectDTO project = ProjectDTO.builder().companyId(employee1.getCompanyId()).employeeId(employee1.getId()).link(RandomStringUtils.randomAlphanumeric(2100)).title("Title").description("Description").goal(BigDecimal.valueOf(1337)).investedIn(BigDecimal.valueOf(0)).reached(false).build();
+        ValidatableResponse rest = given().header("Authorization", "Bearer exampleToken1").contentType(ContentType.JSON).body(project).post(REST_ENDPOINT_URL).then().statusCode(BAD_REQUEST.value());
+    }
+
+    @Test
+    public void addProject_ToOwnCompany_LongDesc() {
+        EmployeeDTO employee1 = given().header("Authorization", "Bearer exampleToken1").get(HateoasLink.EMPLOYEE_SINGLE + 1).as(EmployeeDTO.class);
+        ProjectDTO project = ProjectDTO.builder().companyId(employee1.getCompanyId()).employeeId(employee1.getId()).link("ExampleLink").title("Title").description(RandomStringUtils.randomAlphanumeric(2100)).goal(BigDecimal.valueOf(1337)).investedIn(BigDecimal.valueOf(0)).reached(false).build();
+        ValidatableResponse rest = given().header("Authorization", "Bearer exampleToken1").contentType(ContentType.JSON).body(project).post(REST_ENDPOINT_URL).then().statusCode(OK.value());
     }
 
 }

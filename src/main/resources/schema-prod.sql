@@ -48,7 +48,7 @@ CREATE TABLE employee_comment
   employee_comment_id BIGSERIAL PRIMARY KEY,
   employee_id         bigint                                                                                            NOT NULL,
   commenter_id        bigint                                                                                            NOT NULL,
-  comment             character varying(255)                                                                            NOT NULL,
+  comment             character varying(2083)                                                                            NOT NULL,
   date                timestamp without time zone DEFAULT now()                                                         NOT NULL
 );
 
@@ -60,9 +60,9 @@ CREATE TABLE project
   project_id  BIGSERIAL PRIMARY KEY,
   employee_id bigint                                                                          NOT NULL,
   company_id  bigint                                                                          NOT NULL,
-  link        character varying(255)                                                          NOT NULL,
+  link        character varying(2083)                                                          NOT NULL,
   name        character varying(255)                                                          NOT NULL,
-  description character varying(255)                                                          NOT NULL,
+  description varchar                                                          NOT NULL,
   goal        DECIMAL                                                                         NOT NULL,
   invested_in DECIMAL                                                                         NOT NULL,
   reached     boolean                                                                         NOT NULL,
@@ -91,7 +91,7 @@ CREATE TABLE project_comment
   employee_id        bigint                                                                                          NOT NULL,
   project_id         bigint                                                                                          NOT NULL,
   title              character varying(255)                                                                          NOT NULL,
-  text               character varying(255)                                                                          NOT NULL,
+  text               character varying(2083)                                                                          NOT NULL,
   date               timestamp WITHOUT TIME ZONE DEFAULT now()
 );
 

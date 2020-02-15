@@ -2,6 +2,8 @@ package de.clerkvest.api.entity.company;
 
 import de.clerkvest.api.common.hateoas.constants.HateoasLink;
 import de.clerkvest.api.common.hateoas.link.LinkBuilder;
+import de.clerkvest.api.entity.image.Image;
+import de.clerkvest.api.entity.image.ImageService;
 import de.clerkvest.api.exception.ClerkEntityNotFoundException;
 import de.clerkvest.api.implement.DTOConverter;
 import de.clerkvest.api.security.EmployeeUserDetails;
@@ -31,11 +33,13 @@ import java.util.Optional;
 public class CompanyController implements DTOConverter<Company,CompanyDTO> {
 
     private final CompanyService service;
+    private final ImageService imageService;
     private final ModelMapper modelMapper;
 
     @Autowired
-    public CompanyController(CompanyService service, ModelMapper modelMapper) {
+    public CompanyController(CompanyService service, ImageService imageService, ModelMapper modelMapper) {
         this.service = service;
+        this.imageService = imageService;
         this.modelMapper = modelMapper;
     }
 
@@ -54,16 +58,14 @@ public class CompanyController implements DTOConverter<Company,CompanyDTO> {
     @PutMapping(value = "/update")
     public ResponseEntity<CompanyDTO> updateCompany(@Valid @RequestBody CompanyDTO updated, @AuthenticationPrincipal EmployeeUserDetails auth) throws ParseException {
         Company converted = convertToEntity(updated);
-        service.update(converted);
-        return ResponseEntity.ok().body(convertToDto(converted));
+        return ResponseEntity.ok().body(convertToDto(service.update(converted)));
     }
 
     @PostMapping(value = "/create")
     public ResponseEntity<CompanyDTO> createCompany(@Valid @RequestBody CompanyDTO fresh, @RequestParam String mail) throws ParseException {
         fresh.setId(-1L);
         Company converted = convertToEntity(fresh);
-        service.save(converted);
-        return ResponseEntity.ok().body(convertToDto(converted));
+        return ResponseEntity.ok().body(convertToDto(service.save(converted)));
     }
 
     @Override
@@ -88,7 +90,13 @@ public class CompanyController implements DTOConverter<Company,CompanyDTO> {
                 val.setPayAmount(postDto.getPayAmount());
                 val.setInviteOnly(postDto.getInviteOnly());
                 val.setName(postDto.getName());
+                Optional<Image> frshImage = imageService.getById(postDto.getId());
+                frshImage.ifPresent(val::setImage);
                 return val;
+            }
+        } else {
+            if (postDto.getImage() != null) {
+                imageService.getById(postDto.getId()).ifPresent(post::setImage);
             }
         }
         return post;

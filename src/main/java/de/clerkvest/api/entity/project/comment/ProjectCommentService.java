@@ -1,9 +1,12 @@
 package de.clerkvest.api.entity.project.comment;
 
+import de.clerkvest.api.exception.ClerkEntityNotFoundException;
 import de.clerkvest.api.implement.service.IService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,13 +30,23 @@ public class ProjectCommentService implements IService<ProjectComment> {
     }
 
     @Override
-    public void save(ProjectComment projectComment) {
-        repository.save(projectComment);
+    public ProjectComment save(ProjectComment projectComment) {
+        return repository.save(projectComment);
     }
 
     @Override
-    public void update(ProjectComment projectComment) {
-
+    public ProjectComment update(ProjectComment projectComment) {
+        //Check if ProjectComment is new
+        Optional<ProjectComment> existingProjectComment = repository.findById(projectComment.getId());
+        if (existingProjectComment.isPresent()) {
+            ProjectComment value = existingProjectComment.get();
+            value.setTitle(projectComment.getTitle());
+            value.setText(projectComment.getText());
+            value.setDate(Timestamp.from(Instant.now()));
+            return repository.save(value);
+        } else {
+            throw new ClerkEntityNotFoundException("ProjectComment can't be updated, not saved yet.");
+        }
     }
 
     @Override
