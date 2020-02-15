@@ -64,7 +64,7 @@ public class Project extends RepresentationModel<Project> implements IServiceEnt
 
     private boolean reached;
 
-    @OneToOne(targetEntity = Image.class)
+    @OneToOne(targetEntity = Image.class, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "image_id")
     private Image image;
 

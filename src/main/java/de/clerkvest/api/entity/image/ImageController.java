@@ -12,6 +12,7 @@ import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -48,12 +49,16 @@ public class ImageController {
     }
 
 
-    //@PreAuthorize("hasRole('ROLE_ADMIN') and (@employeeService.getById(#id).isPresent() ? @employeeService.getById(#id).get().company.id.equals(#auth.companyId) : true)")
+    @PreAuthorize("hasRole('ROLE_ADMIN') and (@companyService.getById(#id).isPresent() ? @companyService.getById(#id).get().id.equals(#auth.companyId) : true)")
     @PostMapping(value = "/create/company/{id}")
     public ResponseEntity<Long> createCompanyImage(@RequestParam(value = "file", required = true) MultipartFile file, @PathVariable Long id, @AuthenticationPrincipal EmployeeUserDetails auth) throws IOException {
         Image image = service.addImage(file);
         Optional<Company> company = companyService.getById(id);
         company.ifPresentOrElse(present -> {
+            Image oldImage = present.getImage();
+            if (oldImage != null) {
+                service.delete(oldImage);
+            }
             present.setImage(image);
             companyService.update(present);
         }, () -> {
@@ -62,23 +67,16 @@ public class ImageController {
         return ResponseEntity.ok().body(image.getId());
     }
 
-    /*@PostMapping(value = "/create/employee/{id}")
-    public ResponseEntity<Long> createEmployeeImage(@RequestParam(value = "file", required = true) MultipartFile file, @PathVariable Long id, @AuthenticationPrincipal EmployeeUserDetails auth) throws IOException {
-        Image image = service.addImage(file);
-        Optional<Employee> employee = employeeService.getById(id);
-        employee.ifPresentOrElse(present->{
-            present.set(image);
-        },()->{
-            throw new ClerkEntityNotFoundException("Company not found");
-        });
-        return ResponseEntity.ok().body(image.getId());
-    }*/
-
+    @PreAuthorize("hasRole('ROLE_ADMIN') and (@projectService.getById(#id).isPresent() ? @projectService.getById(#id).get().company.id.equals(#auth.companyId) : true)")
     @PostMapping(value = "/create/project/{id}")
     public ResponseEntity<Long> createProjectImage(@RequestParam(value = "file", required = true) MultipartFile file, @PathVariable Long id, @AuthenticationPrincipal EmployeeUserDetails auth) throws IOException {
         Image image = service.addImage(file);
         Optional<Project> project = projectService.getById(id);
         project.ifPresentOrElse(present -> {
+            Image oldImage = present.getImage();
+            if (oldImage != null) {
+                service.delete(oldImage);
+            }
             present.setImage(image);
             projectService.update(present);
         }, () -> {
@@ -87,6 +85,7 @@ public class ImageController {
         return ResponseEntity.ok().body(image.getId());
     }
 
+    @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping(value = "/get/{id}", produces = "text/plain")
     public ResponseEntity<String> getImage(@PathVariable Long id, @AuthenticationPrincipal EmployeeUserDetails auth) throws IOException {
         Optional<Image> image = service.getById(id);
@@ -99,6 +98,7 @@ public class ImageController {
         }
     }
 
+    @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping(value = "/get/{id}/stream")
     public ResponseEntity<?> getImageStream(@PathVariable Long id, @AuthenticationPrincipal EmployeeUserDetails auth) throws IOException {
         Optional<Image> f = service.getById(id);
@@ -112,14 +112,5 @@ public class ImageController {
             throw new ClerkEntityNotFoundException("Image not found");
         }
     }
-
-    /*@DeleteMapping(value = "/delete/{id}")
-    public ResponseEntity<StringResponse> deleteImage(@PathVariable Long id, @AuthenticationPrincipal EmployeeUserDetails auth){
-        Optional<Image> image = service.getById(id);
-        image.ifPresentOrElse(service::delete, () -> {
-            throw new ClerkEntityNotFoundException("Image not found");
-        });
-        return ResponseEntity.ok().build();
-    }*/
 
 }

@@ -42,7 +42,7 @@ public class Company extends RepresentationModel<Company> implements IServiceEnt
     @Size(max = 255)
     private String domain;
 
-    @OneToOne(targetEntity = Image.class)
+    @OneToOne(targetEntity = Image.class, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "image_id")
     private Image image;
 
