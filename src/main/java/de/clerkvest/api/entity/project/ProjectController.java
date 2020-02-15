@@ -17,7 +17,10 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 
@@ -82,6 +85,30 @@ public class ProjectController implements DTOConverter<Project, ProjectDTO> {
         List<ProjectDTO> projectDTOs = Arrays.asList(modelMapper.map(projects, ProjectDTO[].class));
         LinkBuilder<ProjectDTO> linkBuilder = new LinkBuilder<ProjectDTO>()
                 .withSelf(HateoasLink.PROJECT_SINGLE);
+        projectDTOs.forEach(linkBuilder::ifDesiredEmbed);
+        return ResponseEntity.ok(projectDTOs);
+    }
+
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @GetMapping(value = "/all/image")
+    public ResponseEntity<List<ImagedProjectDTO>> getAllProjectsWithImage(@AuthenticationPrincipal EmployeeUserDetails auth) throws IOException {
+        List<Project> projects = service.getAllByCompany(auth.getCompanyId());
+        List<ImagedProjectDTO> projectDTOs = Arrays.asList(modelMapper.map(projects, ImagedProjectDTO[].class));
+        LinkBuilder<ImagedProjectDTO> linkBuilder = new LinkBuilder<ImagedProjectDTO>()
+                .withSelf(HateoasLink.PROJECT_SINGLE);
+        for (int i = 0; i < projectDTOs.size(); i++) {
+            var dto = projectDTOs.get(i);
+            linkBuilder.ifDesiredEmbed(dto);
+            var project = projects.get(i);
+            var image = project.getImage();
+            if (image != null) {
+                InputStream inputStream = imageService.getContent(image);
+                if (inputStream != null && inputStream.available() != 0) {
+                    var string = Base64.getEncoder().encodeToString(inputStream.readAllBytes());
+                    dto.setImage(string);
+                }
+            }
+        }
         projectDTOs.forEach(linkBuilder::ifDesiredEmbed);
         return ResponseEntity.ok(projectDTOs);
     }

@@ -6,6 +6,7 @@ import de.clerkvest.api.entity.employee.Employee;
 import de.clerkvest.api.entity.employee.EmployeeDTO;
 import de.clerkvest.api.entity.investment.Invest;
 import de.clerkvest.api.entity.investment.InvestDTO;
+import de.clerkvest.api.entity.project.ImagedProjectDTO;
 import de.clerkvest.api.entity.project.Project;
 import de.clerkvest.api.entity.project.ProjectDTO;
 import de.clerkvest.api.entity.project.comment.ProjectComment;
@@ -68,6 +69,17 @@ public class SpringConfig {
         //projectMap.addMapping(Project::getImageId,ProjectDTO::setImage);
         projectMap.addMapping(src -> src.getImage().getId(), ProjectDTO::setImage);
         projectMap.addMappings(map -> map.skip(ProjectDTO::setProjectId));
+
+        //ImagedProject
+        TypeMap<Project, ImagedProjectDTO> imagedProjectDTO = mapper.createTypeMap(Project.class, ImagedProjectDTO.class);
+        imagedProjectDTO.addMapping(src -> src.getCompany().getId(), ImagedProjectDTO::setCompanyId);
+        imagedProjectDTO.addMapping(src -> src.getEmployee().getId(), ImagedProjectDTO::setEmployeeId);
+        imagedProjectDTO.addMapping(Project::getProjectId, ImagedProjectDTO::setProjectId);
+        imagedProjectDTO.addMapping(Project::getFundedAt, ImagedProjectDTO::setFundedAt);
+        imagedProjectDTO.addMapping(Project::getInvestedIn, ImagedProjectDTO::setInvestedIn);
+        imagedProjectDTO.addMapping(Project::getCreatedAt, ImagedProjectDTO::setCreatedAt);
+        //projectMap.addMapping(Project::getImageId,ProjectDTO::setImage);
+        imagedProjectDTO.addMappings(map -> map.skip(ImagedProjectDTO::setProjectId));
 
         //Project Comment
         TypeMap<ProjectComment, ProjectCommentDTO> projectCommentMap = mapper.createTypeMap(ProjectComment.class, ProjectCommentDTO.class);
