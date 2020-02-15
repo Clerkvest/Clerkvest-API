@@ -8,6 +8,9 @@ import de.clerkvest.api.entity.project.ProjectService;
 import de.clerkvest.api.exception.ClerkEntityNotFoundException;
 import de.clerkvest.api.security.EmployeeUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -44,12 +47,15 @@ public class ImageController {
         this.projectService = projectService;
     }
 
+
+    //@PreAuthorize("hasRole('ROLE_ADMIN') and (@employeeService.getById(#id).isPresent() ? @employeeService.getById(#id).get().company.id.equals(#auth.companyId) : true)")
     @PostMapping(value = "/create/company/{id}")
     public ResponseEntity<Long> createCompanyImage(@RequestParam(value = "file", required = true) MultipartFile file, @PathVariable Long id, @AuthenticationPrincipal EmployeeUserDetails auth) throws IOException {
         Image image = service.addImage(file);
         Optional<Company> company = companyService.getById(id);
         company.ifPresentOrElse(present -> {
             present.setImage(image);
+            companyService.update(present);
         }, () -> {
             throw new ClerkEntityNotFoundException("Company not found");
         });
@@ -74,6 +80,7 @@ public class ImageController {
         Optional<Project> project = projectService.getById(id);
         project.ifPresentOrElse(present -> {
             present.setImage(image);
+            projectService.update(present);
         }, () -> {
             throw new ClerkEntityNotFoundException("Project not found");
         });
@@ -87,6 +94,20 @@ public class ImageController {
             InputStream content = service.getContent(image.get());
             //StringResponse response = new StringResponse(Base64.getEncoder().encodeToString(content.readAllBytes()));
             return ResponseEntity.ok(Base64.getEncoder().encodeToString(content.readAllBytes()));
+        } else {
+            throw new ClerkEntityNotFoundException("Image not found");
+        }
+    }
+
+    @GetMapping(value = "/get/{id}/stream")
+    public ResponseEntity<?> getImageStream(@PathVariable Long id, @AuthenticationPrincipal EmployeeUserDetails auth) throws IOException {
+        Optional<Image> f = service.getById(id);
+        if (f.isPresent()) {
+            InputStreamResource inputStreamResource = new InputStreamResource(service.getContent(f.get()));
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentLength(f.get().getContentLength());
+            headers.set("Content-Type", "image/jpeg");
+            return new ResponseEntity<Object>(inputStreamResource, headers, HttpStatus.OK);
         } else {
             throw new ClerkEntityNotFoundException("Image not found");
         }
