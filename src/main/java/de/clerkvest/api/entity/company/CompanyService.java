@@ -27,7 +27,7 @@ public class CompanyService implements IService<Company> {
     private final CompanyRepository repository;
 
     @Autowired
-    public CompanyService (CompanyRepository repository) {
+    public CompanyService(CompanyRepository repository) {
         this.repository = repository;
     }
 

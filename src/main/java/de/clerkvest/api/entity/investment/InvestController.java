@@ -15,7 +15,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.text.ParseException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -48,7 +47,7 @@ public class InvestController implements DTOConverter<Invest, InvestDTO> {
 
     @PreAuthorize("hasRole('ROLE_USER') and (#fresh.employeeId.equals(#auth.employeeId)) and (@projectService.getById(#fresh.projectId).isPresent() ? @projectService.getById(#fresh.projectId).get().company.id.equals(#auth.companyId): true)")
     @PostMapping(value = "/create")
-    public ResponseEntity<InvestDTO> createInvestment(@Valid @RequestBody InvestDTO fresh, @AuthenticationPrincipal EmployeeUserDetails auth) throws ParseException {
+    public ResponseEntity<InvestDTO> createInvestment(@Valid @RequestBody InvestDTO fresh, @AuthenticationPrincipal EmployeeUserDetails auth) {
         fresh.setId(-1L);
         Invest converted = convertToEntity(fresh);
         return ResponseEntity.ok().body(convertToDto(service.save(converted)));
@@ -114,7 +113,7 @@ public class InvestController implements DTOConverter<Invest, InvestDTO> {
     }
 
     @Override
-    public Invest convertToEntity(InvestDTO postDto) throws ParseException {
+    public Invest convertToEntity(InvestDTO postDto) {
         Invest post = modelMapper.map(postDto, Invest.class);
         if (postDto.getId() != null && post.getId() != -1L) {
             Optional<Invest> oldPost = service.getById(postDto.getId());

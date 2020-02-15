@@ -14,11 +14,9 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.text.ParseException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-
 
 
 /**
@@ -33,7 +31,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/employee")
 @CrossOrigin(origins = "*")
-public class EmployeeController implements DTOConverter<Employee,EmployeeDTO> {
+public class EmployeeController implements DTOConverter<Employee, EmployeeDTO> {
 
     private final EmployeeService service;
     private final CompanyService companyService;
@@ -48,7 +46,7 @@ public class EmployeeController implements DTOConverter<Employee,EmployeeDTO> {
 
     @PreAuthorize("hasRole('ROLE_ADMIN') and #fresh.companyId.equals(#auth.companyId)")
     @PostMapping(value = "/create")
-    public ResponseEntity<EmployeeDTO> createEmployee(@Valid @RequestBody EmployeeDTO fresh, @AuthenticationPrincipal EmployeeUserDetails auth) throws ParseException {
+    public ResponseEntity<EmployeeDTO> createEmployee(@Valid @RequestBody EmployeeDTO fresh, @AuthenticationPrincipal EmployeeUserDetails auth) {
         fresh.setId(-1L);
         Employee converted = convertToEntity(fresh);
         return ResponseEntity.ok().body(convertToDto(service.save(converted)));
@@ -56,7 +54,7 @@ public class EmployeeController implements DTOConverter<Employee,EmployeeDTO> {
 
     @PreAuthorize("hasRole('ROLE_USER') and #updated.id.equals(#auth.employeeId)")
     @PutMapping(value = "/update")
-    public ResponseEntity<EmployeeDTO> updatedEmployee(@Valid @RequestBody EmployeeDTO updated, @AuthenticationPrincipal EmployeeUserDetails auth) throws ParseException {
+    public ResponseEntity<EmployeeDTO> updatedEmployee(@Valid @RequestBody EmployeeDTO updated, @AuthenticationPrincipal EmployeeUserDetails auth) {
         Employee converted = convertToEntity(updated);
         return ResponseEntity.ok().body(convertToDto(service.update(converted)));
     }
@@ -110,7 +108,7 @@ public class EmployeeController implements DTOConverter<Employee,EmployeeDTO> {
         return postDto;
     }
 
-    public Employee convertToEntity(EmployeeDTO postDto) throws ParseException {
+    public Employee convertToEntity(EmployeeDTO postDto) {
         Employee post = modelMapper.map(postDto, Employee.class);
         if (postDto.getEmployeeId() != null && postDto.getId() != -1) {
             Optional<Employee> oldPost = service.getById(postDto.getEmployeeId());

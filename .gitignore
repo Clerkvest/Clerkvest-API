@@ -35,7 +35,6 @@ build/
 .mvn/
 /mvnw
 /mvnw.cmd
-/*.log
 /*.gz
 
 ### Properties ###

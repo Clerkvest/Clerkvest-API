@@ -27,7 +27,7 @@ public class GetInvestmentsResourceTest {
 
     @Test
     public void getInvestmentsByEmployee() {
-        List rest = given().header("Authorization", "Bearer exampleToken0").get(REST_ENDPOINT_URL + "/invest/all/0").then().statusCode(OK.value()).extract().body().jsonPath().getList(".", InvestDTO.class);
+        List<InvestDTO> rest = given().header("Authorization", "Bearer exampleToken0").get(REST_ENDPOINT_URL + "/invest/all/0").then().statusCode(OK.value()).extract().body().jsonPath().getList(".", InvestDTO.class);
         assertThat(rest.isEmpty()).isFalse();
     }
 

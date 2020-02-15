@@ -54,12 +54,12 @@ public class ProjectComment extends RepresentationModel<ProjectComment> implemen
     private Timestamp date;
 
     @Override
-    public Long getId () {
+    public Long getId() {
         return projectCommentId;
     }
 
     @Override
-    public void setId (Long id) {
+    public void setId(Long id) {
         projectCommentId = id;
     }
 

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class AuthenticationProvider extends AbstractUserDetailsAuthenticationProvider {
-    private UserDetailsService detailsService;
+    private final UserDetailsService detailsService;
 
     public AuthenticationProvider(UserDetailsService detailsService) {
         this.detailsService = detailsService;

@@ -26,12 +26,12 @@ public class GetCommentResourceTest {
 
     @Test
     public void getProjectCommentsAsSelf() {
-        List employee0Comment = given().header("Authorization", "Bearer exampleToken0").get(REST_ENDPOINT_URL + 0 + "/comments").then().statusCode(OK.value()).extract().body().jsonPath().getList(".", ProjectCommentDTO.class);
+        List<ProjectCommentDTO> employee0Comment = given().header("Authorization", "Bearer exampleToken0").get(REST_ENDPOINT_URL + 0 + "/comments").then().statusCode(OK.value()).extract().body().jsonPath().getList(".", ProjectCommentDTO.class);
     }
 
     @Test
     public void getProjectCommentsAsEmployee() {
-        List employee0Comment = given().header("Authorization", "Bearer exampleToken1").get(REST_ENDPOINT_URL + 0 + "/comments").then().statusCode(OK.value()).extract().body().jsonPath().getList(".", ProjectCommentDTO.class);
+        List<ProjectCommentDTO> employee0Comment = given().header("Authorization", "Bearer exampleToken1").get(REST_ENDPOINT_URL + 0 + "/comments").then().statusCode(OK.value()).extract().body().jsonPath().getList(".", ProjectCommentDTO.class);
     }
 
     @Disabled

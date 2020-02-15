@@ -10,11 +10,11 @@ import org.springframework.hateoas.RepresentationModel;
  * api <p>
  * de.clerkvest.api.common.hateoas.link <p>
  * LinkBuilder.java <p>
- *
- *     Build class to add HATEOAS field {@code _link} to a object that extends {@code RepresentationModel}. <p>
- *
- *     Example:
- *     <pre>
+ * <p>
+ * Build class to add HATEOAS field {@code _link} to a object that extends {@code RepresentationModel}. <p>
+ * <p>
+ * Example:
+ * <pre>
  *     LinkBuilder<Company> linkBuilder = new LinkBuilder<Company>()
  *          .withSelf(HateoasLink.COMPANY_SINGLE)
  *          .withAll(HateoasLink.COMPANY_ALL)
@@ -26,48 +26,67 @@ import org.springframework.hateoas.RepresentationModel;
  *
  * @author Danny B.
  * @version 1.0
- * @since 22 Dec 2019 12:28
- *
  * @see RepresentationModel
  * @see IServiceEntity
+ * @since 22 Dec 2019 12:28
  */
 @Data
 public class LinkBuilder<T extends RepresentationModel<T> & IServiceEntity> {
 
-    /** _link to itself */
+    /**
+     * _link to itself
+     */
     private String self = HateoasLink.BASE_ENDPOINT;
 
-    /** _link to all entities */
+    /**
+     * _link to all entities
+     */
     private String all = HateoasLink.BASE_ENDPOINT;
 
-    /** _link to delete a entity */
+    /**
+     * _link to delete a entity
+     */
     private String delete = HateoasLink.BASE_ENDPOINT;
 
-    /** _link to create a entity */
+    /**
+     * _link to create a entity
+     */
     private String create = HateoasLink.BASE_ENDPOINT;
 
-    /** _link to update a entity */
+    /**
+     * _link to update a entity
+     */
     private String update = HateoasLink.BASE_ENDPOINT;
 
-    /** Defines if self should be embedded into _link */
+    /**
+     * Defines if self should be embedded into _link
+     */
     private boolean withSelf = false;
 
-    /** Defines if all should be embedded into _link */
+    /**
+     * Defines if all should be embedded into _link
+     */
     private boolean withAll = false;
 
-    /** Defines if delete of an entity should be embedded into _link */
+    /**
+     * Defines if delete of an entity should be embedded into _link
+     */
     private boolean withDelete = false;
 
-    /** Defines if create of an entity should be embedded into _link */
+    /**
+     * Defines if create of an entity should be embedded into _link
+     */
     private boolean withCreate = false;
 
-    /** Defines if update of an entity should be embedded into _link */
+    /**
+     * Defines if update of an entity should be embedded into _link
+     */
     private boolean withUpdate = false;
 
     /**
      * Creates an instance of LinkBuilder with default values;
      */
-    public LinkBuilder () {
+    public LinkBuilder() {
     }
 
     /**
@@ -75,10 +94,9 @@ public class LinkBuilder<T extends RepresentationModel<T> & IServiceEntity> {
      * And sets the link to itself.
      *
      * @param link link to self
-     *
      * @see LinkBuilder#withSelf
      */
-    public LinkBuilder<T> withSelf (String link) {
+    public LinkBuilder<T> withSelf(String link) {
         this.withSelf = true;
         this.self = link;
         return this;
@@ -89,10 +107,9 @@ public class LinkBuilder<T extends RepresentationModel<T> & IServiceEntity> {
      * And sets the link to all entities.
      *
      * @param link link to all
-     *
      * @see LinkBuilder#withAll
      */
-    public LinkBuilder<T> withAll (String link) {
+    public LinkBuilder<T> withAll(String link) {
         this.withAll = true;
         this.all = link;
         return this;
@@ -103,10 +120,9 @@ public class LinkBuilder<T extends RepresentationModel<T> & IServiceEntity> {
      * And sets the link to delete an entity.
      *
      * @param link link to delete
-     *
      * @see LinkBuilder#withDelete
      */
-    public LinkBuilder<T> withDelete (String link) {
+    public LinkBuilder<T> withDelete(String link) {
         this.withDelete = true;
         this.delete = link;
         return this;
@@ -117,10 +133,9 @@ public class LinkBuilder<T extends RepresentationModel<T> & IServiceEntity> {
      * And sets the link to create an entity.
      *
      * @param link link to create
-     *
      * @see LinkBuilder#withCreate
      */
-    public LinkBuilder<T> withCreate (String link) {
+    public LinkBuilder<T> withCreate(String link) {
         this.withCreate = true;
         this.create = link;
         return this;
@@ -131,10 +146,9 @@ public class LinkBuilder<T extends RepresentationModel<T> & IServiceEntity> {
      * And sets the link to update an entity.
      *
      * @param link link to update
-     *
      * @see LinkBuilder#withUpdate
      */
-    public LinkBuilder<T> withUpdate (String link) {
+    public LinkBuilder<T> withUpdate(String link) {
         this.withUpdate = true;
         this.update = link;
         return this;
@@ -142,8 +156,8 @@ public class LinkBuilder<T extends RepresentationModel<T> & IServiceEntity> {
 
     /**
      * Embeds self link into _link if withSelf is true
-     * @param model Model to embed into
      *
+     * @param model Model to embed into
      * @see LinkBuilder#withSelf(String)
      * @see LinkBuilder#withSelf
      */
@@ -157,8 +171,8 @@ public class LinkBuilder<T extends RepresentationModel<T> & IServiceEntity> {
 
     /**
      * Embeds all link into _link if withAll is {@code true}
-     * @param model Model to embed into
      *
+     * @param model Model to embed into
      * @see LinkBuilder#withAll(String)
      * @see LinkBuilder#withAll
      */
@@ -170,8 +184,8 @@ public class LinkBuilder<T extends RepresentationModel<T> & IServiceEntity> {
 
     /**
      * Embeds delete link into _link if withDelete is {@code true}
-     * @param model Model to embed into
      *
+     * @param model Model to embed into
      * @see LinkBuilder#withDelete(String)
      * @see LinkBuilder#withDelete
      */
@@ -185,8 +199,8 @@ public class LinkBuilder<T extends RepresentationModel<T> & IServiceEntity> {
 
     /**
      * Embeds create link into _link if withCreate is {@code true}
-     * @param model Model to embed into
      *
+     * @param model Model to embed into
      * @see LinkBuilder#withCreate(String)
      * @see LinkBuilder#withCreate
      */
@@ -198,8 +212,8 @@ public class LinkBuilder<T extends RepresentationModel<T> & IServiceEntity> {
 
     /**
      * Embeds update link into _link if withUpdate is {@code true}
-     * @param model Model to embed into
      *
+     * @param model Model to embed into
      * @see LinkBuilder#withUpdate(String)
      * @see LinkBuilder#withUpdate
      */
@@ -213,7 +227,6 @@ public class LinkBuilder<T extends RepresentationModel<T> & IServiceEntity> {
      * Embeds all desired links into the object
      *
      * @param model model
-     *
      * @see LinkBuilder#embedSelf(T)
      * @see LinkBuilder#embedAll(T)
      * @see LinkBuilder#embedDelete(T)

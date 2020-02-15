@@ -25,7 +25,7 @@ public class EmployeeService implements IService<Employee> {
     private final EmployeeRepository repository;
 
     @Autowired
-    public EmployeeService (EmployeeRepository repository) {
+    public EmployeeService(EmployeeRepository repository) {
         this.repository = repository;
     }
 

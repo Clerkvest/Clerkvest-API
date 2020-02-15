@@ -15,7 +15,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.text.ParseException;
 import java.util.Optional;
 
 /**
@@ -30,7 +29,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/company")
 @CrossOrigin(origins = "*")
-public class CompanyController implements DTOConverter<Company,CompanyDTO> {
+public class CompanyController implements DTOConverter<Company, CompanyDTO> {
 
     private final CompanyService service;
     private final ImageService imageService;
@@ -56,13 +55,13 @@ public class CompanyController implements DTOConverter<Company,CompanyDTO> {
 
     @PreAuthorize("hasRole('ROLE_ADMIN') and #auth.companyId.equals(#updated.id)")
     @PutMapping(value = "/update")
-    public ResponseEntity<CompanyDTO> updateCompany(@Valid @RequestBody CompanyDTO updated, @AuthenticationPrincipal EmployeeUserDetails auth) throws ParseException {
+    public ResponseEntity<CompanyDTO> updateCompany(@Valid @RequestBody CompanyDTO updated, @AuthenticationPrincipal EmployeeUserDetails auth) {
         Company converted = convertToEntity(updated);
         return ResponseEntity.ok().body(convertToDto(service.update(converted)));
     }
 
     @PostMapping(value = "/create")
-    public ResponseEntity<CompanyDTO> createCompany(@Valid @RequestBody CompanyDTO fresh, @RequestParam String mail) throws ParseException {
+    public ResponseEntity<CompanyDTO> createCompany(@Valid @RequestBody CompanyDTO fresh, @RequestParam String mail) {
         fresh.setId(-1L);
         Company converted = convertToEntity(fresh);
         return ResponseEntity.ok().body(convertToDto(service.save(converted)));
@@ -80,7 +79,7 @@ public class CompanyController implements DTOConverter<Company,CompanyDTO> {
     }
 
     @Override
-    public Company convertToEntity(CompanyDTO postDto) throws ParseException {
+    public Company convertToEntity(CompanyDTO postDto) {
         Company post = modelMapper.map(postDto, Company.class);
         if (postDto.getId() != null && postDto.getId() != -1) {
             Optional<Company> oldPost = service.getById(postDto.getId());

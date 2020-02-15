@@ -13,14 +13,16 @@ public interface IServiceEntity {
 
     /**
      * Gets the id of the entity
+     *
      * @return The Id
      */
-    public Long getId();
+    Long getId();
 
     /**
      * Sets the id of the entity
-     * @param id
+     *
+     * @param id the new Id of the Entity
      */
-    public void setId(Long id);
+    void setId(Long id);
 
 }

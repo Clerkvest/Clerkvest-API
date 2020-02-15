@@ -15,7 +15,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -48,7 +47,7 @@ public class ProjectCommentController implements DTOConverter<ProjectComment, Pr
 
     @PreAuthorize("hasRole('ROLE_USER') and (@projectService.getById(#fresh.projectId).isPresent() ? @projectService.getById(#fresh.projectId).get().company.id.equals(#auth.companyId): true) and #fresh.employeeId.equals(#auth.employeeId)")
     @PostMapping(value = "/create")
-    public ResponseEntity<ProjectCommentDTO> createProjectComment(@Valid @RequestBody ProjectCommentDTO fresh, @AuthenticationPrincipal EmployeeUserDetails auth) throws ParseException {
+    public ResponseEntity<ProjectCommentDTO> createProjectComment(@Valid @RequestBody ProjectCommentDTO fresh, @AuthenticationPrincipal EmployeeUserDetails auth) {
         fresh.setId(-1L);
         ProjectComment converted = convertToEntity(fresh);
         return ResponseEntity.ok().body(convertToDto(service.save(converted)));
@@ -56,7 +55,7 @@ public class ProjectCommentController implements DTOConverter<ProjectComment, Pr
 
     @PreAuthorize("hasRole('ROLE_USER') and #updated.employeeId.equals(#auth.employeeId)")
     @PutMapping(value = "/update")
-    public ResponseEntity<String> updatedEmployee(@Valid @RequestBody ProjectCommentDTO updated, @AuthenticationPrincipal EmployeeUserDetails auth) throws ParseException {
+    public ResponseEntity<String> updatedEmployee(@Valid @RequestBody ProjectCommentDTO updated, @AuthenticationPrincipal EmployeeUserDetails auth) {
         ProjectComment converted = convertToEntity(updated);
         service.update(converted);
         return ResponseEntity.ok().build();
@@ -77,9 +76,7 @@ public class ProjectCommentController implements DTOConverter<ProjectComment, Pr
     public ResponseEntity<List<ProjectCommentDTO>> getAllCommentsForProject(@PathVariable long id, @AuthenticationPrincipal EmployeeUserDetails auth) {
         Optional<List<ProjectComment>> projects = service.getByProjectId(id);
         List<ProjectCommentDTO> projectDTOs = new ArrayList<>();
-        projects.ifPresent(presentProjects -> {
-            presentProjects.forEach(project -> projectDTOs.add(convertToDto(project)));
-        });
+        projects.ifPresent(presentProjects -> presentProjects.forEach(project -> projectDTOs.add(convertToDto(project))));
         return ResponseEntity.ok(projectDTOs);
     }
 
@@ -95,7 +92,7 @@ public class ProjectCommentController implements DTOConverter<ProjectComment, Pr
     }
 
     @Override
-    public ProjectComment convertToEntity(ProjectCommentDTO postDto) throws ParseException {
+    public ProjectComment convertToEntity(ProjectCommentDTO postDto) {
         ProjectComment post = modelMapper.map(postDto, ProjectComment.class);
         if (postDto.getId() != null && post.getId() != -1) {
             Optional<ProjectComment> oldPost = service.getById(postDto.getId());

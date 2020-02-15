@@ -1,7 +1,7 @@
 package de.clerkvest.api.entity;
 
 public class StringResponse {
-    private String response;
+    private final String response;
 
     public StringResponse(String response) {
         this.response = response;

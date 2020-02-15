@@ -80,22 +80,10 @@ public class SpringConfig {
         return mapper;
     }
 
-    private class CustomModelMapper extends ModelMapper {
+    private static class CustomModelMapper extends ModelMapper {
         CustomModelMapper() {
             super();
             this.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
-
-            /*this.addConverter((Converter<ProjectComment, ProjectCommentDTO>) mappingContext -> {
-                final ProjectComment comment = mappingContext.getSource();
-                return ProjectCommentDTO.builder()
-                        .projectCommentId(comment.getId())
-                        .employeeId(comment.getEmployeeId().getId())
-                        .projectId(comment.getProjectId().getId())
-                        .text(comment.getText())
-                        .title(comment.getTitle())
-                        .date(comment.getDate())
-                        .build();
-            });*/
         }
     }
 }

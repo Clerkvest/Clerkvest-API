@@ -5,16 +5,13 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
-import java.sql.Timestamp;
-import java.time.Instant;
-
 /**
  * api <p>
  * de.clerkvest.api <p>
  * Application.java <p>
- *
- *     Entry point of the application.
- *     Starts the Spring Boot 2.2.2 application with custom start up code.
+ * <p>
+ * Entry point of the application.
+ * Starts the Spring Boot 2.2.2 application with custom start up code.
  *
  * @author Danny B.
  * @version 1.0
@@ -29,7 +26,7 @@ public class Application implements CommandLineRunner {
      *
      * @param args Arguments given to the application
      */
-    public static void main (String[] args) {
+    public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
     }
 
@@ -37,9 +34,8 @@ public class Application implements CommandLineRunner {
      * Custom start up code before springs starts.
      *
      * @param args Arguments given to the application
-     * @throws Exception Getting thrown when spring could not start for some reason.
      */
     @Override
-    public void run (String... args) throws Exception {
+    public void run(String... args) {
     }
 }

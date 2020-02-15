@@ -49,6 +49,7 @@ public class CompanyDTO extends RepresentationModel<CompanyDTO> implements IServ
     public CompanyDTO() {
 
     }
+
     public CompanyDTO(Company createdCompany) {
         companyId = createdCompany.getId();
         name = createdCompany.getName();

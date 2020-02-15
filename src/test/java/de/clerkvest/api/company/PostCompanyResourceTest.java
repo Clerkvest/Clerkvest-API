@@ -96,8 +96,7 @@ public class PostCompanyResourceTest {
         company = CompanyDTO.builder().name("titCompany").domain("tit.com").inviteOnly(false).payAmount(BigDecimal.valueOf(1)).payInterval(1).build();
         ValidatableResponse response = given().body(company).contentType(ContentType.JSON).post(HateoasLink.COMPANY_CREATE + "?mail=test@tit.com").then().statusCode(OK.value());
         company = CompanyDTO.builder().name("titCompany").domain("tit.com").inviteOnly(false).payAmount(BigDecimal.valueOf(1)).payInterval(1).build();
-        response = given().body(company).contentType(ContentType.JSON).post(HateoasLink.COMPANY_CREATE + "?mail=test@tit.com").then().statusCode(CONFLICT.value());
-
+        given().body(company).contentType(ContentType.JSON).post(HateoasLink.COMPANY_CREATE + "?mail=test@tit.com").then().statusCode(CONFLICT.value());
     }
 
     @Test

@@ -11,7 +11,7 @@ import java.sql.SQLException;
 public class H2Triggers {
     public static class InvestmentInsertTrigger implements Trigger {
         @Override
-        public void init(Connection connection, String s, String s1, String s2, boolean b, int i) throws SQLException {
+        public void init(Connection connection, String s, String s1, String s2, boolean b, int i) {
 
         }
 
@@ -61,18 +61,19 @@ public class H2Triggers {
         }
 
         @Override
-        public void close() throws SQLException {
+        public void close() {
 
         }
 
         @Override
-        public void remove() throws SQLException {
+        public void remove() {
 
         }
     }
-    public static class InvestmentDeleteTrigger implements Trigger{
+
+    public static class InvestmentDeleteTrigger implements Trigger {
         @Override
-        public void init(Connection conn, String schemaName, String triggerName, String tableName, boolean before, int type) throws SQLException {
+        public void init(Connection conn, String schemaName, String triggerName, String tableName, boolean before, int type) {
 
         }
 
@@ -99,12 +100,12 @@ public class H2Triggers {
         }
 
         @Override
-        public void close() throws SQLException {
+        public void close() {
 
         }
 
         @Override
-        public void remove() throws SQLException {
+        public void remove() {
 
         }
     }

@@ -2,7 +2,6 @@ package de.clerkvest.api.entity.image;
 
 import de.clerkvest.api.entity.company.Company;
 import de.clerkvest.api.entity.company.CompanyService;
-import de.clerkvest.api.entity.employee.EmployeeService;
 import de.clerkvest.api.entity.project.Project;
 import de.clerkvest.api.entity.project.ProjectService;
 import de.clerkvest.api.exception.ClerkEntityNotFoundException;
@@ -37,21 +36,19 @@ import java.util.Optional;
 public class ImageController {
     private final ImageService service;
     private final CompanyService companyService;
-    private final EmployeeService employeeService;
     private final ProjectService projectService;
 
     @Autowired
-    public ImageController(ImageService service, CompanyService companyService, EmployeeService employeeService, ProjectService projectService) {
+    public ImageController(ImageService service, CompanyService companyService, ProjectService projectService) {
         this.service = service;
         this.companyService = companyService;
-        this.employeeService = employeeService;
         this.projectService = projectService;
     }
 
 
     @PreAuthorize("hasRole('ROLE_ADMIN') and (@companyService.getById(#id).isPresent() ? @companyService.getById(#id).get().id.equals(#auth.companyId) : true)")
     @PostMapping(value = "/create/company/{id}")
-    public ResponseEntity<Long> createCompanyImage(@RequestParam(value = "file", required = true) MultipartFile file, @PathVariable Long id, @AuthenticationPrincipal EmployeeUserDetails auth) throws IOException {
+    public ResponseEntity<Long> createCompanyImage(@RequestParam(value = "file") MultipartFile file, @PathVariable Long id, @AuthenticationPrincipal EmployeeUserDetails auth) throws IOException {
         Image image = service.addImage(file);
         Optional<Company> company = companyService.getById(id);
         company.ifPresentOrElse(present -> {
@@ -69,7 +66,7 @@ public class ImageController {
 
     @PreAuthorize("hasRole('ROLE_USER') and (@projectService.getById(#id).isPresent() ? @projectService.getById(#id).get().employee.id.equals(#auth.employeeId) : true)")
     @PostMapping(value = "/create/project/{id}")
-    public ResponseEntity<Long> createProjectImage(@RequestParam(value = "file", required = true) MultipartFile file, @PathVariable Long id, @AuthenticationPrincipal EmployeeUserDetails auth) throws IOException {
+    public ResponseEntity<Long> createProjectImage(@RequestParam(value = "file") MultipartFile file, @PathVariable Long id, @AuthenticationPrincipal EmployeeUserDetails auth) throws IOException {
         Image image = service.addImage(file);
         Optional<Project> project = projectService.getById(id);
         project.ifPresentOrElse(present -> {

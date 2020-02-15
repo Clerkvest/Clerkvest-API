@@ -17,7 +17,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.text.ParseException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -52,7 +51,7 @@ public class ProjectController implements DTOConverter<Project, ProjectDTO> {
 
     @PreAuthorize("hasRole('ROLE_USER') and #auth.employeeId.equals(#fresh.employeeId) and #auth.companyId.equals(#fresh.companyId)")
     @PostMapping(value = "/create")
-    public ResponseEntity<ProjectDTO> createProject(@Valid @RequestBody ProjectDTO fresh, @AuthenticationPrincipal EmployeeUserDetails auth) throws ParseException {
+    public ResponseEntity<ProjectDTO> createProject(@Valid @RequestBody ProjectDTO fresh, @AuthenticationPrincipal EmployeeUserDetails auth) {
         fresh.setId(-1L);
         Project converted = convertToEntity(fresh);
         return ResponseEntity.ok().body(convertToDto(service.save(converted)));
@@ -60,7 +59,7 @@ public class ProjectController implements DTOConverter<Project, ProjectDTO> {
 
     @PreAuthorize("hasRole('ROLE_USER') and #auth.employeeId.equals(#updated.employeeId)")
     @PutMapping(value = "/update")
-    public ResponseEntity<ProjectDTO> updatedProject(@Valid @RequestBody ProjectDTO updated, @AuthenticationPrincipal EmployeeUserDetails auth) throws ParseException {
+    public ResponseEntity<ProjectDTO> updatedProject(@Valid @RequestBody ProjectDTO updated, @AuthenticationPrincipal EmployeeUserDetails auth) {
         Project converted = convertToEntity(updated);
         return ResponseEntity.ok().body(convertToDto(service.update(converted)));
     }
@@ -111,7 +110,7 @@ public class ProjectController implements DTOConverter<Project, ProjectDTO> {
     }
 
     @Override
-    public Project convertToEntity(ProjectDTO postDto) throws ParseException {
+    public Project convertToEntity(ProjectDTO postDto) {
         Project post = modelMapper.map(postDto, Project.class);
         if (postDto.getId() != null && postDto.getId() != -1) {
             Optional<Project> oldPost = service.getById(postDto.getId());

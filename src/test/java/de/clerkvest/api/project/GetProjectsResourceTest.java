@@ -26,13 +26,13 @@ public class GetProjectsResourceTest {
 
     @Test
     public void getProject_0() {
-        List rest = given().header("Authorization", "Bearer exampleToken1").get(REST_ENDPOINT_URL).then().statusCode(OK.value()).extract().body().jsonPath().getList(".", ProjectDTO.class);
+        List<ProjectDTO> rest = given().header("Authorization", "Bearer exampleToken1").get(REST_ENDPOINT_URL).then().statusCode(OK.value()).extract().body().jsonPath().getList(".", ProjectDTO.class);
         assertThat(rest.isEmpty()).isFalse();
     }
 
     @Test
     public void getProject_1() {
-        List rest = given().header("Authorization", "Bearer exampleToken2").get(REST_ENDPOINT_URL).then().statusCode(OK.value()).extract().body().jsonPath().getList(".", ProjectDTO.class);
+        List<ProjectDTO> rest = given().header("Authorization", "Bearer exampleToken2").get(REST_ENDPOINT_URL).then().statusCode(OK.value()).extract().body().jsonPath().getList(".", ProjectDTO.class);
         assertThat(rest.isEmpty()).isFalse();
     }
 

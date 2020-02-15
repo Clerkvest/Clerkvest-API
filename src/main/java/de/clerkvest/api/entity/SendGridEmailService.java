@@ -18,7 +18,7 @@ import java.io.IOException;
 @Service
 public class SendGridEmailService implements EmailService {
     private final Logger log = LoggerFactory.getLogger(SendGridEmailService.class);
-    private SendGrid sendGridClient;
+    private final SendGrid sendGridClient;
 
     @Autowired
     public SendGridEmailService(SendGrid sendGridClient) {
@@ -52,7 +52,7 @@ public class SendGridEmailService implements EmailService {
             request.setMethod(Method.POST);
             request.setEndpoint("mail/send");
             request.setBody(mail.build());
-            this.sendGridClient.api(request);
+            response = this.sendGridClient.api(request);
         } catch (IOException ex) {
             log.error(ex.getMessage());
         }

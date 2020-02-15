@@ -4,19 +4,20 @@ package de.clerkvest.api.common.hateoas.constants;
  * api <p>
  * de.clerkvest.api.common.hateoas.constants <p>
  * HateoasLink.java <p>
- *
- *     Class to hold all constants related to HATEOAS.
- *     All strings already got the field {@code BASE_ENDPOINT} concatenated.
+ * <p>
+ * Class to hold all constants related to HATEOAS.
+ * All strings already got the field {@code BASE_ENDPOINT} concatenated.
  *
  * @author Danny B.
  * @version 1.0
- * @since 22 Dec 2019 11:33
- *
  * @see HateoasLink#BASE_ENDPOINT
+ * @since 22 Dec 2019 11:33
  */
 public class HateoasLink {
 
-    /** API Base address without a "/" at the end */
+    /**
+     * API Base address without a "/" at the end
+     */
     public static final String BASE_ENDPOINT = "http://localhost:8080/api";
     /**
      * Single company

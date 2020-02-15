@@ -22,9 +22,9 @@ import java.util.UUID;
 public class TokenController {
 
     private final Logger log = LoggerFactory.getLogger(TokenController.class);
-    private EmployeeService employeeService;
-    private CompanyService companyService;
-    private SendGridEmailService sendGridEmailService;
+    private final EmployeeService employeeService;
+    private final CompanyService companyService;
+    private final SendGridEmailService sendGridEmailService;
 
     @Autowired
     public TokenController(EmployeeService employeeService, SendGridEmailService sendGridEmailService, CompanyService companyService) {
@@ -37,7 +37,7 @@ public class TokenController {
     public ResponseEntity<StringResponse> getToken(@PathVariable String loginToken) {
         String token = employeeService.login(loginToken);
         if (StringUtils.isEmpty(token)) {
-            return new ResponseEntity<StringResponse>(new StringResponse("No Token Found"), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(new StringResponse("No Token Found"), HttpStatus.NOT_FOUND);
         }
         return ResponseEntity.ok(new StringResponse(token));
     }

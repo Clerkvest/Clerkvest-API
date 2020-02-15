@@ -56,12 +56,12 @@ public class Company extends RepresentationModel<Company> implements IServiceEnt
     private boolean inviteOnly;
 
     @Override
-    public Long getId () {
+    public Long getId() {
         return getCompanyId();
     }
 
     @Override
-    public void setId (Long id) {
+    public void setId(Long id) {
         setCompanyId(id);
     }
 
