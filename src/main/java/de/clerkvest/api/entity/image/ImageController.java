@@ -67,7 +67,7 @@ public class ImageController {
         return ResponseEntity.ok().body(image.getId());
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN') and (@projectService.getById(#id).isPresent() ? @projectService.getById(#id).get().company.id.equals(#auth.companyId) : true)")
+    @PreAuthorize("hasRole('ROLE_USER') and (@projectService.getById(#id).isPresent() ? @projectService.getById(#id).get().employee.id.equals(#auth.employeeId) : true)")
     @PostMapping(value = "/create/project/{id}")
     public ResponseEntity<Long> createProjectImage(@RequestParam(value = "file", required = true) MultipartFile file, @PathVariable Long id, @AuthenticationPrincipal EmployeeUserDetails auth) throws IOException {
         Image image = service.addImage(file);
