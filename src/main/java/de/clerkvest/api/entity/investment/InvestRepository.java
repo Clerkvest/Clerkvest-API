@@ -1,5 +1,6 @@
 package de.clerkvest.api.entity.investment;
 
+import de.clerkvest.api.entity.employee.Employee;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -22,4 +23,7 @@ public interface InvestRepository extends JpaRepository<Invest, Long> {
 
     @Query(value = "SELECT * FROM invest_in i WHERE i.project_id = ?1", nativeQuery = true)
     List<Invest> getByProjectId(Long id);
+
+    @Query(value = "SELECT * FROM invest_in i WHERE i.project_id = ?1", nativeQuery = true)
+    List<Invest> getByProjectIdAAndEmployee(Long id, Employee employee);
 }

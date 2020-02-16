@@ -1,5 +1,7 @@
 package de.clerkvest.api.entity.investment;
 
+import de.clerkvest.api.entity.employee.Employee;
+import de.clerkvest.api.entity.project.Project;
 import de.clerkvest.api.exception.ClerkEntityNotFoundException;
 import de.clerkvest.api.exception.ViolatedConstraintException;
 import de.clerkvest.api.implement.service.IService;
@@ -56,6 +58,9 @@ public class InvestService implements IService<Invest> {
         return repository.findAll();
     }
 
+    public List<Invest> getAllByProjectAndEmployee(Project project, Employee employee) {
+        return repository.getByProjectIdAAndEmployee(project.getId(), employee);
+    }
 
     @Override
     public Optional<Invest> getById(long id) {

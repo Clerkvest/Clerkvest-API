@@ -17,7 +17,9 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -100,6 +102,29 @@ public class InvestController implements DTOConverter<Invest, InvestDTO> {
         return ResponseEntity.ok(investmentDTOs);
     }
 
+    @PreAuthorize("hasRole('ROLE_USER') and (@projectService.getById(#id).isPresent() ? @projectService.getById(#id).get().company.id.equals(#auth.companyId) : true)")
+    @GetMapping(value = "/get/project/{id}/employee/{employeeId}")
+    public ResponseEntity<Double> getInvestmentAmountByProjectForEmployee(@PathVariable long id, @PathVariable long employeeId, @AuthenticationPrincipal EmployeeUserDetails auth) {
+        Optional<Employee> employee = employeeService.getById(employeeId);
+        Optional<Project> project = projectService.getById(id);
+        employee.ifPresentOrElse(employee1 -> {
+        }, () -> {
+            throw new EntityNotFoundException("Employee does not exist");
+        });
+        project.ifPresentOrElse(project1 -> {
+        }, () -> {
+            throw new EntityNotFoundException("Project does not exist");
+        });
+        BigDecimal sumOfInvestments = BigDecimal.ZERO;
+        List<Invest> investments = service.getAllByProjectAndEmployee(project.get(), employee.get());
+        BigDecimal sum = investments
+                .stream()
+                .map(Invest::getInvestment)
+                .reduce(BigDecimal::add)
+                .get();
+        return ResponseEntity.ok(sum.doubleValue());
+    }
+
     @PreAuthorize("(hasRole('ROLE_USER') and (@investService.getById(#id).isPresent() ? @investService.getById(#id).get().employee.id.equals(#auth.employeeId) : true))")
     @DeleteMapping(value = "/delete/{id}")
     public ResponseEntity<String> deleteInvestment(@PathVariable long id, @AuthenticationPrincipal EmployeeUserDetails auth) {
@@ -109,6 +134,25 @@ public class InvestController implements DTOConverter<Invest, InvestDTO> {
         });
         return ResponseEntity.ok().build();
     }
+
+    @PreAuthorize("(hasRole('ROLE_USER') and (@employeeService.getById(#employeeId).isPresent() ? @employeeService.getById(#employeeId).get().employeeId.equals(#auth.employeeId) : true))")
+    @DeleteMapping(value = "/delete/project/{id}/employee/{employeeId}")
+    public ResponseEntity<String> deleteInvestmentsByEmployeeAndProject(@PathVariable long id, @PathVariable long employeeId, @AuthenticationPrincipal EmployeeUserDetails auth) {
+        Optional<Employee> employee = employeeService.getById(employeeId);
+        Optional<Project> project = projectService.getById(id);
+        employee.ifPresentOrElse(employee1 -> {
+        }, () -> {
+            throw new EntityNotFoundException("Employee does not exist");
+        });
+        project.ifPresentOrElse(project1 -> {
+        }, () -> {
+            throw new EntityNotFoundException("Project does not exist");
+        });
+        List<Invest> investments = service.getAllByProjectAndEmployee(project.get(), employee.get());
+        investments.forEach(service::delete);
+        return ResponseEntity.ok().build();
+    }
+
 
     @Override
     public InvestDTO convertToDto(Invest post) {
