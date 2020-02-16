@@ -15,7 +15,7 @@ import javax.validation.ConstraintViolationException;
 public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(value
-            = {ClerkEntityNotFoundException.class, DuplicateEntityException.class, ViolatedConstraintException.class})
+            = {ClerkEntityNotFoundException.class, DuplicateEntityException.class, ViolatedConstraintException.class, NotEnoughPermissionsException.class})
     protected ResponseEntity<Object> handleConflict(
             RuntimeException ex, WebRequest request) {
         if (ex instanceof ClerkEntityNotFoundException) {
@@ -30,6 +30,10 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
             String bodyOfResponse = ex.getMessage();
             return handleExceptionInternal(ex, bodyOfResponse,
                     new HttpHeaders(), HttpStatus.CONFLICT, request);
+        } else if (ex instanceof NotEnoughPermissionsException) {
+            String bodyOfResponse = ex.getMessage();
+            return handleExceptionInternal(ex, bodyOfResponse,
+                    new HttpHeaders(), HttpStatus.FORBIDDEN, request);
         }
         String bodyOfResponse = "A Error Occurred";
         return handleExceptionInternal(ex, bodyOfResponse,

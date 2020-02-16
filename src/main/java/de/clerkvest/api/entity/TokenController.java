@@ -4,6 +4,7 @@ import de.clerkvest.api.entity.company.Company;
 import de.clerkvest.api.entity.company.CompanyService;
 import de.clerkvest.api.entity.employee.Employee;
 import de.clerkvest.api.entity.employee.EmployeeService;
+import de.clerkvest.api.exception.NotEnoughPermissionsException;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,6 +59,9 @@ public class TokenController {
             String domain = mail.substring(mail.indexOf('@'));
             String firstname = mail.substring(0, mail.indexOf('.')), lastname = mail.substring(mail.indexOf('.'), mail.indexOf('@')), name = domain.substring(0, mail.indexOf('.'));
             Optional<Company> company = companyService.getByDomain(domain);
+            if (company.isPresent() && company.get().isInviteOnly()) {
+                throw new NotEnoughPermissionsException("Company is invite only");
+            }
             Employee employee = Employee.builder().employeeId(-1L).balance(BigDecimal.ONE).company(null).email(mail).firstname(firstname).lastname(lastname).isAdmin(false).loginToken(token).nickname(firstname + " " + lastname).build();
             company.ifPresentOrElse(employee::setCompany, () -> {
                 Company newCompany = Company.builder().companyId(-1L).domain(domain).inviteOnly(true).image(null).name(name).payAmount(BigDecimal.TEN).payInterval(30).build();
