@@ -1,5 +1,6 @@
 package de.clerkvest.api.entity.employee;
 
+import de.clerkvest.api.entity.company.Company;
 import de.clerkvest.api.exception.ClerkEntityNotFoundException;
 import de.clerkvest.api.implement.service.IService;
 import org.apache.commons.lang3.StringUtils;
@@ -57,6 +58,10 @@ public class EmployeeService implements IService<Employee> {
     @Override
     public List<Employee> getAll() {
         return repository.findAll();
+    }
+
+    public List<Employee> getAllAdmins(Company company) {
+        return repository.findAllByCompanyAndIsAdminIsTrue(company.getId());
     }
 
     @Override

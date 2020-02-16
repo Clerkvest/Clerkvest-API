@@ -2,7 +2,10 @@ package de.clerkvest.api.entity.investment;
 
 import de.clerkvest.api.common.hateoas.constants.HateoasLink;
 import de.clerkvest.api.common.hateoas.link.LinkBuilder;
+import de.clerkvest.api.entity.SendGridEmailService;
+import de.clerkvest.api.entity.employee.Employee;
 import de.clerkvest.api.entity.employee.EmployeeService;
+import de.clerkvest.api.entity.project.Project;
 import de.clerkvest.api.entity.project.ProjectService;
 import de.clerkvest.api.exception.ClerkEntityNotFoundException;
 import de.clerkvest.api.implement.DTOConverter;
@@ -35,13 +38,15 @@ public class InvestController implements DTOConverter<Invest, InvestDTO> {
     private final InvestService service;
     private final EmployeeService employeeService;
     private final ProjectService projectService;
+    private final SendGridEmailService sendGridEmailService;
     private final ModelMapper modelMapper;
 
     @Autowired
-    public InvestController(InvestService service, EmployeeService employeeService, ProjectService projectService, ModelMapper modelMapper) {
+    public InvestController(InvestService service, EmployeeService employeeService, ProjectService projectService, SendGridEmailService sendGridEmailService, ModelMapper modelMapper) {
         this.service = service;
         this.employeeService = employeeService;
         this.projectService = projectService;
+        this.sendGridEmailService = sendGridEmailService;
         this.modelMapper = modelMapper;
     }
 
@@ -50,7 +55,13 @@ public class InvestController implements DTOConverter<Invest, InvestDTO> {
     public ResponseEntity<InvestDTO> createInvestment(@Valid @RequestBody InvestDTO fresh, @AuthenticationPrincipal EmployeeUserDetails auth) {
         fresh.setId(-1L);
         Invest converted = convertToEntity(fresh);
-        return ResponseEntity.ok().body(convertToDto(service.save(converted)));
+        Invest savedInvestment = service.save(converted);
+        Project project = savedInvestment.getProject();
+        if (project.isReached()) {
+            List<Employee> admins = employeeService.getAllAdmins(project.getCompany());
+            sendGridEmailService.sendMailToEmployees(admins, "Project completed", "The project: " + project.getTitle() + " is completed.");
+        }
+        return ResponseEntity.ok().body(convertToDto(savedInvestment));
     }
 
     @PreAuthorize("hasRole('ROLE_USER') and (@investService.getById(#id).isPresent() ? @investService.getById(#id).get().employee.company.id.equals(#auth.companyId) : true)")

@@ -25,4 +25,7 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
     List<Employee> findAllByCompany(Long companyId);
 
     Optional<Employee> getByEmail(String mail);
+
+    List<Employee> findAllByCompanyAndIsAdminIsTrue(Long companyId);
+
 }

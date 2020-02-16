@@ -143,7 +143,7 @@ BEGIN
     UPDATE employee AS e SET balance = balance - new.investment WHERE (employee_id = new.employee_id);
     IF (Select invested_in FROM project WHERE project_id = new.project_id) >=
        (Select goal FROM project WHERE project_id = new.project_id) THEN
-        UPDATE project AS p SET reached = true WHERE (project_id = new.project_id);
+        UPDATE project AS p SET reached = true, funded_at = now() WHERE (project_id = new.project_id);
     end if;
     RETURN NEW;
 END;

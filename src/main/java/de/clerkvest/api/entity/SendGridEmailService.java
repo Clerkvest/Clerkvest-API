@@ -7,6 +7,7 @@ import com.sendgrid.SendGrid;
 import com.sendgrid.helpers.mail.Mail;
 import com.sendgrid.helpers.mail.objects.Content;
 import com.sendgrid.helpers.mail.objects.Email;
+import de.clerkvest.api.entity.employee.Employee;
 import de.clerkvest.api.implement.service.EmailService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.List;
 
 @Service
 public class SendGridEmailService implements EmailService {
@@ -57,5 +59,9 @@ public class SendGridEmailService implements EmailService {
             log.error(ex.getMessage());
         }
         return response;
+    }
+
+    public void sendMailToEmployees(List<Employee> employees, String subject, String body) {
+        employees.forEach(employee -> sendEmail("admin@clerkvest.com", employee.getEmail(), subject, new Content("text/plain", body)));
     }
 }
