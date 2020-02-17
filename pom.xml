@@ -75,11 +75,6 @@
             <artifactId>modelmapper</artifactId>
             <version>2.3.0</version>
         </dependency>
-        <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
-        </dependency>
-
         <!-- io.springfox setup  -->
         <dependency>
             <groupId>io.springfox</groupId>
@@ -110,6 +105,16 @@
             <groupId>com.github.paulcwarren</groupId>
             <artifactId>spring-content-fs-boot-starter</artifactId>
             <version>0.7.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.opentable.components</groupId>
+            <artifactId>otj-pg-embedded</artifactId>
+            <version>0.13.1</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-core</artifactId>
         </dependency>
         <!-- https://mvnrepository.com/artifact/io.rest-assured/rest-assured -->
         <dependency>

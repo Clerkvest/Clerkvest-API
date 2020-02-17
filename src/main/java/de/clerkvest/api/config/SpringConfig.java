@@ -1,5 +1,6 @@
 package de.clerkvest.api.config;
 
+import com.opentable.db.postgres.embedded.EmbeddedPostgres;
 import de.clerkvest.api.entity.company.Company;
 import de.clerkvest.api.entity.company.CompanyDTO;
 import de.clerkvest.api.entity.employee.Employee;
@@ -15,14 +16,26 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeMap;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.content.fs.config.EnableFilesystemStores;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.*;
 import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
+import javax.sql.DataSource;
+
 @Configuration
 @EnableFilesystemStores
+@ComponentScan
 public class SpringConfig {
+
+    @Profile("dev")
+    @Bean
+    @Primary
+    public DataSource inMemoryDS() throws Exception {
+        DataSource embeddedPostgresDS = EmbeddedPostgres.builder()
+                .start().getPostgresDatabase();
+        //EmbeddedPostgresRules.preparedDatabase(FlywayPreparer.forClasspathLocation("db/migration/V1__Base_version"));
+        return embeddedPostgresDS;
+    }
 
     @Bean
     public MultipartResolver multipartResolver() {
