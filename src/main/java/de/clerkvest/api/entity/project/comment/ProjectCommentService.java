@@ -31,6 +31,7 @@ public class ProjectCommentService implements IService<ProjectComment> {
 
     @Override
     public ProjectComment save(ProjectComment projectComment) {
+        projectComment.setDate(Timestamp.from(Instant.now()));
         return repository.save(projectComment);
     }
 
