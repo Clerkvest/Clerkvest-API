@@ -61,7 +61,7 @@ public class EmployeeService implements IService<Employee> {
     }
 
     public List<Employee> getAllAdmins(Company company) {
-        return repository.findAllByCompanyAndIsAdminIsTrue(company.getId());
+        return repository.findAllByCompanyAndIsAdminIsTrue(company);
     }
 
     @Override

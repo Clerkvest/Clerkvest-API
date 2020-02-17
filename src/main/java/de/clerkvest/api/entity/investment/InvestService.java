@@ -32,11 +32,7 @@ public class InvestService implements IService<Invest> {
 
     @Override
     public Invest save(Invest invest) {
-        if (invest.getProject().isReached()) {
-            throw new ViolatedConstraintException("Project is already Closed");
-        } else if (invest.getEmployee().getBalance().compareTo(invest.getInvestment()) == BALANCE_SMALLER_INVESTMENT) {
-            throw new ViolatedConstraintException("Not enough Balance");
-        }
+        validateConstraints(invest);
         return repository.save(invest);
     }
 
@@ -46,6 +42,7 @@ public class InvestService implements IService<Invest> {
         Optional<Invest> existingInvest = repository.findById(invest.getId());
         if (existingInvest.isPresent()) {
             Invest value = existingInvest.get();
+            validateConstraints(invest);
             value.setInvestment(invest.getInvestment());
             return repository.save(value);
         } else {
@@ -69,6 +66,9 @@ public class InvestService implements IService<Invest> {
 
     @Override
     public void delete(Invest invest) {
+        if (invest.getProject().isReached()) {
+            throw new ViolatedConstraintException("Project is already Closed");
+        }
         repository.delete(invest);
     }
 
@@ -78,5 +78,16 @@ public class InvestService implements IService<Invest> {
 
     public List<Invest> getByProjectId(Long id) {
         return repository.getByProjectId(id);
+    }
+
+
+    private void validateConstraints(Invest invest) {
+        if (invest.getProject().isReached()) {
+            throw new ViolatedConstraintException("Project is already Closed");
+        } else if (invest.getEmployee().getBalance().compareTo(invest.getInvestment()) == BALANCE_SMALLER_INVESTMENT) {
+            throw new ViolatedConstraintException("Not enough Balance");
+        } else if (invest.getProject().getGoal().compareTo(invest.getProject().getInvestedIn().add(invest.getInvestment())) == -1) {
+            throw new ViolatedConstraintException("Not allowed to invest more than the Goal");
+        }
     }
 }

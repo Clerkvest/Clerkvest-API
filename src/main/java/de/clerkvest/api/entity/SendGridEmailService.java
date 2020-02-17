@@ -47,7 +47,7 @@ public class SendGridEmailService implements EmailService {
 
     private Response sendEmail(String from, String to, String subject, Content content) {
         Mail mail = new Mail(new Email(from), subject, new Email(to), content);
-        mail.setReplyTo(new Email("admin@clerkvest.de"));
+        mail.setReplyTo(new Email("admin@clerkvest.com"));
         Request request = new Request();
         Response response = null;
         try {

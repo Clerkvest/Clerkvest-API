@@ -59,7 +59,7 @@ public class InvestController implements DTOConverter<Invest, InvestDTO> {
         Invest converted = convertToEntity(fresh);
         Invest savedInvestment = service.save(converted);
         Project project = savedInvestment.getProject();
-        if (project.isReached()) {
+        if (project.getInvestedIn().add(savedInvestment.getInvestment()).equals(project.getGoal())) {//Goal reached
             List<Employee> admins = employeeService.getAllAdmins(project.getCompany());
             sendGridEmailService.sendMailToEmployees(admins, "Project completed", "The project: " + project.getTitle() + " is completed.");
         }
@@ -107,22 +107,26 @@ public class InvestController implements DTOConverter<Invest, InvestDTO> {
     public ResponseEntity<Double> getInvestmentAmountByProjectForEmployee(@PathVariable long id, @PathVariable long employeeId, @AuthenticationPrincipal EmployeeUserDetails auth) {
         Optional<Employee> employee = employeeService.getById(employeeId);
         Optional<Project> project = projectService.getById(id);
-        employee.ifPresentOrElse(employee1 -> {
-        }, () -> {
-            throw new EntityNotFoundException("Employee does not exist");
-        });
-        project.ifPresentOrElse(project1 -> {
-        }, () -> {
-            throw new EntityNotFoundException("Project does not exist");
-        });
-        BigDecimal sumOfInvestments = BigDecimal.ZERO;
-        List<Invest> investments = service.getAllByProjectAndEmployee(project.get(), employee.get());
-        BigDecimal sum = investments
-                .stream()
-                .map(Invest::getInvestment)
-                .reduce(BigDecimal::add)
-                .get();
-        return ResponseEntity.ok(sum.doubleValue());
+        if (project.isPresent() && employee.isPresent()) {
+            BigDecimal sumOfInvestments = BigDecimal.ZERO;
+            List<Invest> investments = service.getAllByProjectAndEmployee(project.get(), employee.get());
+            BigDecimal sum = investments
+                    .stream()
+                    .map(Invest::getInvestment)
+                    .reduce(BigDecimal::add)
+                    .orElse(BigDecimal.ZERO);
+            return ResponseEntity.ok(sum.doubleValue());
+        } else {
+            employee.ifPresentOrElse(employee1 -> {
+            }, () -> {
+                throw new EntityNotFoundException("Employee does not exist");
+            });
+            project.ifPresentOrElse(project1 -> {
+            }, () -> {
+                throw new EntityNotFoundException("Project does not exist");
+            });
+            throw new EntityNotFoundException("Some Entity could't be found");
+        }
     }
 
     @PreAuthorize("(hasRole('ROLE_USER') and (@investService.getById(#id).isPresent() ? @investService.getById(#id).get().employee.id.equals(#auth.employeeId) : true))")

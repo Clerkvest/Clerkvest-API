@@ -60,12 +60,12 @@ public class ProjectController implements DTOConverter<Project, ProjectDTO> {
         return ResponseEntity.ok().body(convertToDto(service.save(converted)));
     }
 
-    @PreAuthorize("hasRole('ROLE_USER') and #auth.employeeId.equals(#updated.employeeId)")
+   /* @PreAuthorize("hasRole('ROLE_USER') and #auth.employeeId.equals(#updated.employeeId)")
     @PutMapping(value = "/update")
     public ResponseEntity<ProjectDTO> updatedProject(@Valid @RequestBody ProjectDTO updated, @AuthenticationPrincipal EmployeeUserDetails auth) {
         Project converted = convertToEntity(updated);
         return ResponseEntity.ok().body(convertToDto(service.update(converted)));
-    }
+    }*/
 
     @PreAuthorize("hasRole('ROLE_USER') and (@projectService.getById(#id).isPresent()? @projectService.getById(#id).get().company.id.equals(#auth.companyId): true)")
     @GetMapping(value = "/get/{id}")

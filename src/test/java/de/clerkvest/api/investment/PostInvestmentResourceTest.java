@@ -74,4 +74,17 @@ public class PostInvestmentResourceTest {
         ValidatableResponse rest = given().header("Authorization", "Bearer exampleToken2").body(inRest).contentType(ContentType.JSON).post(REST_ENDPOINT_URL).then().statusCode(FORBIDDEN.value());
     }
 
+    @Test
+    public void postInvestmentFinishProject() {
+        EmployeeDTO employee0 = given().header("Authorization", "Bearer exampleToken4").get(HateoasLink.EMPLOYEE_SINGLE + 4).then().statusCode(OK.value()).extract().as(EmployeeDTO.class);
+        ProjectDTO projectRest = given().header("Authorization", "Bearer exampleToken4").get(HateoasLink.PROJECT_SINGLE + 0).then().statusCode(OK.value()).extract().as(ProjectDTO.class);
+        BigDecimal invest = projectRest.getGoal().subtract(projectRest.getInvestedIn());
+        InvestDTO inRest = InvestDTO.builder().employeeId(employee0.getId()).investment(invest).projectId(projectRest.getId()).build();
+        ValidatableResponse rest = given().header("Authorization", "Bearer exampleToken4").body(inRest).contentType(ContentType.JSON).post(REST_ENDPOINT_URL).then().statusCode(OK.value());
+        EmployeeDTO employee0changed = given().header("Authorization", "Bearer exampleToken4").get(HateoasLink.EMPLOYEE_SINGLE + 4).then().statusCode(OK.value()).extract().as(EmployeeDTO.class);
+        ProjectDTO projectRestchanged = given().header("Authorization", "Bearer exampleToken4").get(HateoasLink.PROJECT_SINGLE + 0).then().statusCode(OK.value()).extract().as(ProjectDTO.class);
+        assertThat(employee0.getBalance().subtract(invest)).isEqualTo(employee0changed.getBalance());
+        assertThat(projectRest.getInvestedIn().add(invest)).isEqualTo(projectRestchanged.getInvestedIn());
+    }
+
 }

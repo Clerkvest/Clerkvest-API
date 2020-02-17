@@ -213,6 +213,9 @@ VALUES (2, 1, 'user1@company.de', 12, 'exampleToken2', null, 'Mike', 'User', 'Us
 INSERT INTO employee(employee_id, company_id, email, balance, token, login_token, firstname, lastname, nickname,
                      is_admin)
 VALUES (3, 1, 'user2@company.de', 13, 'exampleToken3', null, 'Bike', 'User2', 'User2CompanyAdmin', true);
+Insert Into employee(employee_id, company_id, email, balance, token, login_token, firstname, lastname, nickname,
+                     is_admin)
+VALUES (4, 0, 'user3@clerkvest.com', 100000, 'exampleToken4', null, 'Richie', 'Rich', '', false);
 
 INSERT INTO project(project_id, employee_id, company_id, link, name, description, goal, invested_in, reached,
                     image_id, funded_at)
