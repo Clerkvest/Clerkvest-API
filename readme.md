@@ -16,6 +16,8 @@
 ### Getting Started [![clerkvest](https://img.shields.io/badge/Java-Spring-blue?logo=java&logoColor=White)](https://github.com/clerkvest/clerkvest-api) [![Clerkvest](https://img.shields.io/github/license/clerkvest/clerkvest-api)](https://github.com/clerkvest/clerkvest-api) [![clerkvest](https://img.shields.io/github/v/release/clerkvest/clerkvest-api?label=stable)](https://github.com/clerkvest/clerkvest-api) [![clerkvest](https://img.shields.io/github/v/release/clerkvest/clerkvest?include_prereleases&label=beta)](https://github.com/clerkvest/clerkvest-api)
 > These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See     deployment for notes on how to deploy the project on a live system.
 
+> #### The default Profile is "dev", the Profile requires a Environment Variable named SENDGRID_API_KEY. You can either set this Environment Variable or replace the sendgrid.api.key value inside the application-dev.properties with a String.
+
 - Build the Project: `mvn -B package --file pom.xml -Dmaven.test.skip=true`
 - Switch to the target folder: `cd target`
 - Run the Jar: `java -jar api-<version>.jar`
