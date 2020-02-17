@@ -82,6 +82,9 @@ public class ProjectService implements IService<Project> {
 
     @Override
     public void delete(Project project) {
+        if (project.isReached()) {
+            throw new ViolatedConstraintException("Funded Projects can't be deleted");
+        }
         repository.delete(project);
     }
 }
