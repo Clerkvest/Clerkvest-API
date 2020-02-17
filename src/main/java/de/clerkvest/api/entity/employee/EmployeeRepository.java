@@ -1,5 +1,6 @@
 package de.clerkvest.api.entity.employee;
 
+import de.clerkvest.api.entity.company.Company;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -22,7 +23,7 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 
     Optional<Employee> findByToken(String token);
 
-    List<Employee> findAllByCompany(Long companyId);
+    List<Employee> findAllByCompany(Company company);
 
     Optional<Employee> getByEmail(String mail);
 

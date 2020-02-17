@@ -102,7 +102,7 @@ public class EmployeeService implements IService<Employee> {
         return Optional.empty();
     }
 
-    public List<Employee> getAllForCompany(Long companyId) {
-        return repository.findAllByCompany(companyId);
+    public List<Employee> getAllForCompany(Company company) {
+        return repository.findAllByCompany(company);
     }
 }

@@ -1,6 +1,7 @@
 package de.clerkvest.api.employee;
 
 import de.clerkvest.api.Application;
+import de.clerkvest.api.common.hateoas.constants.HateoasLink;
 import de.clerkvest.api.entity.company.CompanyService;
 import de.clerkvest.api.entity.employee.EmployeeDTO;
 import io.restassured.response.ValidatableResponse;
@@ -11,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import static de.clerkvest.api.config.TestConfig.REST_BASE_URL;
 import static io.restassured.RestAssured.given;
@@ -63,5 +65,9 @@ public class GetEmployeeResourceTest {
         ValidatableResponse response = given().header("Authorization", "Bearer exampleToken3").get(REST_ENDPOINT_URL + 0).then().statusCode(FORBIDDEN.value());
     }
 
-
+    @Test
+    public void getAllEmployeesForCompany() {
+        List<EmployeeDTO> rest = given().header("Authorization", "Bearer exampleToken0").get(HateoasLink.EMPLOYEE_ALL).then().statusCode(OK.value()).extract().body().jsonPath().getList(".", EmployeeDTO.class);
+        assertThat(rest.isEmpty()).isFalse();
+    }
 }

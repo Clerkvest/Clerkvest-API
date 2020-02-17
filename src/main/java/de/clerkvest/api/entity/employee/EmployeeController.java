@@ -2,6 +2,7 @@ package de.clerkvest.api.entity.employee;
 
 import de.clerkvest.api.common.hateoas.constants.HateoasLink;
 import de.clerkvest.api.common.hateoas.link.LinkBuilder;
+import de.clerkvest.api.entity.company.Company;
 import de.clerkvest.api.entity.company.CompanyService;
 import de.clerkvest.api.exception.ClerkEntityNotFoundException;
 import de.clerkvest.api.implement.DTOConverter;
@@ -78,12 +79,17 @@ public class EmployeeController implements DTOConverter<Employee, EmployeeDTO> {
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping(value = "/all")
     public ResponseEntity<List<EmployeeDTO>> getAllEmployees(@AuthenticationPrincipal EmployeeUserDetails auth) {
-        List<Employee> employees = service.getAllForCompany(auth.getCompanyId());
-        List<EmployeeDTO> employeesDTOs = Arrays.asList(modelMapper.map(employees, EmployeeDTO[].class));
-        LinkBuilder<EmployeeDTO> linkBuilder = new LinkBuilder<EmployeeDTO>()
-                .withSelf(HateoasLink.EMPLOYEE_SINGLE);
-        employeesDTOs.forEach(linkBuilder::ifDesiredEmbed);
-        return ResponseEntity.ok(employeesDTOs);
+        Optional<Company> company = companyService.getById(auth.getCompanyId());
+        if (company.isPresent()) {
+            List<Employee> employees = service.getAllForCompany(company.get());
+            List<EmployeeDTO> employeesDTOs = Arrays.asList(modelMapper.map(employees, EmployeeDTO[].class));
+            LinkBuilder<EmployeeDTO> linkBuilder = new LinkBuilder<EmployeeDTO>()
+                    .withSelf(HateoasLink.EMPLOYEE_SINGLE);
+            employeesDTOs.forEach(linkBuilder::ifDesiredEmbed);
+            return ResponseEntity.ok(employeesDTOs);
+        } else {
+            throw new ClerkEntityNotFoundException("Company not found");
+        }
     }
 
     @PreAuthorize("(hasRole('ROLE_ADMIN') and (@employeeService.getById(#id).isPresent() ? @employeeService.getById(#id).get().company.id.equals(#auth.companyId) : true)) or (hasRole('ROLE_USER') and #auth.employeeId.equals(#id))")
