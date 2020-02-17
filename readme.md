@@ -19,11 +19,6 @@
 - Build the Project: `mvn -B package --file pom.xml -Dmaven.test.skip=true`
 - Switch to the target folder: `cd target`
 - Run the Jar: `java -jar api-<version>.jar`
-> #### Warning - Currently the dev Profile is static only. This is due to incompatibilities between PostgreSQL and H2
->  - Deleting
->  - Creating
-> 
-> of Entities fails, due to missing Sequence Generators and Delete Triggers.
 
 ### Prerequisites
 > Prerequisites to building and running this software
@@ -36,7 +31,7 @@ Maven
 ### Deployment
 
 > A step by step series of examples that tell you how to get a live System running
-> #### Warning - Currently only PostgreSQL is supported, if you want to use another DB anyway you need to adjust the Sequence Generators in the Entites.
+> #### Warning - Currently only PostgreSQL is supported, if you want to use another DB anyway you need to adjust the Sequence Generators in the Entites and replace the existing DB Triggers.
 
 To Deploy the System you will have to configure the Spring Application trough the application.properties. Create a new Application Profile and set the application.properties to the newly created Profile, this will tell Spring Boot to use that Profile.
 #### Example  Profile 
