@@ -1,0 +1,14 @@
+{
+  "properties": [
+    {
+      "name": "spring.sendgird.template.funded.id",
+      "type": "java.lang.String",
+      "description": "Description for spring.sendgird.template.funded.id."
+    },
+    {
+      "name": "spring.sendgird.template.login.id",
+      "type": "java.lang.String",
+      "description": "Description for spring.sendgird.template.login.id."
+    }
+  ]
+}
