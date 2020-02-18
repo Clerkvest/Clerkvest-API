@@ -19,6 +19,7 @@ import java.math.BigDecimal;
 import java.util.Optional;
 import java.util.UUID;
 
+@CrossOrigin(origins = "*")
 @RestController
 public class TokenController {
 
@@ -56,8 +57,18 @@ public class TokenController {
             sendGridEmailService.sendText("admin@clerkvest.de", employee.getEmail(), "Login Credentials", employee.getLoginToken());
         }, () -> {
             // GET Domain from mail, verify Mail & Domain; Parse First & Lastname
-            String domain = mail.substring(mail.indexOf('@'));
-            String firstname = mail.substring(0, mail.indexOf('.')), lastname = mail.substring(mail.indexOf('.'), mail.indexOf('@')), name = domain.substring(0, mail.indexOf('.'));
+            String domain = mail.substring(mail.indexOf('@') + 1);
+            int dots = StringUtils.countMatches(mail, '.');
+            String firstname, lastname, name;
+            if (dots > 1) {
+                firstname = mail.substring(0, mail.indexOf('.'));
+                lastname = mail.substring(mail.indexOf('.'), mail.indexOf('@'));
+                name = firstname;
+            } else {
+                firstname = "";
+                lastname = mail.substring(0, mail.indexOf('@'));
+                name = lastname;
+            }
             Optional<Company> company = companyService.getByDomain(domain);
             if (company.isPresent() && company.get().isInviteOnly()) {
                 throw new NotEnoughPermissionsException("Company is invite only");
@@ -65,13 +76,12 @@ public class TokenController {
             Employee employee = Employee.builder().employeeId(-1L).balance(BigDecimal.ONE).company(null).email(mail).firstname(firstname).lastname(lastname).isAdmin(false).loginToken(token).nickname(firstname + " " + lastname).build();
             company.ifPresentOrElse(employee::setCompany, () -> {
                 Company newCompany = Company.builder().companyId(-1L).domain(domain).inviteOnly(true).image(null).name(name).payAmount(BigDecimal.TEN).payInterval(30).build();
-                companyService.save(newCompany);
-                employee.setCompany(newCompany);
+                employee.setCompany(companyService.save(newCompany));
                 employee.setAdmin(true);
             });
             employeeService.save(employee);
-            sendGridEmailService.sendText("admin@clerkvest.de", employee.getEmail(), "Login Credentials", employee.getLoginToken());
+            sendGridEmailService.sendText("admin@clerkvest.com", employee.getEmail(), "Login Credentials", employee.getLoginToken());
         });
-        return ResponseEntity.ok(new StringResponse("E-Mail Send Successfully"));
+        return ResponseEntity.ok(new StringResponse("E-Mail Sent Successfully"));
     }
 }
