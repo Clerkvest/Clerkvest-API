@@ -77,6 +77,17 @@ public class EmployeeController implements DTOConverter<Employee, EmployeeDTO> {
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")
+    @GetMapping(value = "/get")
+    public ResponseEntity<EmployeeDTO> getSingleEmployee(@AuthenticationPrincipal EmployeeUserDetails auth) {
+        Optional<Employee> employee = service.getById(auth.getEmployeeId());
+        if (employee.isPresent()) {
+            return ResponseEntity.ok(convertToDto(employee.get()));
+        } else {
+            throw new ClerkEntityNotFoundException("Employee not found");
+        }
+    }
+
+    @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping(value = "/all")
     public ResponseEntity<List<EmployeeDTO>> getAllEmployees(@AuthenticationPrincipal EmployeeUserDetails auth) {
         Optional<Company> company = companyService.getById(auth.getCompanyId());
