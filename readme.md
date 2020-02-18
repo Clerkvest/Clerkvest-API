@@ -97,9 +97,6 @@ Using the Test Data a call to the GET Project Endpoint results in following Resp
 * [Sendgrid](https://sendgrid.com/) - Used to Send Login Mails
 * [PostgreSQL](https://www.postgresql.org/docs/) - Database
 
-## Contributing
-
-~~Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.~~ *TBD*
 
 ## Authors
 
