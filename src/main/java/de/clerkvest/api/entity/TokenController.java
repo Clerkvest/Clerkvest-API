@@ -1,5 +1,6 @@
 package de.clerkvest.api.entity;
 
+import de.clerkvest.api.common.mail.MailUtil;
 import de.clerkvest.api.entity.company.Company;
 import de.clerkvest.api.entity.company.CompanyService;
 import de.clerkvest.api.entity.employee.Employee;
@@ -48,36 +49,30 @@ public class TokenController {
     @PostMapping("/login")
     public ResponseEntity<StringResponse> login(@Email @RequestParam("mail") final String mail) {
         Optional<Employee> employeeOptional = employeeService.getByMail(mail);
-        String token = UUID.randomUUID().toString();
-        log.debug("Generated new Token: " + token);
-        employeeOptional.ifPresentOrElse(employee -> {
-            employee.setLoginToken(token);
-            employee.setToken(null);
-            sendGridEmailService.sendLoginMail(employeeService.update(employee));
-        }, () -> {
-            // GET Domain from mail, verify Mail & Domain; Parse First & Lastname
-            String domain = mail.substring(mail.indexOf('@') + 1);
-            int dots = StringUtils.countMatches(mail, '.');
-            String firstname, lastname;
-            if (dots > 1) {
-                firstname = mail.substring(0, mail.indexOf('.'));
-                lastname = mail.substring(mail.indexOf('.') + 1, mail.indexOf('@'));
-            } else {
-                firstname = "";
-                lastname = mail.substring(0, mail.indexOf('@'));
-            }
+        employeeOptional.ifPresentOrElse(this::login, () -> {
+            Employee employee = MailUtil.createEmployeeFromMail(mail, companyService);
+            String domain = MailUtil.getDomain(mail);
             Optional<Company> company = companyService.getByDomain(domain);
+
             if (company.isPresent() && company.get().isInviteOnly()) {
                 throw new NotEnoughPermissionsException("Company is invite only");
             }
-            Employee employee = Employee.builder().employeeId(-1L).balance(BigDecimal.ONE).company(null).email(mail).firstname(firstname).lastname(lastname).isAdmin(false).loginToken(token).nickname(mail).build();
-            company.ifPresentOrElse(employee::setCompany, () -> {
+
+            if (company.isEmpty()) {
                 Company newCompany = Company.builder().companyId(-1L).domain(domain).inviteOnly(true).image(null).name(domain).payAmount(BigDecimal.TEN).payInterval(30).build();
                 employee.setCompany(companyService.save(newCompany));
                 employee.setAdmin(true);
-            });
-            sendGridEmailService.sendLoginMail(employeeService.save(employee));
+            }
+            login(employeeService.save(employee));
         });
         return ResponseEntity.ok(new StringResponse("E-Mail Sent Successfully"));
+    }
+
+    public void login(Employee employee) {
+        String token = UUID.randomUUID().toString();
+        log.debug("Generated new Token: " + token);
+        employee.setLoginToken(token);
+        employee.setToken(null);
+        sendGridEmailService.sendLoginMail(employeeService.update(employee));
     }
 }
