@@ -26,10 +26,9 @@ import javax.persistence.*;
 @Entity
 public class Image extends RepresentationModel<Image> implements IServiceEntity {
 
+
     @Id
-    //@SequenceGenerator(name = "image_gen", sequenceName = "image_image_id_seq", allocationSize = 1)
-    //@GeneratedValue(generator = "image_gen", strategy = GenerationType.SEQUENCE)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     @Column(name = "image_id", updatable = false)
     private Long imageId;
 

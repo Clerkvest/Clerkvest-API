@@ -5,6 +5,7 @@ import de.clerkvest.api.entity.employee.Employee;
 import de.clerkvest.api.entity.image.Image;
 import de.clerkvest.api.implement.service.IServiceEntity;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.hateoas.RepresentationModel;
 
 import javax.persistence.*;
@@ -31,9 +32,9 @@ import java.time.LocalDateTime;
 @Entity
 public class Project extends RepresentationModel<Project> implements IServiceEntity {
 
+
     @Id
-    @SequenceGenerator(name = "project_gen", sequenceName = "project_project_id_seq", allocationSize = 1)
-    @GeneratedValue(generator = "project_gen", strategy = GenerationType.SEQUENCE)
+    @GeneratedValue
     @Column(name = "project_id", updatable = false)
     private Long projectId;
 
@@ -68,6 +69,7 @@ public class Project extends RepresentationModel<Project> implements IServiceEnt
     @JoinColumn(name = "image_id")
     private Image image;
 
+    @CreatedDate
     private LocalDateTime createdAt = LocalDateTime.now();
 
     private LocalDateTime fundedAt;

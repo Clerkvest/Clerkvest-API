@@ -4,6 +4,7 @@ import de.clerkvest.api.entity.employee.Employee;
 import de.clerkvest.api.entity.project.Project;
 import de.clerkvest.api.implement.service.IServiceEntity;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.hateoas.RepresentationModel;
 
 import javax.persistence.*;
@@ -28,9 +29,9 @@ import java.sql.Timestamp;
 @Table(name = "project_comment")
 @Entity
 public class ProjectComment extends RepresentationModel<ProjectComment> implements IServiceEntity {
+
     @Id
-    @SequenceGenerator(name = "project_comment_gen", sequenceName = "project_comment_project_comment_id_seq", allocationSize = 1)
-    @GeneratedValue(generator = "project_comment_gen", strategy = GenerationType.SEQUENCE)
+    @GeneratedValue
     @Column(name = "project_comment_id", nullable = false, updatable = false)
     private Long projectCommentId;
 
@@ -50,6 +51,7 @@ public class ProjectComment extends RepresentationModel<ProjectComment> implemen
     @Size(max = 2083)
     private String text;
 
+    @CreatedDate
     @NotNull
     private Timestamp date;
 

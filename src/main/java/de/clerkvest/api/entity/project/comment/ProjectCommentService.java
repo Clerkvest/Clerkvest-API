@@ -36,6 +36,13 @@ public class ProjectCommentService implements IService<ProjectComment> {
     }
 
     @Override
+    public ProjectComment saveAndFlush(ProjectComment projectComment) {
+        var freshEntity = save(projectComment);
+        repository.flush();
+        return freshEntity;
+    }
+
+    @Override
     public ProjectComment update(ProjectComment projectComment) {
         //Check if ProjectComment is new
         Optional<ProjectComment> existingProjectComment = repository.findById(projectComment.getId());

@@ -21,6 +21,14 @@ public interface IService<T> {
      */
     T save(T t);
 
+
+    /**
+     * Saves an entity into the database and flushes the database afterwards.
+     *
+     * @param t Entity to save
+     */
+    T saveAndFlush(T t);
+
     /**
      * Updates a existing entity database.
      *

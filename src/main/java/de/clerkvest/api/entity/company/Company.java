@@ -27,9 +27,9 @@ import java.math.BigDecimal;
 @Entity
 public class Company extends RepresentationModel<Company> implements IServiceEntity {
 
+
     @Id
-    @SequenceGenerator(name = "company_gen", sequenceName = "company_company_id_seq", allocationSize = 1)
-    @GeneratedValue(generator = "company_gen", strategy = GenerationType.SEQUENCE)
+    @GeneratedValue
     @Column(name = "company_id", updatable = false)
     private Long companyId;
 

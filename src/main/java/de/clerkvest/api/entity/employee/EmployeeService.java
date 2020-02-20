@@ -39,6 +39,13 @@ public class EmployeeService implements IService<Employee> {
     }
 
     @Override
+    public Employee saveAndFlush(Employee employee) {
+        var freshEntity = save(employee);
+        repository.flush();
+        return freshEntity;
+    }
+
+    @Override
     public Employee update(Employee employee) {
         //Check if company is new
         Optional<Employee> existingEmployee = repository.findById(employee.getId());

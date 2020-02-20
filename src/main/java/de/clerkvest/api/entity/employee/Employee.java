@@ -29,9 +29,9 @@ import java.util.HashSet;
 @Table(name = "employee")
 @Entity
 public class Employee implements IServiceEntity {
+
     @Id
-    @SequenceGenerator(name = "employee_gen", sequenceName = "employee_employee_id_seq", allocationSize = 1)
-    @GeneratedValue(generator = "employee_gen", strategy = GenerationType.SEQUENCE)
+    @GeneratedValue
     @Column(name = "employee_id", updatable = false, nullable = false)
     private Long employeeId;
 

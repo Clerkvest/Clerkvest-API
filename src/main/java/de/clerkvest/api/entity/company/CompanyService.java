@@ -55,6 +55,13 @@ public class CompanyService implements IService<Company> {
     }
 
     @Override
+    public Company saveAndFlush(Company company) {
+        var freshCompany = save(company);
+        repository.flush();
+        return freshCompany;
+    }
+
+    @Override
     public Company update(Company company) {
         //Check if company is new
         Optional<Company> existingCompany = repository.findById(company.getId());

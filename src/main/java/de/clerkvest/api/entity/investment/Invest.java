@@ -26,11 +26,11 @@ import java.math.BigDecimal;
 @Getter
 @Table(name = "invest_in")
 @Entity
+@EntityListeners(InvestmentListener.class)
 public class Invest extends RepresentationModel<Invest> implements IServiceEntity {
 
     @Id
-    @SequenceGenerator(name = "invest_gen", sequenceName = "invest_in_invest_in_id_seq", allocationSize = 1)
-    @GeneratedValue(generator = "invest_gen", strategy = GenerationType.SEQUENCE)
+    @GeneratedValue
     @Column(name = "invest_in_id", updatable = false)
     private Long investInId;
 
