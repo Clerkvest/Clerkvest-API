@@ -2,6 +2,7 @@ package de.clerkvest.api.entity.company;
 
 import de.clerkvest.api.common.hateoas.constants.HateoasLink;
 import de.clerkvest.api.common.hateoas.link.LinkBuilder;
+import de.clerkvest.api.entity.TokenController;
 import de.clerkvest.api.entity.image.Image;
 import de.clerkvest.api.entity.image.ImageService;
 import de.clerkvest.api.exception.ClerkEntityNotFoundException;
@@ -32,12 +33,14 @@ import java.util.Optional;
 public class CompanyController implements DTOConverter<Company, CompanyDTO> {
 
     private final CompanyService service;
+    private final TokenController tokenController;
     private final ImageService imageService;
     private final ModelMapper modelMapper;
 
     @Autowired
-    public CompanyController(CompanyService service, ImageService imageService, ModelMapper modelMapper) {
+    public CompanyController(CompanyService service, TokenController tokenController, ImageService imageService, ModelMapper modelMapper) {
         this.service = service;
+        this.tokenController = tokenController;
         this.imageService = imageService;
         this.modelMapper = modelMapper;
     }
@@ -64,7 +67,9 @@ public class CompanyController implements DTOConverter<Company, CompanyDTO> {
     public ResponseEntity<CompanyDTO> createCompany(@Valid @RequestBody CompanyDTO fresh, @RequestParam String mail) {
         fresh.setId(-1L);
         Company converted = convertToEntity(fresh);
-        return ResponseEntity.ok().body(convertToDto(service.save(converted)));
+        Company savedCompany = service.save(converted);
+        tokenController.login(mail);
+        return ResponseEntity.ok().body(convertToDto(savedCompany));
     }
 
     @Override
