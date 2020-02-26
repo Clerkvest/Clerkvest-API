@@ -139,7 +139,7 @@ public class InvestController implements DTOConverter<Invest, InvestDTO> {
         return ResponseEntity.ok().build();
     }
 
-    @PreAuthorize("(hasRole('ROLE_USER') and (@employeeService.getById(#employeeId).isPresent() ? @employeeService.getById(#employeeId).get().employeeId.equals(#auth.employeeId) : true))")
+    @PreAuthorize("(hasRole('ROLE_USER') and (@employeeService.getById(#employeeId).isPresent() ? @employeeService.getById(#employeeId).get().id.equals(#auth.employeeId) : true))")
     @DeleteMapping(value = "/delete/project/{id}/employee/{employeeId}")
     public ResponseEntity<String> deleteInvestmentsByEmployeeAndProject(@PathVariable long id, @PathVariable long employeeId, @AuthenticationPrincipal EmployeeUserDetails auth) {
         Optional<Employee> employee = employeeService.getById(employeeId);

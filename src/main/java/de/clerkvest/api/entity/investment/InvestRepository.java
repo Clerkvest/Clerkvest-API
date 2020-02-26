@@ -24,6 +24,6 @@ public interface InvestRepository extends JpaRepository<Invest, Long> {
     @Query(value = "SELECT * FROM invest_in i WHERE i.project_id = ?1", nativeQuery = true)
     List<Invest> getByProjectId(Long id);
 
-    @Query(value = "SELECT * FROM invest_in i WHERE i.project_id = ?1", nativeQuery = true)
+    @Query(value = "SELECT * FROM invest_in i WHERE i.project_id = ?1 AND i.employee_id = ?2", nativeQuery = true)
     List<Invest> getByProjectIdAAndEmployee(Long id, Employee employee);
 }
