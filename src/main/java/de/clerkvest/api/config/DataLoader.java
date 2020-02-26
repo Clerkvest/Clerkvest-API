@@ -17,7 +17,6 @@ import org.springframework.stereotype.Component;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.time.Instant;
-import java.time.LocalDateTime;
 
 @Profile({"dev", "test"})
 @Component
@@ -53,8 +52,8 @@ public class DataLoader {
         user3 = employeeService.saveAndFlush(user3);
         user4 = employeeService.saveAndFlush(user4);
 
-        var google = Project.builder().projectId(0L).employee(user1).company(clerkCompany).link("google.de").title("Google").description("Lets buy google").goal(BigDecimal.valueOf(100000)).investedIn(BigDecimal.valueOf(10)).reached(false).image(null).fundedAt(null).build();
-        var amazon = Project.builder().projectId(1L).employee(user3).company(companyCompany).link("amazon.com").title("Amazon").description("Dis").goal(BigDecimal.valueOf(5)).investedIn(BigDecimal.valueOf(5)).reached(true).image(null).fundedAt(LocalDateTime.now()).build();
+        var google = Project.builder().projectId(0L).employee(user1).company(clerkCompany).link("google.de").title("Google").description("Lets buy google").goal(BigDecimal.valueOf(100000)).investedIn(BigDecimal.ZERO).reached(false).image(null).fundedAt(null).build();
+        var amazon = Project.builder().projectId(1L).employee(user3).company(companyCompany).link("amazon.com").title("Amazon").description("Dis").goal(BigDecimal.valueOf(5)).investedIn(BigDecimal.ZERO).reached(false).image(null).fundedAt(null).build();
         google = projectService.saveAndFlush(google);
         amazon = projectService.saveAndFlush(amazon);
 

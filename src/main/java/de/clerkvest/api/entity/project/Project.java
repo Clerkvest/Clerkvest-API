@@ -13,6 +13,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 /**
  * api <p>
@@ -38,11 +39,11 @@ public class Project extends RepresentationModel<Project> implements IServiceEnt
     @Column(name = "project_id", updatable = false)
     private Long projectId;
 
-    @ManyToOne(cascade = CascadeType.MERGE, targetEntity = Employee.class)
+    @ManyToOne(cascade = CascadeType.ALL, targetEntity = Employee.class)
     @JoinColumn(name = "employee_id", nullable = false, updatable = false)
     private Employee employee;
 
-    @ManyToOne(cascade = CascadeType.MERGE, targetEntity = Company.class)
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.DETACH, CascadeType.REFRESH}, targetEntity = Company.class)
     @JoinColumn(name = "company_id", nullable = false, updatable = false)
     private Company company;
 
@@ -92,5 +93,30 @@ public class Project extends RepresentationModel<Project> implements IServiceEnt
             e.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        Project project = (Project) o;
+        return reached == project.reached &&
+                projectId.equals(project.projectId) &&
+                employee.equals(project.employee) &&
+                company.equals(project.company) &&
+                link.equals(project.link) &&
+                title.equals(project.title) &&
+                description.equals(project.description) &&
+                goal.equals(project.goal) &&
+                investedIn.equals(project.investedIn) &&
+                Objects.equals(image, project.image) &&
+                Objects.equals(createdAt, project.createdAt) &&
+                Objects.equals(fundedAt, project.fundedAt);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), projectId, employee, company, link, title, description, goal, investedIn, reached, image, createdAt, fundedAt);
     }
 }

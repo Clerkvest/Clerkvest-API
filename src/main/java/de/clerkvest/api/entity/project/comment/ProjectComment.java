@@ -11,6 +11,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.sql.Timestamp;
+import java.util.Objects;
 
 /**
  * api <p>
@@ -35,11 +36,11 @@ public class ProjectComment extends RepresentationModel<ProjectComment> implemen
     @Column(name = "project_comment_id", nullable = false, updatable = false)
     private Long projectCommentId;
 
-    @ManyToOne(cascade = CascadeType.MERGE, targetEntity = Employee.class)
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.DETACH, CascadeType.REFRESH}, targetEntity = Employee.class)
     @JoinColumn(name = "employee_id", nullable = false, updatable = false)
     private Employee employee;
 
-    @ManyToOne(cascade = CascadeType.MERGE, targetEntity = Project.class)
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.DETACH, CascadeType.REFRESH}, targetEntity = Project.class)
     @JoinColumn(name = "project_id", nullable = false, updatable = false)
     private Project project;
 
@@ -73,5 +74,24 @@ public class ProjectComment extends RepresentationModel<ProjectComment> implemen
             e.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        ProjectComment that = (ProjectComment) o;
+        return projectCommentId.equals(that.projectCommentId) &&
+                employee.equals(that.employee) &&
+                project.equals(that.project) &&
+                title.equals(that.title) &&
+                text.equals(that.text) &&
+                Objects.equals(date, that.date);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), projectCommentId, employee, project, title, text, date);
     }
 }

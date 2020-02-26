@@ -7,6 +7,7 @@ import org.springframework.content.commons.annotations.ContentLength;
 import org.springframework.hateoas.RepresentationModel;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 /**
  * api <p>
@@ -56,5 +57,21 @@ public class Image extends RepresentationModel<Image> implements IServiceEntity 
             e.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        Image image = (Image) o;
+        return contentLength == image.contentLength &&
+                imageId.equals(image.imageId) &&
+                Objects.equals(contentId, image.contentId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), imageId, contentId, contentLength);
     }
 }

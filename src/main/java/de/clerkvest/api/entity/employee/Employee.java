@@ -11,6 +11,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.util.HashSet;
+import java.util.Objects;
 
 /**
  * api <p>
@@ -29,7 +30,6 @@ import java.util.HashSet;
 @Table(name = "employee")
 @Entity
 public class Employee implements IServiceEntity {
-
     @Id
     @GeneratedValue
     @Column(name = "employee_id", updatable = false, nullable = false)
@@ -100,5 +100,27 @@ public class Employee implements IServiceEntity {
             e.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Employee employee = (Employee) o;
+        return isAdmin == employee.isAdmin &&
+                employeeId.equals(employee.employeeId) &&
+                company.equals(employee.company) &&
+                email.equals(employee.email) &&
+                balance.equals(employee.balance) &&
+                Objects.equals(token, employee.token) &&
+                Objects.equals(loginToken, employee.loginToken) &&
+                firstname.equals(employee.firstname) &&
+                lastname.equals(employee.lastname) &&
+                nickname.equals(employee.nickname);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(employeeId, company, email, balance, token, loginToken, firstname, lastname, nickname, isAdmin);
     }
 }
