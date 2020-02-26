@@ -36,4 +36,10 @@ public class GetInvestmentsResourceTest {
     public void getInvestmentsFromOtherCompany() {
         ValidatableResponse rest = given().header("Authorization", "Bearer exampleToken0").get(REST_ENDPOINT_URL + 2).then().statusCode(BAD_REQUEST.value());
     }
+
+    @Test
+    public void getInvestmentsByProjectAndEmployee() {
+        List<InvestDTO> rest = given().header("Authorization", "Bearer exampleToken0").get(HateoasLink.BASE_ENDPOINT + "/invest/all/0").then().statusCode(OK.value()).extract().body().jsonPath().getList(".", InvestDTO.class);
+        assertThat(rest.isEmpty()).isFalse();
+    }
 }
