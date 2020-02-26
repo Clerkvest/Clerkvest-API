@@ -56,7 +56,7 @@ public class InvestService implements IService<Invest> {
     }
 
     public List<Invest> getAllByProjectAndEmployee(Project project, Employee employee) {
-        return repository.getByProjectIdAAndEmployee(project.getId(), employee);
+        return repository.getByProjectIdAAndEmployee(project.getId(), employee.getId());
     }
 
     @Override

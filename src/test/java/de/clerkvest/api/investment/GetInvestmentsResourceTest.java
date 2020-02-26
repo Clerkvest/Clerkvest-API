@@ -31,11 +31,9 @@ public class GetInvestmentsResourceTest {
         assertThat(rest.isEmpty()).isFalse();
     }
 
-
     @Disabled("Disabled")
     @Test
     public void getInvestmentsFromOtherCompany() {
         ValidatableResponse rest = given().header("Authorization", "Bearer exampleToken0").get(REST_ENDPOINT_URL + 2).then().statusCode(BAD_REQUEST.value());
-
     }
 }
