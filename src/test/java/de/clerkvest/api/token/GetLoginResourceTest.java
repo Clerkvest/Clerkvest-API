@@ -2,7 +2,6 @@ package de.clerkvest.api.token;
 
 import de.clerkvest.api.Application;
 import de.clerkvest.api.entity.employee.EmployeeDTO;
-import io.zonky.test.db.AutoConfigureEmbeddedDatabase;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -16,7 +15,7 @@ import static org.springframework.http.HttpStatus.OK;
 @SpringBootTest(classes = Application.class,
         webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @Transactional
-@AutoConfigureEmbeddedDatabase
+
 @Disabled
 public class GetLoginResourceTest {
 

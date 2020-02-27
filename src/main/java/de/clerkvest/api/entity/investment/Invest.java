@@ -35,7 +35,7 @@ public class Invest extends RepresentationModel<Invest> implements IServiceEntit
     @Column(name = "invest_in_id", updatable = false)
     private Long investInId;
 
-    @ManyToOne(targetEntity = Project.class)
+    @ManyToOne(targetEntity = Project.class, cascade = {CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.DETACH, CascadeType.REFRESH})
     @JoinColumn(name = "project_id", nullable = false, updatable = false)
     private Project project;
 

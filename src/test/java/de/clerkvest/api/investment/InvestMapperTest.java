@@ -4,7 +4,6 @@ import de.clerkvest.api.Application;
 import de.clerkvest.api.entity.investment.Invest;
 import de.clerkvest.api.entity.investment.InvestDTO;
 import de.clerkvest.api.entity.investment.InvestRepository;
-import io.zonky.test.db.AutoConfigureEmbeddedDatabase;
 import org.junit.jupiter.api.Test;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +18,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest(classes = Application.class,
         webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @Transactional
-@AutoConfigureEmbeddedDatabase
+
 public class InvestMapperTest {
     @Autowired
     private ModelMapper modelMapper;
@@ -28,7 +27,7 @@ public class InvestMapperTest {
 
     @Test
     public void whenConvertCompanyEntityToCompanyDto_thenCorrect() {
-        Optional<Invest> optionalInvestalEmployee = investRepository.findById(0L);
+        Optional<Invest> optionalInvestalEmployee = investRepository.findById(1L);
         assertThat(optionalInvestalEmployee.isEmpty()).isFalse();
 
         Invest invest = optionalInvestalEmployee.get();
@@ -43,9 +42,9 @@ public class InvestMapperTest {
     @Test
     public void whenConvertPostDtoToPostEntity_thenCorrect() {
         InvestDTO investDTO = new InvestDTO();
-        investDTO.setId(0L);
-        investDTO.setEmployeeId(0L);
-        investDTO.setProjectId(0L);
+        investDTO.setId(1L);
+        investDTO.setEmployeeId(1L);
+        investDTO.setProjectId(1L);
         investDTO.setInvestment(BigDecimal.valueOf(5));
 
         Invest invest = modelMapper.map(investDTO, Invest.class);

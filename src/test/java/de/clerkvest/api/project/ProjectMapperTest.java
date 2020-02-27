@@ -4,7 +4,6 @@ import de.clerkvest.api.Application;
 import de.clerkvest.api.entity.project.Project;
 import de.clerkvest.api.entity.project.ProjectDTO;
 import de.clerkvest.api.entity.project.ProjectService;
-import io.zonky.test.db.AutoConfigureEmbeddedDatabase;
 import org.junit.jupiter.api.Test;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +18,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest(classes = Application.class,
         webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @Transactional
-@AutoConfigureEmbeddedDatabase
+
 public class ProjectMapperTest {
     @Autowired
     private ModelMapper modelMapper;
@@ -28,7 +27,7 @@ public class ProjectMapperTest {
 
     @Test
     public void whenConvertCompanyEntityToCompanyDto_thenCorrect() {
-        Optional<Project> optionalProject = projectService.getById(0L);
+        Optional<Project> optionalProject = projectService.getById(1L);
         assertThat(optionalProject.isEmpty()).isFalse();
 
         Project project = optionalProject.get();
@@ -51,9 +50,9 @@ public class ProjectMapperTest {
     @Test
     public void whenConvertPostDtoToPostEntity_thenCorrect() {
         ProjectDTO projectDTO = new ProjectDTO();
-        projectDTO.setId(0L);
-        projectDTO.setEmployeeId(0L);
-        projectDTO.setCompanyId(0L);
+        projectDTO.setId(1L);
+        projectDTO.setEmployeeId(1L);
+        projectDTO.setCompanyId(1L);
         projectDTO.setLink("google.de");
         projectDTO.setTitle("Google");
         projectDTO.setDescription("Lets buy google");
