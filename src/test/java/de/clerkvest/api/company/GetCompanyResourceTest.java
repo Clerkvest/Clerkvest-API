@@ -3,9 +3,12 @@ package de.clerkvest.api.company;
 
 import de.clerkvest.api.Application;
 import de.clerkvest.api.entity.company.CompanyDTO;
+import de.clerkvest.api.entity.company.CompanyService;
+import de.clerkvest.api.entity.employee.EmployeeService;
 import io.restassured.response.ValidatableResponse;
 import io.zonky.test.db.AutoConfigureEmbeddedDatabase;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,6 +27,14 @@ import static org.springframework.http.HttpStatus.OK;
 public class GetCompanyResourceTest {
 
     private final static String REST_ENDPOINT_URL = REST_BASE_URL + "/company/get/";
+
+    @Autowired
+    private CompanyService service;
+    @Autowired
+    private EmployeeService employeeService;
+
+    public GetCompanyResourceTest() {
+    }
 
     @Test
     public void getCompany_0() {

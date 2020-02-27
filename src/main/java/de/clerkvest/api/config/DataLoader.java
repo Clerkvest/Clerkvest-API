@@ -38,19 +38,82 @@ public class DataLoader {
     }
 
     void initEntities() {
-        var clerkCompany = Company.builder().companyId(0L).name("Clerk GmbH").domain("clerkvest.com").image(null).payAmount(BigDecimal.valueOf(25)).payInterval(1).inviteOnly(true).build();
-        var companyCompany = Company.builder().companyId(1L).name("Company GmbH").domain("company.de").image(null).payAmount(BigDecimal.valueOf(15)).payInterval(30).inviteOnly(false).build();
-        clerkCompany = companyService.saveAndFlush(clerkCompany);
-        companyCompany = companyService.saveAndFlush(companyCompany);
+        //Company clerkCompany = Company.builder().companyId(0L).name("Clerk GmbH").domain("clerkvest.com").image(null).payAmount(BigDecimal.valueOf(25)).payInterval(1).inviteOnly(true).build();
+        //Company companyCompany = Company.builder().companyId(1L).name("Company GmbH").domain("company.de").image(null).payAmount(BigDecimal.valueOf(15)).payInterval(30).inviteOnly(false).build();
 
-        var user1 = Employee.builder().employeeId(0L).company(clerkCompany).email("user1@clerkvest.de").balance(BigDecimal.TEN).token("exampleToken0").loginToken(null).firstname("Mike").lastname("User").nickname("User1ClerkNonAdmin").isAdmin(false).build();
-        var user2 = Employee.builder().employeeId(1L).company(clerkCompany).email("user2@clerkvest.de").balance(BigDecimal.valueOf(11)).token("exampleToken1").loginToken(null).firstname("Bike").lastname("User2").nickname("User2ClerkAdmin").isAdmin(true).build();
-        var user3 = Employee.builder().employeeId(2L).company(companyCompany).email("user1@company.de").balance(BigDecimal.valueOf(12)).token("exampleToken2").loginToken(null).firstname("Mike").lastname("User").nickname("User1CompanyNonAdmin").isAdmin(false).build();
-        var user4 = Employee.builder().employeeId(3L).company(companyCompany).email("user2@company.de").balance(BigDecimal.valueOf(13)).token("exampleToken3").loginToken(null).firstname("Bike").lastname("User2").nickname("User2CompanyAdmin").isAdmin(true).build();
-        user1 = employeeService.saveAndFlush(user1);
-        user2 = employeeService.saveAndFlush(user2);
-        user3 = employeeService.saveAndFlush(user3);
-        user4 = employeeService.saveAndFlush(user4);
+        Company clerkCompany = new Company();
+        clerkCompany.setCompanyId(1L);
+        clerkCompany.setName("Clerk GmbH");
+        clerkCompany.setDomain("clerkvest.com");
+        clerkCompany.setPayAmount(BigDecimal.TEN);
+        clerkCompany.setPayInterval(1);
+        clerkCompany.setInviteOnly(true);
+        clerkCompany.setImage(null);
+
+        Company companyCompany = new Company();
+        companyCompany.setCompanyId(2L);
+        companyCompany.setName("Company GmbH");
+        companyCompany.setDomain("company.com");
+        companyCompany.setPayAmount(BigDecimal.TEN);
+        companyCompany.setPayInterval(1);
+        companyCompany.setInviteOnly(true);
+        companyCompany.setImage(null);
+
+        clerkCompany = companyService.save(clerkCompany);
+        companyCompany = companyService.save(companyCompany);
+
+        Employee user1 = new Employee();
+        user1.setEmployeeId(0L);
+        user1.setCompany(clerkCompany);
+        user1.setEmail("user1@clerkvest.de");
+        user1.setBalance(BigDecimal.TEN);
+        user1.setToken("exampleToken0");
+        user1.setLoginToken(null);
+        user1.setFirstname("Mike");
+        user1.setLastname("User");
+        user1.setNickname("User1ClerkNonAdmin");
+        user1.setAdmin(false);
+
+        Employee user2 = new Employee();
+        user2.setEmployeeId(1L);
+        user2.setCompany(clerkCompany);
+        user2.setEmail("user2@clerkvest.de");
+        user2.setBalance(BigDecimal.valueOf(11));
+        user2.setToken("exampleToken1");
+        user2.setLoginToken(null);
+        user2.setFirstname("Bike");
+        user2.setLastname("User2");
+        user2.setNickname("User2ClerkAdmin");
+        user2.setAdmin(true);
+
+        Employee user3 = new Employee();
+        user3.setEmployeeId(2L);
+        user3.setCompany(companyCompany);
+        user3.setEmail("user1@company.de");
+        user3.setBalance(BigDecimal.valueOf(12));
+        user3.setToken("exampleToken2");
+        user3.setLoginToken(null);
+        user3.setFirstname("Mike");
+        user3.setLastname("User");
+        user3.setNickname("User1CompanyNonAdmin");
+        user3.setAdmin(false);
+
+        Employee user4 = new Employee();
+        user4.setEmployeeId(3L);
+        user4.setCompany(companyCompany);
+        user4.setEmail("user2@company.de");
+        user4.setBalance(BigDecimal.valueOf(13));
+        user4.setToken("exampleToken3");
+        user4.setLoginToken(null);
+        user4.setFirstname("Bike");
+        user4.setLastname("User2");
+        user4.setNickname("User2CompanyAdmin");
+        user4.setAdmin(true);
+
+        user1 = employeeService.save(user1);
+        user2 = employeeService.save(user2);
+        user3 = employeeService.save(user3);
+        user4 = employeeService.save(user4);
 
         var google = Project.builder().projectId(0L).employee(user1).company(clerkCompany).link("google.de").title("Google").description("Lets buy google").goal(BigDecimal.valueOf(100000)).investedIn(BigDecimal.ZERO).reached(false).image(null).fundedAt(null).build();
         var amazon = Project.builder().projectId(1L).employee(user3).company(companyCompany).link("amazon.com").title("Amazon").description("Dis").goal(BigDecimal.valueOf(5)).investedIn(BigDecimal.ZERO).reached(false).image(null).fundedAt(null).build();

@@ -32,7 +32,7 @@ import java.util.Objects;
 public class ProjectComment extends RepresentationModel<ProjectComment> implements IServiceEntity {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "project_comment_id", nullable = false, updatable = false)
     private Long projectCommentId;
 

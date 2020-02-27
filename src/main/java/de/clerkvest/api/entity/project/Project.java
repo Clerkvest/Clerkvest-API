@@ -33,9 +33,8 @@ import java.util.Objects;
 @Entity
 public class Project extends RepresentationModel<Project> implements IServiceEntity {
 
-
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "project_id", updatable = false)
     private Long projectId;
 

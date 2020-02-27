@@ -29,7 +29,7 @@ public class Image extends RepresentationModel<Image> implements IServiceEntity 
 
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "image_id", updatable = false)
     private Long imageId;
 
