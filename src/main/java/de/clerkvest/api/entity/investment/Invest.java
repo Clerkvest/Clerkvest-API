@@ -31,7 +31,7 @@ import java.util.Objects;
 public class Invest extends RepresentationModel<Invest> implements IServiceEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "invest_in_id", updatable = false)
     private Long investInId;
 

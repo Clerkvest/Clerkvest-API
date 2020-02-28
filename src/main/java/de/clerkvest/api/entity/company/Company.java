@@ -30,7 +30,7 @@ public class Company extends RepresentationModel<Company> implements IServiceEnt
 
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "company_id", updatable = false)
     private Long companyId;
 

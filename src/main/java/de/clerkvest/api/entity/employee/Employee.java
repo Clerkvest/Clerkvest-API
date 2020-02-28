@@ -35,7 +35,7 @@ import java.util.Objects;
 @Entity
 public class Employee implements IServiceEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "employee_id", updatable = false, nullable = false)
     private Long employeeId;
 
