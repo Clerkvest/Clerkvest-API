@@ -5,12 +5,11 @@ import de.clerkvest.api.Application;
 import de.clerkvest.api.entity.project.comment.ProjectComment;
 import de.clerkvest.api.entity.project.comment.ProjectCommentDTO;
 import de.clerkvest.api.entity.project.comment.ProjectCommentService;
-import io.zonky.test.db.AutoConfigureEmbeddedDatabase;
 import org.junit.jupiter.api.Test;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.test.annotation.DirtiesContext;
 
 import java.util.Optional;
 
@@ -18,8 +17,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(classes = Application.class,
         webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
-@Transactional
-@AutoConfigureEmbeddedDatabase
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+
 public class ProjectCommentMapperTest {
     @Autowired
     private ModelMapper modelMapper;
@@ -28,7 +27,7 @@ public class ProjectCommentMapperTest {
 
     @Test
     public void whenConvertCompanyEntityToCompanyDto_thenCorrect() {
-        Optional<ProjectComment> optionalProjectComment = projectCommentService.getById(0L);
+        Optional<ProjectComment> optionalProjectComment = projectCommentService.getById(1L);
         assertThat(optionalProjectComment.isEmpty()).isFalse();
 
         ProjectComment optionalProject = optionalProjectComment.get();
@@ -45,9 +44,9 @@ public class ProjectCommentMapperTest {
     @Test
     public void whenConvertPostDtoToPostEntity_thenCorrect() {
         ProjectCommentDTO projectDTO = new ProjectCommentDTO();
-        projectDTO.setId(0L);
-        projectDTO.setEmployeeId(0L);
-        projectDTO.setProjectId(0L);
+        projectDTO.setId(1L);
+        projectDTO.setEmployeeId(1L);
+        projectDTO.setProjectId(1L);
         projectDTO.setTitle("Google ist ja Billig!");
         projectDTO.setText("Brudi Google ist ja krass billig");
         //projectDTO.setDate("Lets buy google");

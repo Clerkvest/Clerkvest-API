@@ -45,7 +45,7 @@ public class PayoutTask {
     private void payoutEmployees(Company company) {
         employeeService.getAllForCompany(company).forEach(employee -> {
             employee.setBalance(employee.getBalance().add(company.getPayAmount()));
-            employeeService.save(employee);
+            employeeService.update(employee);
         });
     }
 }

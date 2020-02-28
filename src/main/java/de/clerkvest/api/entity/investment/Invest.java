@@ -9,6 +9,7 @@ import org.springframework.hateoas.RepresentationModel;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
+import java.util.Objects;
 
 /**
  * api <p>
@@ -26,11 +27,11 @@ import java.math.BigDecimal;
 @Getter
 @Table(name = "invest_in")
 @Entity
+@EntityListeners(InvestmentListener.class)
 public class Invest extends RepresentationModel<Invest> implements IServiceEntity {
 
     @Id
-    @SequenceGenerator(name = "invest_gen", sequenceName = "invest_in_invest_in_id_seq", allocationSize = 1)
-    @GeneratedValue(generator = "invest_gen", strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "invest_in_id", updatable = false)
     private Long investInId;
 
@@ -63,5 +64,22 @@ public class Invest extends RepresentationModel<Invest> implements IServiceEntit
             e.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        Invest invest = (Invest) o;
+        return investInId.equals(invest.investInId) &&
+                project.equals(invest.project) &&
+                employee.equals(invest.employee) &&
+                investment.equals(invest.investment);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), investInId, project, employee, investment);
     }
 }

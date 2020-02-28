@@ -3,8 +3,11 @@ package de.clerkvest.api.entity.project;
 import de.clerkvest.api.entity.company.Company;
 import de.clerkvest.api.entity.employee.Employee;
 import de.clerkvest.api.entity.image.Image;
+import de.clerkvest.api.entity.investment.Invest;
+import de.clerkvest.api.entity.project.comment.ProjectComment;
 import de.clerkvest.api.implement.service.IServiceEntity;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.hateoas.RepresentationModel;
 
 import javax.persistence.*;
@@ -12,6 +15,9 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * api <p>
@@ -32,18 +38,32 @@ import java.time.LocalDateTime;
 public class Project extends RepresentationModel<Project> implements IServiceEntity {
 
     @Id
-    @SequenceGenerator(name = "project_gen", sequenceName = "project_project_id_seq", allocationSize = 1)
-    @GeneratedValue(generator = "project_gen", strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "project_id", updatable = false)
     private Long projectId;
 
-    @ManyToOne(cascade = CascadeType.MERGE, targetEntity = Employee.class)
+    @ManyToOne(targetEntity = Employee.class)
     @JoinColumn(name = "employee_id", nullable = false, updatable = false)
     private Employee employee;
 
-    @ManyToOne(cascade = CascadeType.MERGE, targetEntity = Company.class)
+    @ManyToOne(targetEntity = Company.class)
     @JoinColumn(name = "company_id", nullable = false, updatable = false)
     private Company company;
+
+    @OneToMany(
+            mappedBy = "project",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private List<Invest> investments = new ArrayList<>();
+
+
+    @OneToMany(
+            mappedBy = "project",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private List<ProjectComment> comments = new ArrayList<>();
 
     @NotNull
     @Size(max = 2083)
@@ -68,6 +88,7 @@ public class Project extends RepresentationModel<Project> implements IServiceEnt
     @JoinColumn(name = "image_id")
     private Image image;
 
+    @CreatedDate
     private LocalDateTime createdAt = LocalDateTime.now();
 
     private LocalDateTime fundedAt;
@@ -82,6 +103,27 @@ public class Project extends RepresentationModel<Project> implements IServiceEnt
         setProjectId(id);
     }
 
+    public void addInvestment(Invest invest) {
+        investments.add(invest);
+        invest.setProject(this);
+    }
+
+    public void removeInvestment(Invest invest) {
+        investments.remove(invest);
+        invest.setProject(null);
+    }
+
+
+    public void addProjectComment(ProjectComment comment) {
+        comments.add(comment);
+        comment.setProject(this);
+    }
+
+    public void removeProjectComment(ProjectComment comment) {
+        comments.remove(comment);
+        comment.setProject(null);
+    }
+
     @Override
     public String toString() {
         try {
@@ -90,5 +132,30 @@ public class Project extends RepresentationModel<Project> implements IServiceEnt
             e.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        Project project = (Project) o;
+        return reached == project.reached &&
+                projectId.equals(project.projectId) &&
+                employee.equals(project.employee) &&
+                company.equals(project.company) &&
+                link.equals(project.link) &&
+                title.equals(project.title) &&
+                description.equals(project.description) &&
+                goal.equals(project.goal) &&
+                investedIn.equals(project.investedIn) &&
+                Objects.equals(image, project.image) &&
+                Objects.equals(createdAt, project.createdAt) &&
+                Objects.equals(fundedAt, project.fundedAt);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), projectId, employee, company, link, title, description, goal, investedIn, reached, image, createdAt, fundedAt);
     }
 }

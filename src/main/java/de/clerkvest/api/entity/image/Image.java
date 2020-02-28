@@ -7,6 +7,7 @@ import org.springframework.content.commons.annotations.ContentLength;
 import org.springframework.hateoas.RepresentationModel;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 /**
  * api <p>
@@ -26,9 +27,8 @@ import javax.persistence.*;
 @Entity
 public class Image extends RepresentationModel<Image> implements IServiceEntity {
 
+
     @Id
-    //@SequenceGenerator(name = "image_gen", sequenceName = "image_image_id_seq", allocationSize = 1)
-    //@GeneratedValue(generator = "image_gen", strategy = GenerationType.SEQUENCE)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "image_id", updatable = false)
     private Long imageId;
@@ -57,5 +57,21 @@ public class Image extends RepresentationModel<Image> implements IServiceEntity 
             e.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        Image image = (Image) o;
+        return contentLength == image.contentLength &&
+                imageId.equals(image.imageId) &&
+                Objects.equals(contentId, image.contentId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), imageId, contentId, contentLength);
     }
 }

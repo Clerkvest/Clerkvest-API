@@ -1,6 +1,8 @@
 package de.clerkvest.api.entity.employee;
 
 import de.clerkvest.api.entity.company.Company;
+import de.clerkvest.api.entity.investment.Invest;
+import de.clerkvest.api.entity.project.Project;
 import de.clerkvest.api.implement.service.IServiceEntity;
 import lombok.*;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -10,7 +12,10 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * api <p>
@@ -30,14 +35,28 @@ import java.util.HashSet;
 @Entity
 public class Employee implements IServiceEntity {
     @Id
-    @SequenceGenerator(name = "employee_gen", sequenceName = "employee_employee_id_seq", allocationSize = 1)
-    @GeneratedValue(generator = "employee_gen", strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "employee_id", updatable = false, nullable = false)
     private Long employeeId;
 
     @ManyToOne(cascade = CascadeType.MERGE, targetEntity = Company.class)
     @JoinColumn(name = "company_id", updatable = false)
     private Company company;
+
+    @OneToMany(
+            mappedBy = "employee",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private List<Invest> investments = new ArrayList<>();
+
+
+    @OneToMany(
+            mappedBy = "employee",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private List<Project> projects = new ArrayList<>();
 
     @NotNull
     @Email
@@ -83,6 +102,27 @@ public class Employee implements IServiceEntity {
         setEmployeeId(id);
     }
 
+    public void addInvestment(Invest invest) {
+        investments.add(invest);
+        invest.setEmployee(this);
+    }
+
+    public void removeInvestment(Invest invest) {
+        investments.remove(invest);
+        invest.setEmployee(null);
+    }
+
+
+    public void addProject(Project project) {
+        projects.add(project);
+        project.setEmployee(this);
+    }
+
+    public void removeProject(Project project) {
+        projects.remove(project);
+        project.setEmployee(null);
+    }
+
     public HashSet<SimpleGrantedAuthority> getAuthorities() {
         HashSet<SimpleGrantedAuthority> authorities = new HashSet<>();
         authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
@@ -100,5 +140,27 @@ public class Employee implements IServiceEntity {
             e.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Employee employee = (Employee) o;
+        return isAdmin == employee.isAdmin &&
+                employeeId.equals(employee.employeeId) &&
+                company.equals(employee.company) &&
+                email.equals(employee.email) &&
+                balance.equals(employee.balance) &&
+                Objects.equals(token, employee.token) &&
+                Objects.equals(loginToken, employee.loginToken) &&
+                firstname.equals(employee.firstname) &&
+                lastname.equals(employee.lastname) &&
+                nickname.equals(employee.nickname);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(employeeId, company, email, balance, token, loginToken, firstname, lastname, nickname, isAdmin);
     }
 }

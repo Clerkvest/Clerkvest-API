@@ -4,12 +4,14 @@ import de.clerkvest.api.entity.employee.Employee;
 import de.clerkvest.api.entity.project.Project;
 import de.clerkvest.api.implement.service.IServiceEntity;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.hateoas.RepresentationModel;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.sql.Timestamp;
+import java.util.Objects;
 
 /**
  * api <p>
@@ -28,17 +30,17 @@ import java.sql.Timestamp;
 @Table(name = "project_comment")
 @Entity
 public class ProjectComment extends RepresentationModel<ProjectComment> implements IServiceEntity {
+
     @Id
-    @SequenceGenerator(name = "project_comment_gen", sequenceName = "project_comment_project_comment_id_seq", allocationSize = 1)
-    @GeneratedValue(generator = "project_comment_gen", strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "project_comment_id", nullable = false, updatable = false)
     private Long projectCommentId;
 
-    @ManyToOne(cascade = CascadeType.MERGE, targetEntity = Employee.class)
+    @ManyToOne(targetEntity = Employee.class)
     @JoinColumn(name = "employee_id", nullable = false, updatable = false)
     private Employee employee;
 
-    @ManyToOne(cascade = CascadeType.MERGE, targetEntity = Project.class)
+    @ManyToOne(targetEntity = Project.class)
     @JoinColumn(name = "project_id", nullable = false, updatable = false)
     private Project project;
 
@@ -50,6 +52,7 @@ public class ProjectComment extends RepresentationModel<ProjectComment> implemen
     @Size(max = 2083)
     private String text;
 
+    @CreatedDate
     @NotNull
     private Timestamp date;
 
@@ -71,5 +74,24 @@ public class ProjectComment extends RepresentationModel<ProjectComment> implemen
             e.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        ProjectComment that = (ProjectComment) o;
+        return projectCommentId.equals(that.projectCommentId) &&
+                employee.equals(that.employee) &&
+                project.equals(that.project) &&
+                title.equals(that.title) &&
+                text.equals(that.text) &&
+                Objects.equals(date, that.date);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), projectCommentId, employee, project, title, text, date);
     }
 }

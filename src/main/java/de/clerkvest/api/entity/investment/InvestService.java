@@ -37,6 +37,13 @@ public class InvestService implements IService<Invest> {
     }
 
     @Override
+    public Invest saveAndFlush(Invest invest) {
+        var freshEntity = save(invest);
+        repository.flush();
+        return freshEntity;
+    }
+
+    @Override
     public Invest update(Invest invest) {
         //Check if company is new
         Optional<Invest> existingInvest = repository.findById(invest.getId());

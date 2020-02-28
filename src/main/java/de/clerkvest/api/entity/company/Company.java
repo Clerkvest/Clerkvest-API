@@ -8,6 +8,7 @@ import org.springframework.hateoas.RepresentationModel;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.math.BigDecimal;
+import java.util.Objects;
 
 /**
  * api <p>
@@ -27,9 +28,9 @@ import java.math.BigDecimal;
 @Entity
 public class Company extends RepresentationModel<Company> implements IServiceEntity {
 
+
     @Id
-    @SequenceGenerator(name = "company_gen", sequenceName = "company_company_id_seq", allocationSize = 1)
-    @GeneratedValue(generator = "company_gen", strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "company_id", updatable = false)
     private Long companyId;
 
@@ -73,5 +74,25 @@ public class Company extends RepresentationModel<Company> implements IServiceEnt
             e.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        Company company = (Company) o;
+        return payInterval == company.payInterval &&
+                inviteOnly == company.inviteOnly &&
+                companyId.equals(company.companyId) &&
+                name.equals(company.name) &&
+                domain.equals(company.domain) &&
+                Objects.equals(image, company.image) &&
+                payAmount.equals(company.payAmount);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), companyId, name, domain, image, payAmount, payInterval, inviteOnly);
     }
 }

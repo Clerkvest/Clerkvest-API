@@ -76,6 +76,7 @@ public class CompanyController implements DTOConverter<Company, CompanyDTO> {
         Company savedCompany = service.save(converted);
         Employee freshEmployee = MailUtil.createEmployeeFromMail(mail, service);
         freshEmployee.setAdmin(true);
+        freshEmployee.setCompany(savedCompany);
         tokenController.login(employeeService.save(freshEmployee));
         return ResponseEntity.ok().body(convertToDto(savedCompany));
     }

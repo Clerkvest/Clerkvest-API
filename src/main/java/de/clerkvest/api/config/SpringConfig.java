@@ -27,7 +27,7 @@ import javax.sql.DataSource;
 @ComponentScan
 public class SpringConfig {
 
-    @Profile("dev")
+    @Profile({"dev", "test"})
     @Bean
     @Primary
     public DataSource inMemoryDS() throws Exception {

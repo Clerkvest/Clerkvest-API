@@ -43,6 +43,13 @@ public class ProjectService implements IService<Project> {
     }
 
     @Override
+    public Project saveAndFlush(Project project) {
+        var freshEntity = save(project);
+        repository.flush();
+        return freshEntity;
+    }
+
+    @Override
     public Project update(Project project) {
         if (project.getGoal().intValue() < 0) {
             throw new ViolatedConstraintException("Goal can't be below 1");

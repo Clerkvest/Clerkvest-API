@@ -53,7 +53,7 @@ public class EmployeeController implements DTOConverter<Employee, EmployeeDTO> {
         return ResponseEntity.ok().body(convertToDto(service.save(converted)));
     }
 
-    @PreAuthorize("hasRole('ROLE_USER') and #updated.id.equals(#auth.employeeId)")
+    @PreAuthorize("(hasRole('ROLE_ADMIN') and (@employeeService.getById(#updated.id).isPresent() ? @employeeService.getById(#updated.id).get().company.id.equals(#auth.companyId) : false)) or (hasRole('ROLE_USER') and #updated.id.equals(#auth.employeeId))")
     @PutMapping(value = "/update")
     public ResponseEntity<EmployeeDTO> updatedEmployee(@Valid @RequestBody EmployeeDTO updated, @AuthenticationPrincipal EmployeeUserDetails auth) {
         Employee converted = convertToEntity(updated);
