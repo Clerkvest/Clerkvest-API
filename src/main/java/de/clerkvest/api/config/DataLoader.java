@@ -44,8 +44,8 @@ public class DataLoader {
         Company clerkCompany = new Company();
         clerkCompany.setCompanyId(1L);
         clerkCompany.setName("Clerk GmbH");
-        clerkCompany.setDomain("clerkvest.com");
-        clerkCompany.setPayAmount(BigDecimal.TEN);
+        clerkCompany.setDomain("clerkvest.de");
+        clerkCompany.setPayAmount(BigDecimal.valueOf(25));
         clerkCompany.setPayInterval(1);
         clerkCompany.setInviteOnly(true);
         clerkCompany.setImage(null);

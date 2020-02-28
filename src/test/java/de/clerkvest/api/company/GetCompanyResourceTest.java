@@ -37,7 +37,7 @@ public class GetCompanyResourceTest {
     @Test
     public void getCompany_0() {
         CompanyDTO rest = given().header("Authorization", "Bearer exampleToken0").get(REST_ENDPOINT_URL + 1).then().statusCode(OK.value()).extract().as(CompanyDTO.class);
-        CompanyDTO company0 = CompanyDTO.builder().companyId(1L).name("Clerk GmbH").domain("clerkvest.de").payAmount(BigDecimal.valueOf(25)).payInterval(1).inviteOnly(true).imageId(rest.getImage()).build();
+        CompanyDTO company0 = CompanyDTO.builder().companyId(1L).name("Clerk GmbH").domain("clerkvest.de").payAmount(new BigDecimal("25.00")).payInterval(1).inviteOnly(true).imageId(rest.getImage()).build();
         assertThat(rest).isEqualTo(company0);
         //Assert.assertEquals(rest, company0);
     }
@@ -45,7 +45,7 @@ public class GetCompanyResourceTest {
     @Test
     public void getCompany_1() {
         CompanyDTO rest = given().header("Authorization", "Bearer exampleToken2").get(REST_ENDPOINT_URL + 2).then().statusCode(OK.value()).extract().as(CompanyDTO.class);
-        CompanyDTO company1 = CompanyDTO.builder().companyId(2L).name("Company GmbH").domain("company.de").payAmount(BigDecimal.valueOf(15)).payInterval(30).inviteOnly(false).imageId(rest.getImage()).build();
+        CompanyDTO company1 = CompanyDTO.builder().companyId(2L).name("Company GmbH").domain("company.de").payAmount(new BigDecimal("15.00")).payInterval(30).inviteOnly(false).imageId(rest.getImage()).build();
         assertThat(rest).isEqualTo(company1);
     }
 

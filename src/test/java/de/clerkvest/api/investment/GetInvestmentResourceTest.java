@@ -38,7 +38,7 @@ public class GetInvestmentResourceTest {
         InvestDTO rest = given().header("Authorization", "Bearer exampleToken0").get(HateoasLink.INVEST_SINGLE + 1).then().statusCode(OK.value()).extract().as(InvestDTO.class);
         EmployeeDTO restEmployee = given().header("Authorization", "Bearer exampleToken0").get(HateoasLink.EMPLOYEE_SINGLE + 1).then().statusCode(OK.value()).extract().as(EmployeeDTO.class);
         ProjectDTO restProject = given().header("Authorization", "Bearer exampleToken0").get(HateoasLink.PROJECT_SINGLE + 1).then().statusCode(OK.value()).extract().as(ProjectDTO.class);
-        InvestDTO investMent0 = InvestDTO.builder().employeeId(restEmployee.getId()).investment(BigDecimal.valueOf(5.00)).projectId(restProject.getId()).investId(1L).build();
+        InvestDTO investMent0 = InvestDTO.builder().employeeId(restEmployee.getId()).investment(new BigDecimal("5.00")).projectId(restProject.getId()).investId(1L).build();
         assertThat(investMent0).isEqualTo(rest);
     }
 
@@ -47,7 +47,7 @@ public class GetInvestmentResourceTest {
         InvestDTO rest = given().header("Authorization", "Bearer exampleToken1").get(HateoasLink.INVEST_SINGLE + 2).then().statusCode(OK.value()).extract().as(InvestDTO.class);
         EmployeeDTO restEmployee = given().header("Authorization", "Bearer exampleToken1").get(HateoasLink.EMPLOYEE_SINGLE + 2).then().statusCode(OK.value()).extract().as(EmployeeDTO.class);
         ProjectDTO restProject = given().header("Authorization", "Bearer exampleToken1").get(HateoasLink.PROJECT_SINGLE + 1).then().statusCode(OK.value()).extract().as(ProjectDTO.class);
-        InvestDTO investMent0 = InvestDTO.builder().employeeId(restEmployee.getId()).investment(BigDecimal.valueOf(5.00)).projectId(restProject.getId()).investId(2L).build();
+        InvestDTO investMent0 = InvestDTO.builder().employeeId(restEmployee.getId()).investment(new BigDecimal("5.00")).projectId(restProject.getId()).investId(2L).build();
         assertThat(investMent0).isEqualTo(rest);
     }
 
@@ -56,7 +56,7 @@ public class GetInvestmentResourceTest {
         InvestDTO rest = given().header("Authorization", "Bearer exampleToken2").get(HateoasLink.INVEST_SINGLE + 3).then().statusCode(OK.value()).extract().as(InvestDTO.class);
         EmployeeDTO restEmployee = given().header("Authorization", "Bearer exampleToken2").get(HateoasLink.EMPLOYEE_SINGLE + 3).then().statusCode(OK.value()).extract().as(EmployeeDTO.class);
         ProjectDTO restProject = given().header("Authorization", "Bearer exampleToken2").get(HateoasLink.PROJECT_SINGLE + 2).then().statusCode(OK.value()).extract().as(ProjectDTO.class);
-        InvestDTO investMent0 = InvestDTO.builder().employeeId(restEmployee.getId()).investment(BigDecimal.valueOf(5.00)).projectId(restProject.getId()).investId(3L).build();
+        InvestDTO investMent0 = InvestDTO.builder().employeeId(restEmployee.getId()).investment(new BigDecimal("5.00")).projectId(restProject.getId()).investId(3L).build();
         assertThat(investMent0).isEqualTo(rest);
     }
 
