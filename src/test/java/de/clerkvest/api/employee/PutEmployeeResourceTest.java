@@ -37,7 +37,7 @@ public class PutEmployeeResourceTest {
         String name = "TEST NAME";
         EmployeeDTO rest = given().header("Authorization", "Bearer exampleToken0").get(HateoasLink.EMPLOYEE_SINGLE + 1).then().statusCode(OK.value()).extract().as(EmployeeDTO.class);
         rest.setNickname(name);
-        ValidatableResponse updated = given().header("Authorization", "Bearer exampleToken1").body(rest).contentType(ContentType.JSON).put(REST_ENDPOINT_URL).then().statusCode(FORBIDDEN.value());
+        ValidatableResponse updated = given().header("Authorization", "Bearer exampleToken1").body(rest).contentType(ContentType.JSON).put(REST_ENDPOINT_URL).then().statusCode(OK.value());
 
     }
 

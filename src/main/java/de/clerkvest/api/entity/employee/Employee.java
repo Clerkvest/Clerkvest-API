@@ -1,6 +1,8 @@
 package de.clerkvest.api.entity.employee;
 
 import de.clerkvest.api.entity.company.Company;
+import de.clerkvest.api.entity.investment.Invest;
+import de.clerkvest.api.entity.project.Project;
 import de.clerkvest.api.implement.service.IServiceEntity;
 import lombok.*;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -10,7 +12,9 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -38,6 +42,21 @@ public class Employee implements IServiceEntity {
     @ManyToOne(cascade = CascadeType.MERGE, targetEntity = Company.class)
     @JoinColumn(name = "company_id", updatable = false)
     private Company company;
+
+    @OneToMany(
+            mappedBy = "employee",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private List<Invest> investments = new ArrayList<>();
+
+
+    @OneToMany(
+            mappedBy = "employee",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private List<Project> projects = new ArrayList<>();
 
     @NotNull
     @Email
@@ -81,6 +100,27 @@ public class Employee implements IServiceEntity {
     @Override
     public void setId(Long id) {
         setEmployeeId(id);
+    }
+
+    public void addInvestment(Invest invest) {
+        investments.add(invest);
+        invest.setEmployee(this);
+    }
+
+    public void removeInvestment(Invest invest) {
+        investments.remove(invest);
+        invest.setEmployee(null);
+    }
+
+
+    public void addProject(Project project) {
+        projects.add(project);
+        project.setEmployee(this);
+    }
+
+    public void removeProject(Project project) {
+        projects.remove(project);
+        project.setEmployee(null);
     }
 
     public HashSet<SimpleGrantedAuthority> getAuthorities() {

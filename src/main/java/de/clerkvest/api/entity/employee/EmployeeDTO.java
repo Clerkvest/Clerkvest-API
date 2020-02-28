@@ -15,7 +15,6 @@ import java.util.Objects;
 public class EmployeeDTO extends RepresentationModel<EmployeeDTO> implements IServiceEntity {
     private Long employeeId = null;
     private Long companyId;
-
     private Boolean admin = false;
     private String email = null;
     private BigDecimal balance = null;
