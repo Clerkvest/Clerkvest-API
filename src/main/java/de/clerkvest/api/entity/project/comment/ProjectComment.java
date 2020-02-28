@@ -36,11 +36,11 @@ public class ProjectComment extends RepresentationModel<ProjectComment> implemen
     @Column(name = "project_comment_id", nullable = false, updatable = false)
     private Long projectCommentId;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.DETACH, CascadeType.REFRESH}, targetEntity = Employee.class)
+    @ManyToOne(targetEntity = Employee.class)
     @JoinColumn(name = "employee_id", nullable = false, updatable = false)
     private Employee employee;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.DETACH, CascadeType.REFRESH}, targetEntity = Project.class)
+    @ManyToOne(targetEntity = Project.class)
     @JoinColumn(name = "project_id", nullable = false, updatable = false)
     private Project project;
 

@@ -3,6 +3,8 @@ package de.clerkvest.api.entity.project;
 import de.clerkvest.api.entity.company.Company;
 import de.clerkvest.api.entity.employee.Employee;
 import de.clerkvest.api.entity.image.Image;
+import de.clerkvest.api.entity.investment.Invest;
+import de.clerkvest.api.entity.project.comment.ProjectComment;
 import de.clerkvest.api.implement.service.IServiceEntity;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -13,6 +15,8 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -38,13 +42,28 @@ public class Project extends RepresentationModel<Project> implements IServiceEnt
     @Column(name = "project_id", updatable = false)
     private Long projectId;
 
-    @ManyToOne(cascade = CascadeType.ALL, targetEntity = Employee.class)
+    @ManyToOne(targetEntity = Employee.class)
     @JoinColumn(name = "employee_id", nullable = false, updatable = false)
     private Employee employee;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.DETACH, CascadeType.REFRESH}, targetEntity = Company.class)
+    @ManyToOne(targetEntity = Company.class)
     @JoinColumn(name = "company_id", nullable = false, updatable = false)
     private Company company;
+
+    @OneToMany(
+            mappedBy = "project",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private List<Invest> investments = new ArrayList<>();
+
+
+    @OneToMany(
+            mappedBy = "project",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private List<ProjectComment> comments = new ArrayList<>();
 
     @NotNull
     @Size(max = 2083)
@@ -82,6 +101,27 @@ public class Project extends RepresentationModel<Project> implements IServiceEnt
     @Override
     public void setId(Long id) {
         setProjectId(id);
+    }
+
+    public void addInvestment(Invest invest) {
+        investments.add(invest);
+        invest.setProject(this);
+    }
+
+    public void removeInvestment(Invest invest) {
+        investments.remove(invest);
+        invest.setProject(null);
+    }
+
+
+    public void addProjectComment(ProjectComment comment) {
+        comments.add(comment);
+        comment.setProject(this);
+    }
+
+    public void removeProjectComment(ProjectComment comment) {
+        comments.remove(comment);
+        comment.setProject(null);
     }
 
     @Override

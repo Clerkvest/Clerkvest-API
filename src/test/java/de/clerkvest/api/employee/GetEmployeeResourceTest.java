@@ -8,7 +8,7 @@ import io.restassured.response.ValidatableResponse;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.test.annotation.DirtiesContext;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -21,7 +21,7 @@ import static org.springframework.http.HttpStatus.OK;
 
 @SpringBootTest(classes = Application.class,
         webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
-@Transactional
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 
 public class GetEmployeeResourceTest {
 

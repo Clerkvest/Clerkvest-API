@@ -5,7 +5,7 @@ import de.clerkvest.api.common.hateoas.constants.HateoasLink;
 import de.clerkvest.api.entity.project.ProjectDTO;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.test.annotation.DirtiesContext;
 
 import java.util.List;
 
@@ -15,7 +15,7 @@ import static org.springframework.http.HttpStatus.OK;
 
 @SpringBootTest(classes = Application.class,
         webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
-@Transactional
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class GetProjectsResourceTest {
 
 
