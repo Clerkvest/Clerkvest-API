@@ -36,6 +36,10 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
             String bodyOfResponse = ex.getMessage();
             return handleExceptionInternal(ex, bodyOfResponse,
                     new HttpHeaders(), HttpStatus.FORBIDDEN, request);
+        } else if (ex instanceof CompanyNotMatchException) {
+            String bodyOfResponse = ex.getMessage();
+            return handleExceptionInternal(ex, bodyOfResponse,
+                    new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
         }
         String bodyOfResponse = "A Error Occurred";
         return handleExceptionInternal(ex, bodyOfResponse,

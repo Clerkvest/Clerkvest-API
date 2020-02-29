@@ -4,10 +4,9 @@ import de.clerkvest.api.common.mail.MailUtil;
 import de.clerkvest.api.entity.company.Company;
 import de.clerkvest.api.entity.company.CompanyService;
 import de.clerkvest.api.entity.employee.Employee;
-import de.clerkvest.api.entity.employee.EmployeeDTO;
 import de.clerkvest.api.entity.employee.EmployeeService;
 import de.clerkvest.api.exception.CompanyNotMatchException;
-import de.clerkvest.api.exception.EntityExistsException;
+import de.clerkvest.api.exception.DuplicateEntityException;
 import de.clerkvest.api.exception.NotEnoughPermissionsException;
 import de.clerkvest.api.security.EmployeeUserDetails;
 import org.apache.commons.lang3.StringUtils;
@@ -21,7 +20,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import javax.validation.constraints.Email;
 import java.math.BigDecimal;
 import java.util.Optional;
@@ -81,7 +79,7 @@ public class TokenController {
     public ResponseEntity<StringResponse> invite(@Email @RequestParam("mail") final String mail, @AuthenticationPrincipal EmployeeUserDetails auth) {
         Optional<Employee> employeeOptional = employeeService.getByMail(mail);
         employeeOptional.ifPresentOrElse(employee -> {
-            throw new EntityExistsException("Employee already exists");
+            throw new DuplicateEntityException("Employee already exists");
         }, () -> {
             Employee employee = MailUtil.createEmployeeFromMail(mail, companyService);
             String domain = MailUtil.getDomain(mail);
