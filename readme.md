@@ -33,7 +33,6 @@ Maven
 ### Deployment
 
 > A step by step series of examples that tell you how to get a live System running
-> #### Warning - Currently only PostgreSQL is supported, if you want to use another DB anyway you need to adjust the Sequence Generators in the Entites and replace the existing DB Triggers.
 
 To Deploy the System you will have to configure the Spring Application trough the application.properties. Create a new Application Profile and set the application.properties to the newly created Profile, this will tell Spring Boot to use that Profile.
 #### Example  Profile 
