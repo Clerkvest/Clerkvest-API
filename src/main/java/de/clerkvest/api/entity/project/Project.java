@@ -74,6 +74,7 @@ public class Project extends RepresentationModel<Project> implements IServiceEnt
     @Size(max = 255)
     private String title;
 
+    @Size(max = 25000)
     private String description;
 
     @NotNull
