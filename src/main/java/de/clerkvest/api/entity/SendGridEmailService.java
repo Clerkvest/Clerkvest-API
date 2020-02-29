@@ -25,11 +25,14 @@ public class SendGridEmailService implements EmailService {
     private final Logger log = LoggerFactory.getLogger(SendGridEmailService.class);
     private final SendGrid sendGridClient;
 
-    @Value("${spring.sendgird.template.login.id}")
+    @Value("${spring.sendgrid.template.login.id}")
     private String loginTemplateId;
 
-    @Value("${spring.sendgird.template.funded.id}")
+    @Value("${spring.sendgrid.template.funded.id}")
     private String fundedTemplateId;
+
+    @Value("${spring.sendgrid.template.invite.id}")
+    private String inviteTemplateId;
 
     @Autowired
     public SendGridEmailService(SendGrid sendGridClient) {
@@ -96,7 +99,6 @@ public class SendGridEmailService implements EmailService {
         return sendRequest(mail);
     }
 
-
     public Response sendFundedMail(Employee employee, Project project) {
         Mail mail = new Mail();
         Email fromEmail = new Email();
@@ -108,6 +110,24 @@ public class SendGridEmailService implements EmailService {
 
         Personalization personalization = new Personalization();
         personalization.addDynamicTemplateData("projectId", String.valueOf(project.getId()));
+        personalization.addTo(new Email(employee.getEmail(), employee.getNickname()));
+        mail.addPersonalization(personalization);
+        return sendRequest(mail);
+    }
+
+    public Response sendInviteMail(Employee employee) {
+        Mail mail = new Mail();
+
+        Email fromEmail = new Email();
+        fromEmail.setName("Clerkvest");
+        fromEmail.setEmail("admin@clerkvest.com");
+        mail.setFrom(fromEmail);
+
+        mail.setTemplateId(inviteTemplateId);
+
+        Personalization personalization = new Personalization();
+        personalization.addDynamicTemplateData("email", employee.getEmail());
+        personalization.addDynamicTemplateData("token", employee.getLoginToken());
         personalization.addTo(new Email(employee.getEmail(), employee.getNickname()));
         mail.addPersonalization(personalization);
         return sendRequest(mail);
