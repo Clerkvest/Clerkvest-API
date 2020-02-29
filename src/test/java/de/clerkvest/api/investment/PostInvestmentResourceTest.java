@@ -3,11 +3,15 @@ package de.clerkvest.api.investment;
 import de.clerkvest.api.Application;
 import de.clerkvest.api.common.hateoas.constants.HateoasLink;
 import de.clerkvest.api.entity.employee.EmployeeDTO;
+import de.clerkvest.api.entity.employee.EmployeeService;
 import de.clerkvest.api.entity.investment.InvestDTO;
+import de.clerkvest.api.entity.investment.InvestService;
 import de.clerkvest.api.entity.project.ProjectDTO;
+import de.clerkvest.api.entity.project.ProjectService;
 import io.restassured.http.ContentType;
 import io.restassured.response.ValidatableResponse;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 
@@ -23,6 +27,12 @@ import static org.springframework.http.HttpStatus.*;
 
 public class PostInvestmentResourceTest {
     private final static String REST_ENDPOINT_URL = HateoasLink.INVEST_CREATE;
+    @Autowired
+    EmployeeService employeeService;
+    @Autowired
+    ProjectService projectService;
+    @Autowired
+    InvestService investService;
 
     @Test
     public void postInvestment_Open_Project() {
@@ -75,13 +85,13 @@ public class PostInvestmentResourceTest {
 
     @Test
     public void postInvestmentFinishProject() {
-        EmployeeDTO employee0 = given().header("Authorization", "Bearer exampleToken4").get(HateoasLink.EMPLOYEE_SINGLE + 5).then().statusCode(OK.value()).extract().as(EmployeeDTO.class);
-        ProjectDTO projectRest = given().header("Authorization", "Bearer exampleToken4").get(HateoasLink.PROJECT_SINGLE + 1).then().statusCode(OK.value()).extract().as(ProjectDTO.class);
+        EmployeeDTO employee0 = given().header("Authorization", "Bearer exampleToken3").get(HateoasLink.EMPLOYEE_SINGLE + 5).then().statusCode(OK.value()).extract().as(EmployeeDTO.class);
+        ProjectDTO projectRest = given().header("Authorization", "Bearer exampleToken3").get(HateoasLink.PROJECT_SINGLE + 1).then().statusCode(OK.value()).extract().as(ProjectDTO.class);
         BigDecimal invest = projectRest.getGoal().subtract(projectRest.getInvestedIn());
         InvestDTO inRest = InvestDTO.builder().employeeId(employee0.getId()).investment(invest).projectId(projectRest.getId()).build();
-        ValidatableResponse rest = given().header("Authorization", "Bearer exampleToken4").body(inRest).contentType(ContentType.JSON).post(REST_ENDPOINT_URL).then().statusCode(OK.value());
-        EmployeeDTO employee0changed = given().header("Authorization", "Bearer exampleToken4").get(HateoasLink.EMPLOYEE_SINGLE + 5).then().statusCode(OK.value()).extract().as(EmployeeDTO.class);
-        ProjectDTO projectRestchanged = given().header("Authorization", "Bearer exampleToken4").get(HateoasLink.PROJECT_SINGLE + 1).then().statusCode(OK.value()).extract().as(ProjectDTO.class);
+        ValidatableResponse rest = given().header("Authorization", "Bearer exampleToken3").body(inRest).contentType(ContentType.JSON).post(REST_ENDPOINT_URL).then().statusCode(OK.value());
+        EmployeeDTO employee0changed = given().header("Authorization", "Bearer exampleToken3").get(HateoasLink.EMPLOYEE_SINGLE + 5).then().statusCode(OK.value()).extract().as(EmployeeDTO.class);
+        ProjectDTO projectRestchanged = given().header("Authorization", "Bearer exampleToken3").get(HateoasLink.PROJECT_SINGLE + 1).then().statusCode(OK.value()).extract().as(ProjectDTO.class);
         assertThat(employee0.getBalance().subtract(invest)).isEqualTo(employee0changed.getBalance());
         assertThat(projectRest.getInvestedIn().add(invest)).isEqualTo(projectRestchanged.getInvestedIn());
     }

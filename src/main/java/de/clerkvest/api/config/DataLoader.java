@@ -42,7 +42,7 @@ public class DataLoader {
         //Company companyCompany = Company.builder().companyId(1L).name("Company GmbH").domain("company.de").image(null).payAmount(BigDecimal.valueOf(15)).payInterval(30).inviteOnly(false).build();
 
         Company clerkCompany = new Company();
-        clerkCompany.setCompanyId(1L);
+        clerkCompany.setCompanyId(-1L);
         clerkCompany.setName("Clerk GmbH");
         clerkCompany.setDomain("clerkvest.de");
         clerkCompany.setPayAmount(BigDecimal.valueOf(25));
@@ -51,7 +51,7 @@ public class DataLoader {
         clerkCompany.setImage(null);
 
         Company companyCompany = new Company();
-        companyCompany.setCompanyId(2L);
+        companyCompany.setCompanyId(-1L);
         companyCompany.setName("Company GmbH");
         companyCompany.setDomain("company.de");
         companyCompany.setPayAmount(BigDecimal.valueOf(15));
@@ -63,7 +63,7 @@ public class DataLoader {
         companyCompany = companyService.save(companyCompany);
 
         Employee user1 = new Employee();
-        user1.setEmployeeId(1L);
+        user1.setEmployeeId(-1L);
         user1.setCompany(clerkCompany);
         user1.setEmail("user1@clerkvest.de");
         user1.setBalance(BigDecimal.TEN);
@@ -75,7 +75,7 @@ public class DataLoader {
         user1.setAdmin(false);
 
         Employee user2 = new Employee();
-        user2.setEmployeeId(2L);
+        user2.setEmployeeId(-1L);
         user2.setCompany(clerkCompany);
         user2.setEmail("user2@clerkvest.de");
         user2.setBalance(BigDecimal.valueOf(11));
@@ -87,7 +87,7 @@ public class DataLoader {
         user2.setAdmin(true);
 
         Employee user3 = new Employee();
-        user3.setEmployeeId(3L);
+        user3.setEmployeeId(-1L);
         user3.setCompany(companyCompany);
         user3.setEmail("user1@company.de");
         user3.setBalance(BigDecimal.valueOf(12));
@@ -99,7 +99,7 @@ public class DataLoader {
         user3.setAdmin(false);
 
         Employee user4 = new Employee();
-        user4.setEmployeeId(4L);
+        user4.setEmployeeId(-1L);
         user4.setCompany(companyCompany);
         user4.setEmail("user2@company.de");
         user4.setBalance(BigDecimal.valueOf(13));
@@ -115,19 +115,19 @@ public class DataLoader {
         user3 = employeeService.save(user3);
         user4 = employeeService.save(user4);
 
-        var google = Project.builder().projectId(1L).employee(user1).company(clerkCompany).link("google.de").title("Google").description("Lets buy google").goal(BigDecimal.valueOf(100000)).investedIn(BigDecimal.ZERO).reached(false).image(null).fundedAt(null).build();
-        var amazon = Project.builder().projectId(2L).employee(user3).company(companyCompany).link("amazon.com").title("Amazon").description("Dis").goal(BigDecimal.valueOf(5)).investedIn(BigDecimal.ZERO).reached(false).image(null).fundedAt(null).build();
+        var google = Project.builder().projectId(-1L).employee(user1).company(clerkCompany).link("google.de").title("Google").description("Lets buy google").goal(BigDecimal.valueOf(100000)).investedIn(BigDecimal.ZERO).reached(false).image(null).fundedAt(null).build();
+        var amazon = Project.builder().projectId(-1L).employee(user3).company(companyCompany).link("amazon.com").title("Amazon").description("Dis").goal(BigDecimal.valueOf(5)).investedIn(BigDecimal.ZERO).reached(false).image(null).fundedAt(null).build();
         google = projectService.saveAndFlush(google);
         amazon = projectService.saveAndFlush(amazon);
 
-        var investment1 = Invest.builder().investInId(1L).project(google).employee(user1).investment(BigDecimal.valueOf(5)).build();
-        var investment2 = Invest.builder().investInId(2L).project(google).employee(user2).investment(BigDecimal.valueOf(5)).build();
-        var investment3 = Invest.builder().investInId(3L).project(amazon).employee(user3).investment(BigDecimal.valueOf(5)).build();
+        var investment1 = Invest.builder().investInId(-1L).project(google).employee(user1).investment(BigDecimal.valueOf(5)).build();
+        var investment2 = Invest.builder().investInId(-1L).project(google).employee(user2).investment(BigDecimal.valueOf(5)).build();
+        var investment3 = Invest.builder().investInId(-1L).project(amazon).employee(user3).investment(BigDecimal.valueOf(5)).build();
         investment1 = investService.saveAndFlush(investment1);
         investment2 = investService.saveAndFlush(investment2);
         investment3 = investService.saveAndFlush(investment3);
 
-        var comment1 = ProjectComment.builder().projectCommentId(1L).employee(user1).project(google).title("Google ist ja Billig!").text("Brudi Google ist ja krass billig").date(Timestamp.from(Instant.now())).build();
+        var comment1 = ProjectComment.builder().projectCommentId(-1L).employee(user1).project(google).title("Google ist ja Billig!").text("Brudi Google ist ja krass billig").date(Timestamp.from(Instant.now())).build();
         comment1 = projectCommentService.saveAndFlush(comment1);
     }
 }

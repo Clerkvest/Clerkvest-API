@@ -9,6 +9,11 @@
       "name": "spring.sendgird.template.login.id",
       "type": "java.lang.String",
       "description": "Description for spring.sendgird.template.login.id."
+    },
+    {
+      "name": "spring.sendgrid.template.invite.id",
+      "type": "java.lang.String",
+      "description": "Description for spring.sendgrid.template.invite.id."
     }
   ]
 }

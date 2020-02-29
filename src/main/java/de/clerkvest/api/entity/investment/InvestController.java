@@ -59,7 +59,7 @@ public class InvestController implements DTOConverter<Invest, InvestDTO> {
         Invest converted = convertToEntity(fresh);
         Invest savedInvestment = service.save(converted);
         Project project = savedInvestment.getProject();
-        if (project.getInvestedIn().add(savedInvestment.getInvestment()).setScale(2).compareTo(project.getGoal().setScale(2)) >= 0) {//Goal reached
+        if (project.isReached()) {//Goal reached
             List<Employee> admins = employeeService.getAllAdmins(project.getCompany());
             sendGridEmailService.sendMailToEmployees(admins, project);
         }
