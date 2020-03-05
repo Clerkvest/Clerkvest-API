@@ -5,7 +5,6 @@ import de.clerkvest.api.common.hateoas.constants.HateoasLink;
 import de.clerkvest.api.entity.project.ProjectDTO;
 import io.restassured.http.ContentType;
 import io.restassured.response.ValidatableResponse;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
@@ -18,7 +17,6 @@ import static org.springframework.http.HttpStatus.OK;
 @SpringBootTest(classes = Application.class,
         webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-@Disabled
 public class PutProjectResourceTest {
 
     private final static String REST_ENDPOINT_URL = HateoasLink.PROJECT_UPDATE;
@@ -26,7 +24,7 @@ public class PutProjectResourceTest {
     @Test
     public void updateProjectAsSelf() {
         String name = "TEST DESC";
-        ProjectDTO rest = given().header("Authorization", "Bearer exampleToken0").get(HateoasLink.PROJECT_SINGLE + 1).then().statusCode(OK.value()).extract().as(ProjectDTO.class);
+        ProjectDTO rest = given().header("Authorization", "Bearer exampleToken0").get(HateoasLink.PROJECT_SINGLE + 7).then().statusCode(OK.value()).extract().as(ProjectDTO.class);
         rest.setDescription(name);
         ProjectDTO updated = given().header("Authorization", "Bearer exampleToken0").body(rest).contentType(ContentType.JSON).put(REST_ENDPOINT_URL).then().statusCode(OK.value()).extract().as(ProjectDTO.class);
         assertThat(rest).isEqualTo(updated);
@@ -35,13 +33,13 @@ public class PutProjectResourceTest {
 
     @Test
     public void updateProjectAsAdmin() {
-        ProjectDTO rest = given().header("Authorization", "Bearer exampleToken1").get(HateoasLink.PROJECT_SINGLE + 1).then().statusCode(OK.value()).extract().as(ProjectDTO.class);
+        ProjectDTO rest = given().header("Authorization", "Bearer exampleToken1").get(HateoasLink.PROJECT_SINGLE + 7).then().statusCode(OK.value()).extract().as(ProjectDTO.class);
         ValidatableResponse updated = given().header("Authorization", "Bearer exampleToken1").body(rest).contentType(ContentType.JSON).put(REST_ENDPOINT_URL).then().statusCode(FORBIDDEN.value());
     }
 
     @Test
     public void updateProjectAsForeignAdmin() {
-        ProjectDTO rest = given().header("Authorization", "Bearer exampleToken0").get(HateoasLink.PROJECT_SINGLE + 1).then().statusCode(OK.value()).extract().as(ProjectDTO.class);
+        ProjectDTO rest = given().header("Authorization", "Bearer exampleToken0").get(HateoasLink.PROJECT_SINGLE + 7).then().statusCode(OK.value()).extract().as(ProjectDTO.class);
         ValidatableResponse updated = given().header("Authorization", "Bearer exampleToken3").body(rest).contentType(ContentType.JSON).put(REST_ENDPOINT_URL).then().statusCode(FORBIDDEN.value());
     }
 }

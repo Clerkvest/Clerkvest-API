@@ -20,29 +20,29 @@ public class DeleteProjectResourceTest {
 
     @Test
     public void deleteProjectAsSelf() {
-        ValidatableResponse updated = given().header("Authorization", "Bearer exampleToken0").delete(REST_ENDPOINT_URL + 1).then().statusCode(OK.value());
-        ValidatableResponse rest = given().header("Authorization", "Bearer exampleToken0").get(HateoasLink.PROJECT_SINGLE + 1).then().statusCode(NOT_FOUND.value());
+        ValidatableResponse updated = given().header("Authorization", "Bearer exampleToken0").delete(REST_ENDPOINT_URL + 7).then().statusCode(OK.value());
+        ValidatableResponse rest = given().header("Authorization", "Bearer exampleToken0").get(HateoasLink.PROJECT_SINGLE + 7).then().statusCode(NOT_FOUND.value());
     }
 
 
     @Test
     public void deleteProjectAsAdmin() {
-        ValidatableResponse updated = given().header("Authorization", "Bearer exampleToken1").delete(REST_ENDPOINT_URL + 1).then().statusCode(FORBIDDEN.value());
+        ValidatableResponse updated = given().header("Authorization", "Bearer exampleToken1").delete(REST_ENDPOINT_URL + 7).then().statusCode(FORBIDDEN.value());
         //ValidatableResponse rest = given().header("Authorization","exampleToken0").get(REST_ENDPOINT_URL+"/0").then().statusCode(NOT_FOUND.getStatusCode());
     }
 
     @Test
     public void deleteProjectAsNonAdmin() {
-        ValidatableResponse updated = given().header("Authorization", "Bearer exampleToken0").delete(REST_ENDPOINT_URL + 2).then().statusCode(FORBIDDEN.value());
+        ValidatableResponse updated = given().header("Authorization", "Bearer exampleToken0").delete(REST_ENDPOINT_URL + 8).then().statusCode(FORBIDDEN.value());
     }
 
     @Test
     public void deleteProjectAsForeignAdmin() {
-        ValidatableResponse updated = given().header("Authorization", "Bearer exampleToken3").delete(REST_ENDPOINT_URL + 1).then().statusCode(FORBIDDEN.value());
+        ValidatableResponse updated = given().header("Authorization", "Bearer exampleToken3").delete(REST_ENDPOINT_URL + 7).then().statusCode(FORBIDDEN.value());
     }
 
     @Test
     public void deleteProjectForeignEmployee() {
-        ValidatableResponse updated = given().header("Authorization", "Bearer exampleToken2").delete(REST_ENDPOINT_URL + 1).then().statusCode(FORBIDDEN.value());
+        ValidatableResponse updated = given().header("Authorization", "Bearer exampleToken2").delete(REST_ENDPOINT_URL + 7).then().statusCode(FORBIDDEN.value());
     }
 }

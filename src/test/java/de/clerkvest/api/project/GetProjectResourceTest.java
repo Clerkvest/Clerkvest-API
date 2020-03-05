@@ -22,16 +22,16 @@ public class GetProjectResourceTest {
 
     @Test
     public void getProject_0() {
-        ProjectDTO rest = given().header("Authorization", "Bearer exampleToken1").get(REST_ENDPOINT_URL + 1).then().statusCode(OK.value()).extract().as(ProjectDTO.class);
+        ProjectDTO rest = given().header("Authorization", "Bearer exampleToken1").get(REST_ENDPOINT_URL + 7).then().statusCode(OK.value()).extract().as(ProjectDTO.class);
     }
 
     @Test
     public void getProject_1() {
-        ProjectDTO rest = given().header("Authorization", "Bearer exampleToken2").get(REST_ENDPOINT_URL + 2).then().statusCode(OK.value()).extract().as(ProjectDTO.class);
+        ProjectDTO rest = given().header("Authorization", "Bearer exampleToken2").get(REST_ENDPOINT_URL + 8).then().statusCode(OK.value()).extract().as(ProjectDTO.class);
     }
 
     @Test
     public void getEmployeeFromOtherCompany() {
-        ValidatableResponse rest = given().header("Authorization", "Bearer exampleToken1").get(REST_ENDPOINT_URL + 2).then().statusCode(FORBIDDEN.value());
+        ValidatableResponse rest = given().header("Authorization", "Bearer exampleToken1").get(REST_ENDPOINT_URL + 8).then().statusCode(FORBIDDEN.value());
     }
 }

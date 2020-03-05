@@ -60,12 +60,36 @@ public class ProjectController implements DTOConverter<Project, ProjectDTO> {
         return ResponseEntity.ok().body(convertToDto(service.save(converted)));
     }
 
-   /* @PreAuthorize("hasRole('ROLE_USER') and #auth.employeeId.equals(#updated.employeeId)")
+    @PreAuthorize("hasRole('ROLE_USER') and #auth.employeeId.equals(#updated.employeeId)")
     @PutMapping(value = "/update")
     public ResponseEntity<ProjectDTO> updatedProject(@Valid @RequestBody ProjectDTO updated, @AuthenticationPrincipal EmployeeUserDetails auth) {
-        Project converted = convertToEntity(updated);
-        return ResponseEntity.ok().body(convertToDto(service.update(converted)));
-    }*/
+        //Project converted = convertToEntity(updated);
+        Optional<Project> optionalProject = service.getById(updated.getId());
+        if (optionalProject.isPresent()) {
+            Project project = optionalProject.get();
+            if (updated.getImage() != null) {
+                Optional<Image> image = imageService.getById(updated.getImage());
+                image.ifPresent(project::setImage);
+            } else {
+                project.setImage(null);
+            }
+
+            if (updated.getDescription() != null) {
+                project.setDescription(updated.getDescription());
+            }
+
+            if (updated.getTitle() != null) {
+                project.setTitle(updated.getTitle());
+            }
+
+            if (updated.getLink() != null) {
+                project.setLink(updated.getLink());
+            }
+            return ResponseEntity.ok().body(convertToDto(service.update(project)));
+        } else {
+            throw new ClerkEntityNotFoundException("Project has to exists, try creating it first.");
+        }
+    }
 
     @PreAuthorize("hasRole('ROLE_USER') and (@projectService.getById(#id).isPresent()? @projectService.getById(#id).get().company.id.equals(#auth.companyId): true)")
     @GetMapping(value = "/get/{id}")
