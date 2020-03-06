@@ -88,6 +88,13 @@ public class InvestController implements DTOConverter<Invest, InvestDTO> {
         return ResponseEntity.ok(investmentDTOs);
     }
 
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @GetMapping(value = "/get/employee")
+    public ResponseEntity<List<InvestDTO>> getInvestmentsBySelf(@AuthenticationPrincipal EmployeeUserDetails auth) {
+        Employee employee = employeeService.getById(auth.getEmployeeId()).orElseThrow();
+        return getInvestmentsByEmployee(employee.getId(), auth);
+    }
+
     @PreAuthorize("hasRole('ROLE_USER') and (@projectService.getById(#id).isPresent() ? @projectService.getById(#id).get().company.id.equals(#auth.companyId) : true)")
     @GetMapping(value = "/all/{id}")
     public ResponseEntity<List<InvestDTO>> getInvestmentsByProject(@PathVariable long id, @AuthenticationPrincipal EmployeeUserDetails auth) {
@@ -129,6 +136,13 @@ public class InvestController implements DTOConverter<Invest, InvestDTO> {
         }
     }
 
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @GetMapping(value = "/get/project/{id}/employee")
+    public ResponseEntity<Double> getInvestmentAmountByProjectForSelf(@PathVariable long id, @AuthenticationPrincipal EmployeeUserDetails auth) {
+        Employee employee = employeeService.getById(auth.getEmployeeId()).orElseThrow();
+        return getInvestmentAmountByProjectForEmployee(id, employee.getId(), auth);
+    }
+
     @PreAuthorize("(hasRole('ROLE_USER') and (@investService.getById(#id).isPresent() ? @investService.getById(#id).get().employee.id.equals(#auth.employeeId) : true))")
     @DeleteMapping(value = "/delete/{id}")
     public ResponseEntity<String> deleteInvestment(@PathVariable long id, @AuthenticationPrincipal EmployeeUserDetails auth) {
@@ -157,6 +171,12 @@ public class InvestController implements DTOConverter<Invest, InvestDTO> {
         return ResponseEntity.ok().build();
     }
 
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @GetMapping(value = "/delete/project/{id}/employee")
+    public ResponseEntity<String> deleteInvestmentsBySelfAndProject(@PathVariable long id, @AuthenticationPrincipal EmployeeUserDetails auth) {
+        Employee employee = employeeService.getById(auth.getEmployeeId()).orElseThrow();
+        return deleteInvestmentsByEmployeeAndProject(id, employee.getId(), auth);
+    }
 
     @Override
     public InvestDTO convertToDto(Invest post) {
