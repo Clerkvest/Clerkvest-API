@@ -35,6 +35,7 @@ public class EmployeeService implements IService<Employee> {
         if (employee.getId() != null && repository.existsById(employee.getId())) {
             return employee;
         }
+        employee.setEmail(employee.getEmail().toLowerCase());
         return repository.save(employee);
     }
 
@@ -78,7 +79,7 @@ public class EmployeeService implements IService<Employee> {
     }
 
     public Optional<Employee> getByMail(String mail) {
-        return repository.getByEmail(mail);
+        return repository.getByEmailIgnoreCase(mail);
     }
 
     @Override
