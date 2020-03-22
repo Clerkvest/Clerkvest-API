@@ -19,6 +19,7 @@ import org.springframework.content.fs.config.EnableFilesystemStores;
 import org.springframework.context.annotation.*;
 import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
+import org.zalando.logbook.Logbook;
 
 import javax.sql.DataSource;
 
@@ -44,7 +45,8 @@ public class SpringConfig {
 
     @Bean
     public ModelMapper modelMapper() {
-        ModelMapper mapper = new CustomModelMapper();
+        ModelMapper mapper = new ModelMapper();
+        mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
         //Employee
         TypeMap<Employee, EmployeeDTO> employeeyMap = mapper.createTypeMap(Employee.class, EmployeeDTO.class);
         employeeyMap.addMapping(Employee::getEmployeeId, EmployeeDTO::setEmployeeId);
@@ -105,10 +107,8 @@ public class SpringConfig {
         return mapper;
     }
 
-    private static class CustomModelMapper extends ModelMapper {
-        CustomModelMapper() {
-            super();
-            this.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
-        }
+    @Bean
+    public Logbook logbook() {
+        return Logbook.create();
     }
 }
