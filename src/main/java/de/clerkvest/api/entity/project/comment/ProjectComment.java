@@ -1,5 +1,6 @@
 package de.clerkvest.api.entity.project.comment;
 
+import de.clerkvest.api.entity.audit.AuditListener;
 import de.clerkvest.api.entity.employee.Employee;
 import de.clerkvest.api.entity.project.Project;
 import de.clerkvest.api.implement.service.IServiceEntity;
@@ -29,6 +30,7 @@ import java.util.Objects;
 @Getter
 @Table(name = "project_comment")
 @Entity
+@EntityListeners(AuditListener.class)
 public class ProjectComment extends RepresentationModel<ProjectComment> implements IServiceEntity {
 
     @Id
