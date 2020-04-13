@@ -104,7 +104,7 @@
         <dependency>
             <groupId>com.github.paulcwarren</groupId>
             <artifactId>spring-content-fs-boot-starter</artifactId>
-            <version>0.7.0</version>
+            <version>0.13.0</version>
         </dependency>
         <dependency>
             <groupId>com.opentable.components</groupId>
