@@ -56,7 +56,6 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
                     new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
         }
         String bodyOfResponse = "A Error Occurred: ";
-        ex.printStackTrace();
         return handleExceptionInternal(ex, bodyOfResponse + ((TransactionSystemException) ex).getRootCause(),
                 new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
     }
