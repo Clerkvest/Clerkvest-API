@@ -32,8 +32,10 @@ public class Audit extends RepresentationModel<Audit> implements IServiceEntity 
     @NotNull
     private Long entityId;
 
+    @NotNull
     private Long employeeId;
 
+    @NotNull
     private Long companyId;
 
 
