@@ -1,6 +1,5 @@
 package de.clerkvest.api.entity.image;
 
-import de.clerkvest.api.entity.audit.AuditListener;
 import de.clerkvest.api.implement.service.IServiceEntity;
 import lombok.*;
 import org.springframework.content.commons.annotations.ContentId;
@@ -26,7 +25,6 @@ import java.util.Objects;
 @Getter
 @Table(name = "image")
 @Entity
-@EntityListeners(AuditListener.class)
 public class Image extends RepresentationModel<Image> implements IServiceEntity {
 
 

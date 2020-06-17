@@ -1,6 +1,5 @@
 package de.clerkvest.api.entity.investment;
 
-import de.clerkvest.api.entity.audit.AuditListener;
 import de.clerkvest.api.entity.employee.Employee;
 import de.clerkvest.api.entity.project.Project;
 import de.clerkvest.api.implement.service.IServiceEntity;
@@ -28,7 +27,7 @@ import java.util.Objects;
 @Getter
 @Table(name = "invest_in")
 @Entity
-@EntityListeners({InvestmentListener.class, AuditListener.class})
+@EntityListeners(InvestmentListener.class)
 public class Invest extends RepresentationModel<Invest> implements IServiceEntity {
 
     @Id

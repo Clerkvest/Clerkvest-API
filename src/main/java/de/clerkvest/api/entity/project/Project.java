@@ -1,6 +1,5 @@
 package de.clerkvest.api.entity.project;
 
-import de.clerkvest.api.entity.audit.AuditListener;
 import de.clerkvest.api.entity.company.Company;
 import de.clerkvest.api.entity.employee.Employee;
 import de.clerkvest.api.entity.image.Image;
@@ -36,7 +35,6 @@ import java.util.Objects;
 @Getter
 @Table(name = "project")
 @Entity
-@EntityListeners(AuditListener.class)
 public class Project extends RepresentationModel<Project> implements IServiceEntity {
 
     @Id

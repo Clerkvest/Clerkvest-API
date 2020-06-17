@@ -1,6 +1,5 @@
 package de.clerkvest.api.entity.employee;
 
-import de.clerkvest.api.entity.audit.AuditListener;
 import de.clerkvest.api.entity.company.Company;
 import de.clerkvest.api.entity.investment.Invest;
 import de.clerkvest.api.entity.project.Project;
@@ -34,7 +33,6 @@ import java.util.Objects;
 @Getter
 @Table(name = "employee")
 @Entity
-@EntityListeners(AuditListener.class)
 public class Employee implements IServiceEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
