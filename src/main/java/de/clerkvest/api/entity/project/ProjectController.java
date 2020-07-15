@@ -3,6 +3,7 @@ package de.clerkvest.api.entity.project;
 import de.clerkvest.api.common.hateoas.constants.HateoasLink;
 import de.clerkvest.api.common.hateoas.link.LinkBuilder;
 import de.clerkvest.api.entity.company.CompanyService;
+import de.clerkvest.api.entity.employee.Employee;
 import de.clerkvest.api.entity.employee.EmployeeService;
 import de.clerkvest.api.entity.image.Image;
 import de.clerkvest.api.entity.image.ImageService;
@@ -111,6 +112,22 @@ public class ProjectController implements DTOConverter<Project, ProjectDTO> {
                 .withSelf(HateoasLink.PROJECT_SINGLE);
         projectDTOs.forEach(linkBuilder::ifDesiredEmbed);
         return ResponseEntity.ok(projectDTOs);
+    }
+
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @GetMapping(value = "/get/employee")
+    public ResponseEntity<List<ProjectDTO>> getInvestmentsBySelf(@AuthenticationPrincipal EmployeeUserDetails auth) {
+        Optional<Employee> employee = employeeService.getById(auth.getEmployeeId());
+        if (employee.isPresent()) {
+            List<Project> projects = employee.get().getProjects();
+            List<ProjectDTO> projectDTOs = Arrays.asList(modelMapper.map(projects, ProjectDTO[].class));
+            LinkBuilder<ProjectDTO> linkBuilder = new LinkBuilder<ProjectDTO>()
+                    .withSelf(HateoasLink.PROJECT_SINGLE);
+            projectDTOs.forEach(linkBuilder::ifDesiredEmbed);
+            return ResponseEntity.ok(projectDTOs);
+        } else {
+            throw new ClerkEntityNotFoundException("Matching Employee not found");
+        }
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")
