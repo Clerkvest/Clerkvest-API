@@ -1,5 +1,6 @@
 package de.clerkvest.api.entity.company;
 
+import de.clerkvest.api.entity.audit.AuditListener;
 import de.clerkvest.api.entity.image.Image;
 import de.clerkvest.api.implement.service.IServiceEntity;
 import lombok.*;
@@ -26,6 +27,7 @@ import java.util.Objects;
 @Getter
 @Table(name = "company")
 @Entity
+@EntityListeners(AuditListener.class)
 public class Company extends RepresentationModel<Company> implements IServiceEntity {
 
 

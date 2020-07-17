@@ -37,12 +37,12 @@ public class PostInvestmentResourceTest {
     @Test
     public void postInvestment_Open_Project() {
         BigDecimal invest = BigDecimal.valueOf(5);
-        EmployeeDTO employee0 = given().header("Authorization", "Bearer exampleToken0").get(HateoasLink.EMPLOYEE_SINGLE + 1).then().statusCode(OK.value()).extract().as(EmployeeDTO.class);
-        ProjectDTO projectRest = given().header("Authorization", "Bearer exampleToken0").get(HateoasLink.PROJECT_SINGLE + 1).then().statusCode(OK.value()).extract().as(ProjectDTO.class);
+        EmployeeDTO employee0 = given().header("Authorization", "Bearer exampleToken0").get(HateoasLink.EMPLOYEE_SINGLE).then().statusCode(OK.value()).extract().as(EmployeeDTO.class);
+        ProjectDTO projectRest = given().header("Authorization", "Bearer exampleToken0").get(HateoasLink.PROJECT_SINGLE + 7).then().statusCode(OK.value()).extract().as(ProjectDTO.class);
         InvestDTO inRest = InvestDTO.builder().employeeId(employee0.getId()).investment(invest).projectId(projectRest.getId()).build();
         ValidatableResponse rest = given().header("Authorization", "Bearer exampleToken0").body(inRest).contentType(ContentType.JSON).post(REST_ENDPOINT_URL).then().statusCode(OK.value());
-        EmployeeDTO employee0changed = given().header("Authorization", "Bearer exampleToken0").get(HateoasLink.EMPLOYEE_SINGLE + 1).then().statusCode(OK.value()).extract().as(EmployeeDTO.class);
-        ProjectDTO projectRestchanged = given().header("Authorization", "Bearer exampleToken0").get(HateoasLink.PROJECT_SINGLE + 1).then().statusCode(OK.value()).extract().as(ProjectDTO.class);
+        EmployeeDTO employee0changed = given().header("Authorization", "Bearer exampleToken0").get(HateoasLink.EMPLOYEE_SINGLE).then().statusCode(OK.value()).extract().as(EmployeeDTO.class);
+        ProjectDTO projectRestchanged = given().header("Authorization", "Bearer exampleToken0").get(HateoasLink.PROJECT_SINGLE + 7).then().statusCode(OK.value()).extract().as(ProjectDTO.class);
         assertThat(employee0.getBalance().subtract(invest)).isEqualTo(employee0changed.getBalance());
         assertThat(projectRest.getInvestedIn().add(invest)).isEqualTo(projectRestchanged.getInvestedIn());
     }
