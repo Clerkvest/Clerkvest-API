@@ -2,6 +2,7 @@ package de.clerkvest.api.entity.employee;
 
 import de.clerkvest.api.entity.audit.AuditListener;
 import de.clerkvest.api.entity.company.Company;
+import de.clerkvest.api.entity.employee.settings.EmployeeSetting;
 import de.clerkvest.api.entity.investment.Invest;
 import de.clerkvest.api.entity.project.Project;
 import de.clerkvest.api.implement.service.IServiceEntity;
@@ -59,6 +60,9 @@ public class Employee implements IServiceEntity {
             orphanRemoval = true
     )
     private List<Project> projects = new ArrayList<>();
+
+    @OneToOne(mappedBy = "employee")
+    private EmployeeSetting setting;
 
     @NotNull
     @Email

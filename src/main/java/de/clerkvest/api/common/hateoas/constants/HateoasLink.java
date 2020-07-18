@@ -54,6 +54,7 @@ public class HateoasLink {
      */
     public static final String EMPLOYEE_UPDATE = BASE_ENDPOINT + "/employee/update";
 
+
     /**
      * All Investments
      */
@@ -109,4 +110,9 @@ public class HateoasLink {
      * Update Comment
      */
     public static final String PROJECT_COMMENT_UPDATE = BASE_ENDPOINT + "/comment/update";
+
+    /**
+     * Employee Setting Self
+     */
+    public static final String EMPLOYEE_SETTING_SINGLE = BASE_ENDPOINT + "settings/get/";
 }

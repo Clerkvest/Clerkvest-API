@@ -5,6 +5,8 @@ import de.clerkvest.api.entity.company.Company;
 import de.clerkvest.api.entity.company.CompanyDTO;
 import de.clerkvest.api.entity.employee.Employee;
 import de.clerkvest.api.entity.employee.EmployeeDTO;
+import de.clerkvest.api.entity.employee.settings.EmployeeSetting;
+import de.clerkvest.api.entity.employee.settings.EmployeeSettingDTO;
 import de.clerkvest.api.entity.investment.Invest;
 import de.clerkvest.api.entity.investment.InvestDTO;
 import de.clerkvest.api.entity.project.ImagedProjectDTO;
@@ -102,6 +104,12 @@ public class SpringConfig {
         projectCommentMap.addMapping(ProjectComment::getProjectCommentId, ProjectCommentDTO::setProjectCommentId);
         projectCommentMap.addMapping(src -> src.getProject().getId(), ProjectCommentDTO::setProjectId);
         projectCommentMap.addMappings(map -> map.skip(ProjectCommentDTO::setProjectCommentId));
+
+        //Employee Setting
+        TypeMap<EmployeeSetting, EmployeeSettingDTO> employeeSettingMap = mapper.createTypeMap(EmployeeSetting.class, EmployeeSettingDTO.class);
+        employeeSettingMap.addMapping(src -> src.getEmployee().getId(), EmployeeSettingDTO::setEmployeeId);
+        employeeSettingMap.addMapping(EmployeeSetting::getEmployeeSettingId, EmployeeSettingDTO::setEmployeeSettingId);
+        employeeSettingMap.addMappings(map -> map.skip(EmployeeSettingDTO::setEmployeeSettingId));
 
         mapper.validate();
         return mapper;
