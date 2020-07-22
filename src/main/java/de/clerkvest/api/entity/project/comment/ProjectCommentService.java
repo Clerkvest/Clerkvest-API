@@ -4,6 +4,8 @@ import de.clerkvest.api.exception.ClerkEntityNotFoundException;
 import de.clerkvest.api.implement.service.IService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.time.Instant;
@@ -20,6 +22,7 @@ import java.util.Optional;
  * @since 21 Dec 2019 19:12
  */
 @Service
+@Transactional(propagation = Propagation.REQUIRES_NEW)
 public class ProjectCommentService implements IService<ProjectComment> {
 
     private final ProjectCommentRepository repository;

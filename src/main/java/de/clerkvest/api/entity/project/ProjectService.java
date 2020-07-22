@@ -5,6 +5,8 @@ import de.clerkvest.api.exception.ViolatedConstraintException;
 import de.clerkvest.api.implement.service.IService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,6 +21,7 @@ import java.util.Optional;
  * @since 21 Dec 2019 19:13
  */
 @Service
+@Transactional(propagation = Propagation.REQUIRES_NEW)
 public class ProjectService implements IService<Project> {
 
     private final ProjectRepository repository;

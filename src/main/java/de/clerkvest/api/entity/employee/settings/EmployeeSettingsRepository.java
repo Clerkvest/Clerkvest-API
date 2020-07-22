@@ -5,6 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
-public interface EmployeeSettingRepository extends JpaRepository<EmployeeSetting, Long> {
-    Optional<EmployeeSetting> findByEmployee(Employee employee);
+public interface EmployeeSettingsRepository extends JpaRepository<EmployeeSettings, Long> {
+    Optional<EmployeeSettings> findByEmployee(Employee employee);
 }

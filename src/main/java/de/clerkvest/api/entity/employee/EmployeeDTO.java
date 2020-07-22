@@ -22,6 +22,7 @@ public class EmployeeDTO extends RepresentationModel<EmployeeDTO> implements ISe
     private String firstname = null;
     private String lastname = null;
     private String nickname = null;
+    private Long imageId = null;
 
     public EmployeeDTO(Employee employee) {
         employeeId = employee.getId();
@@ -212,6 +213,14 @@ public class EmployeeDTO extends RepresentationModel<EmployeeDTO> implements ISe
         this.admin = is_admin;
     }
 
+
+    public Long getImage() {
+        return imageId;
+    }
+
+    public void setImage(Long imageId) {
+        this.imageId = imageId;
+    }
 
     @Override
     public boolean equals(java.lang.Object o) {

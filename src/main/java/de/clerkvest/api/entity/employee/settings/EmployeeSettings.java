@@ -16,7 +16,7 @@ import javax.validation.constraints.NotNull;
 @Table(name = "employee_setting")
 @Entity
 @EntityListeners(AuditListener.class)
-public class EmployeeSetting implements IServiceEntity {
+public class EmployeeSettings implements IServiceEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

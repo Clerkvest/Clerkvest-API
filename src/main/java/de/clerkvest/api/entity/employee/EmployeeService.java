@@ -6,6 +6,8 @@ import de.clerkvest.api.implement.service.IService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -21,6 +23,7 @@ import java.util.UUID;
  * @since 21 Dec 2019 19:10
  */
 @Service
+@Transactional(propagation = Propagation.REQUIRES_NEW)
 public class EmployeeService implements IService<Employee> {
 
     private final EmployeeRepository repository;

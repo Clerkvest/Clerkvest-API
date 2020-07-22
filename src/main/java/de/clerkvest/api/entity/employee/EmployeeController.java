@@ -4,6 +4,8 @@ import de.clerkvest.api.common.hateoas.constants.HateoasLink;
 import de.clerkvest.api.common.hateoas.link.LinkBuilder;
 import de.clerkvest.api.entity.company.Company;
 import de.clerkvest.api.entity.company.CompanyService;
+import de.clerkvest.api.entity.image.Image;
+import de.clerkvest.api.entity.image.ImageService;
 import de.clerkvest.api.exception.ClerkEntityNotFoundException;
 import de.clerkvest.api.implement.DTOConverter;
 import de.clerkvest.api.security.EmployeeUserDetails;
@@ -37,12 +39,14 @@ public class EmployeeController implements DTOConverter<Employee, EmployeeDTO> {
     private final EmployeeService service;
     private final CompanyService companyService;
     private final ModelMapper modelMapper;
+    private final ImageService imageService;
 
     @Autowired
-    public EmployeeController(EmployeeService service, CompanyService companyService, ModelMapper modelMapper) {
+    public EmployeeController(EmployeeService service, CompanyService companyService, ModelMapper modelMapper, ImageService imageService) {
         this.service = service;
         this.companyService = companyService;
         this.modelMapper = modelMapper;
+        this.imageService = imageService;
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN') and #fresh.companyId.equals(#auth.companyId)")
@@ -136,11 +140,16 @@ public class EmployeeController implements DTOConverter<Employee, EmployeeDTO> {
                 val.setLastname(postDto.getLastname());
                 val.setBalance(postDto.getBalance());
                 val.setAdmin(postDto.isAdmin());
+                Optional<Image> frshImage = imageService.getById(postDto.getId());
+                frshImage.ifPresent(val::setImage);
                 return val;
             }
         } else {
             if (postDto.getCompanyId() != null) {
                 companyService.getById(postDto.getCompanyId()).ifPresent(post::setCompany);
+            }
+            if (postDto.getImage() != null) {
+                imageService.getById(postDto.getId()).ifPresent(post::setImage);
             }
         }
         return post;

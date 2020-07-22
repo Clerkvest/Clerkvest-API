@@ -114,5 +114,5 @@ public class HateoasLink {
     /**
      * Employee Setting Self
      */
-    public static final String EMPLOYEE_SETTING_SINGLE = BASE_ENDPOINT + "settings/get/";
+    public static final String EMPLOYEE_SETTING_SINGLE = BASE_ENDPOINT + "/settings/get/";
 }

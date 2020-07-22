@@ -5,8 +5,8 @@ import de.clerkvest.api.entity.company.Company;
 import de.clerkvest.api.entity.company.CompanyDTO;
 import de.clerkvest.api.entity.employee.Employee;
 import de.clerkvest.api.entity.employee.EmployeeDTO;
-import de.clerkvest.api.entity.employee.settings.EmployeeSetting;
-import de.clerkvest.api.entity.employee.settings.EmployeeSettingDTO;
+import de.clerkvest.api.entity.employee.settings.EmployeeSettings;
+import de.clerkvest.api.entity.employee.settings.EmployeeSettingsDTO;
 import de.clerkvest.api.entity.investment.Invest;
 import de.clerkvest.api.entity.investment.InvestDTO;
 import de.clerkvest.api.entity.project.ImagedProjectDTO;
@@ -34,10 +34,9 @@ public class SpringConfig {
     @Bean
     @Primary
     public DataSource inMemoryDS() throws Exception {
-        DataSource embeddedPostgresDS = EmbeddedPostgres.builder()
-                .start().getPostgresDatabase();
         //EmbeddedPostgresRules.preparedDatabase(FlywayPreparer.forClasspathLocation("db/migration/V1__Base_version"));
-        return embeddedPostgresDS;
+        return EmbeddedPostgres.builder()
+                .start().getPostgresDatabase();
     }
 
     @Bean
@@ -55,6 +54,7 @@ public class SpringConfig {
         employeeyMap.addMapping(Employee::isAdmin, EmployeeDTO::setIsAdmin);
         employeeyMap.addMapping(src -> src.getCompany().getId(), EmployeeDTO::setCompanyId);
         employeeyMap.addMappings(map -> map.skip(EmployeeDTO::setEmployeeId));
+        employeeyMap.addMapping(src -> src.getImage().getId(), EmployeeDTO::setImage);
 
         //Company
         TypeMap<Company, CompanyDTO> companyMap = mapper.createTypeMap(Company.class, CompanyDTO.class);
@@ -106,10 +106,10 @@ public class SpringConfig {
         projectCommentMap.addMappings(map -> map.skip(ProjectCommentDTO::setProjectCommentId));
 
         //Employee Setting
-        TypeMap<EmployeeSetting, EmployeeSettingDTO> employeeSettingMap = mapper.createTypeMap(EmployeeSetting.class, EmployeeSettingDTO.class);
-        employeeSettingMap.addMapping(src -> src.getEmployee().getId(), EmployeeSettingDTO::setEmployeeId);
-        employeeSettingMap.addMapping(EmployeeSetting::getEmployeeSettingId, EmployeeSettingDTO::setEmployeeSettingId);
-        employeeSettingMap.addMappings(map -> map.skip(EmployeeSettingDTO::setEmployeeSettingId));
+        TypeMap<EmployeeSettings, EmployeeSettingsDTO> employeeSettingMap = mapper.createTypeMap(EmployeeSettings.class, EmployeeSettingsDTO.class);
+        employeeSettingMap.addMapping(src -> src.getEmployee().getId(), EmployeeSettingsDTO::setEmployeeId);
+        employeeSettingMap.addMapping(EmployeeSettings::getEmployeeSettingId, EmployeeSettingsDTO::setEmployeeSettingId);
+        employeeSettingMap.addMappings(map -> map.skip(EmployeeSettingsDTO::setEmployeeSettingId));
 
         mapper.validate();
         return mapper;

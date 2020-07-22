@@ -7,6 +7,8 @@ import de.clerkvest.api.exception.ViolatedConstraintException;
 import de.clerkvest.api.implement.service.IService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -21,6 +23,7 @@ import java.util.Optional;
  * @since 21 Dec 2019 19:12
  */
 @Service
+@Transactional(propagation = Propagation.REQUIRES_NEW)
 public class InvestService implements IService<Invest> {
     private static final int BALANCE_SMALLER_INVESTMENT = -1;
     private final InvestRepository repository;

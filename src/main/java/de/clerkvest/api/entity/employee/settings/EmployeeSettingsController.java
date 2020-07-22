@@ -20,23 +20,23 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/settings")
 @CrossOrigin(origins = "*")
-public class EmployeeSettingController implements DTOConverter<EmployeeSetting, EmployeeSettingDTO> {
+public class EmployeeSettingsController implements DTOConverter<EmployeeSettings, EmployeeSettingsDTO> {
 
-    private final EmployeeSettingService service;
+    private final EmployeeSettingsService service;
     private final EmployeeService employeeService;
     private final ModelMapper modelMapper;
 
     @Autowired
-    public EmployeeSettingController(EmployeeSettingService service, EmployeeService employeeService, ModelMapper modelMapper) {
+    public EmployeeSettingsController(EmployeeSettingsService service, EmployeeService employeeService, ModelMapper modelMapper) {
         this.service = service;
         this.employeeService = employeeService;
         this.modelMapper = modelMapper;
     }
 
-    @PreAuthorize("hasRole('ROLE_USER') and (@employeeSettingService.getById(#id).isPresent() ? @employeeSettingService.getById(#id).get().employee.id.equals(#auth.employeeId) : true)")
+    @PreAuthorize("hasRole('ROLE_USER') and (@employeeSettingsService.getById(#id).isPresent() ? @employeeSettingsService.getById(#id).get().employee.id.equals(#auth.employeeId) : true)")
     @GetMapping(value = "/get/{id}")
-    public ResponseEntity<EmployeeSettingDTO> getSingleEmployeeSetting(@PathVariable long id, @AuthenticationPrincipal EmployeeUserDetails auth) {
-        Optional<EmployeeSetting> employeeSetting = service.getById(id);
+    public ResponseEntity<EmployeeSettingsDTO> getSingleEmployeeSetting(@PathVariable long id, @AuthenticationPrincipal EmployeeUserDetails auth) {
+        Optional<EmployeeSettings> employeeSetting = service.getById(id);
         if (employeeSetting.isPresent()) {
             return ResponseEntity.ok(convertToDto(employeeSetting.get()));
         } else {
@@ -46,40 +46,40 @@ public class EmployeeSettingController implements DTOConverter<EmployeeSetting, 
 
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping(value = "/get")
-    public ResponseEntity<EmployeeSettingDTO> getSingleEmployeeSetting(@AuthenticationPrincipal EmployeeUserDetails auth) {
+    public ResponseEntity<EmployeeSettingsDTO> getSingleEmployeeSetting(@AuthenticationPrincipal EmployeeUserDetails auth) {
         Optional<Employee> employee = employeeService.getById(auth.getEmployeeId());
         if (employee.isPresent()) {
-            EmployeeSetting employeeSetting = service.getByUser(employee.get());
-            return ResponseEntity.ok(convertToDto(employeeSetting));
+            EmployeeSettings employeeSettings = service.getByUser(employee.get());
+            return ResponseEntity.ok(convertToDto(employeeSettings));
         } else {
             throw new ClerkEntityNotFoundException("Employee not found");
         }
     }
 
-    @PreAuthorize("(hasRole('ROLE_ADMIN') and (@employeeService.getById(#updated.id).isPresent() ? @employeeService.getById(#updated.id).get().company.id.equals(#auth.companyId) : false)) or (hasRole('ROLE_USER') and #updated.id.equals(#auth.employeeId))")
+    @PreAuthorize("hasRole('ROLE_USER') and (@employeeSettingsService.getById(#updated.id).isPresent() ? @employeeSettingsService.getById(#updated.id).get().employee.id.equals(#auth.employeeId) : true)")
     @PutMapping(value = "/update")
-    public ResponseEntity<EmployeeSettingDTO> updatedEmployeeSetting(@Valid @RequestBody EmployeeSettingDTO updated, @AuthenticationPrincipal EmployeeUserDetails auth) {
-        EmployeeSetting converted = convertToEntity(updated);
+    public ResponseEntity<EmployeeSettingsDTO> updatedEmployeeSetting(@Valid @RequestBody EmployeeSettingsDTO updated, @AuthenticationPrincipal EmployeeUserDetails auth) {
+        EmployeeSettings converted = convertToEntity(updated);
         return ResponseEntity.ok().body(convertToDto(service.update(converted)));
     }
 
     @Override
-    public EmployeeSettingDTO convertToDto(EmployeeSetting post) {
-        EmployeeSettingDTO postDto = modelMapper.map(post, EmployeeSettingDTO.class);
-        LinkBuilder<EmployeeSettingDTO> linkBuilder = new LinkBuilder<EmployeeSettingDTO>()
+    public EmployeeSettingsDTO convertToDto(EmployeeSettings post) {
+        EmployeeSettingsDTO postDto = modelMapper.map(post, EmployeeSettingsDTO.class);
+        LinkBuilder<EmployeeSettingsDTO> linkBuilder = new LinkBuilder<EmployeeSettingsDTO>()
                 .withSelf(HateoasLink.EMPLOYEE_SETTING_SINGLE);
         linkBuilder.ifDesiredEmbed(postDto);
         return postDto;
     }
 
     @Override
-    public EmployeeSetting convertToEntity(EmployeeSettingDTO postDto) {
-        EmployeeSetting post = modelMapper.map(postDto, EmployeeSetting.class);
+    public EmployeeSettings convertToEntity(EmployeeSettingsDTO postDto) {
+        EmployeeSettings post = modelMapper.map(postDto, EmployeeSettings.class);
         if (postDto.getId() != null && postDto.getId() != -1) {
-            Optional<EmployeeSetting> oldPost = service.getById(postDto.getId());
+            Optional<EmployeeSettings> oldPost = service.getById(postDto.getId());
             if (oldPost.isPresent()) {
-                EmployeeSetting val = oldPost.get();
-                val.setNotificationProjectNearlyFunded(postDto.isNotificationProjectFunded());
+                EmployeeSettings val = oldPost.get();
+                val.setNotificationProjectFunded(postDto.isNotificationProjectFunded());
                 val.setNotificationProjectComment(postDto.isNotificationProjectComment());
                 val.setNotificationProjectAvailable(postDto.isNotificationProjectAvailable());
                 val.setNotificationProjectNearlyFunded(postDto.isNotificationProjectNearlyFunded());

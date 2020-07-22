@@ -17,6 +17,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import de.clerkvest.api.implement.service.IServiceEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.NoArgsConstructor;
 import org.springframework.hateoas.RepresentationModel;
 
 import java.math.BigDecimal;
@@ -27,6 +28,7 @@ import java.util.Objects;
  */
 @Builder
 @AllArgsConstructor
+@NoArgsConstructor
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaJerseyServerCodegen", date = "2019-04-26T13:56:04.987Z")
 @JsonIgnoreProperties(value = {"investId"}, ignoreUnknown = true)
 public class InvestDTO extends RepresentationModel<InvestDTO> implements IServiceEntity {
@@ -37,17 +39,6 @@ public class InvestDTO extends RepresentationModel<InvestDTO> implements IServic
     private Long employeeId;
 
     private BigDecimal investment = null;
-
-    public InvestDTO() {
-
-    }
-
-    public InvestDTO(Invest investIn) {
-        investId = investIn.getId();
-        projectId = investIn.getProject().getId();
-        employeeId = investIn.getEmployee().getId();
-        investment = investIn.getInvestment();
-    }
 
     public InvestDTO investInId(Long investInId) {
         this.investId = investInId;

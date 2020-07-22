@@ -2,6 +2,8 @@ package de.clerkvest.api.entity.image;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -18,6 +20,7 @@ import java.util.Optional;
  * @since 21 Dec 2019 19:11
  */
 @Service
+@Transactional(propagation = Propagation.REQUIRES_NEW)
 public class ImageService {
 
     private final ImageRepository repository;

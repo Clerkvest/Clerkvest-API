@@ -81,7 +81,10 @@ public class InvestController implements DTOConverter<Invest, InvestDTO> {
     @GetMapping(value = "/get/employee/{id}")
     public ResponseEntity<List<InvestDTO>> getInvestmentsByEmployee(@PathVariable long id, @AuthenticationPrincipal EmployeeUserDetails auth) {
         Optional<List<Invest>> investments = service.getByEmployeeId(id);
-        List<InvestDTO> investmentDTOs = Arrays.asList(modelMapper.map(investments, InvestDTO[].class));
+        if (investments.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        List<InvestDTO> investmentDTOs = Arrays.asList(modelMapper.map(investments.get(), InvestDTO[].class));
         LinkBuilder<InvestDTO> linkBuilder = new LinkBuilder<InvestDTO>()
                 .withSelf(HateoasLink.INVEST_SINGLE);
         investmentDTOs.forEach(linkBuilder::ifDesiredEmbed);

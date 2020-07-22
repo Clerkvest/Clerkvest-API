@@ -2,6 +2,8 @@ package de.clerkvest.api.entity.image;
 
 import de.clerkvest.api.entity.company.Company;
 import de.clerkvest.api.entity.company.CompanyService;
+import de.clerkvest.api.entity.employee.Employee;
+import de.clerkvest.api.entity.employee.EmployeeService;
 import de.clerkvest.api.entity.project.Project;
 import de.clerkvest.api.entity.project.ProjectService;
 import de.clerkvest.api.exception.ClerkEntityNotFoundException;
@@ -37,12 +39,14 @@ public class ImageController {
     private final ImageService service;
     private final CompanyService companyService;
     private final ProjectService projectService;
+    private final EmployeeService employeeService;
 
     @Autowired
-    public ImageController(ImageService service, CompanyService companyService, ProjectService projectService) {
+    public ImageController(ImageService service, CompanyService companyService, ProjectService projectService, EmployeeService employeeService) {
         this.service = service;
         this.companyService = companyService;
         this.projectService = projectService;
+        this.employeeService = employeeService;
     }
 
 
@@ -78,6 +82,24 @@ public class ImageController {
             projectService.update(present);
         }, () -> {
             throw new ClerkEntityNotFoundException("Project not found");
+        });
+        return ResponseEntity.ok().body(image.getId());
+    }
+
+    @PreAuthorize("hasRole('ROLE_USER') and (@employeeService.getById(#id).isPresent() ? @employeeService.getById(#id).get().id.equals(#auth.employeeId) : true)")
+    @PostMapping(value = "/create/employee/{id}")
+    public ResponseEntity<Long> createEmployeeImage(@RequestParam(value = "file") MultipartFile file, @PathVariable Long id, @AuthenticationPrincipal EmployeeUserDetails auth) throws IOException {
+        Image image = service.addImage(file);
+        Optional<Employee> employee = employeeService.getById(id);
+        employee.ifPresentOrElse(present -> {
+            Image oldImage = present.getImage();
+            if (oldImage != null) {
+                service.delete(oldImage);
+            }
+            present.setImage(image);
+            employeeService.update(present);
+        }, () -> {
+            throw new ClerkEntityNotFoundException("Employee not found");
         });
         return ResponseEntity.ok().body(image.getId());
     }

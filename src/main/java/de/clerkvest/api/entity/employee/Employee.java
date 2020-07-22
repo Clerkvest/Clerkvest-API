@@ -2,7 +2,8 @@ package de.clerkvest.api.entity.employee;
 
 import de.clerkvest.api.entity.audit.AuditListener;
 import de.clerkvest.api.entity.company.Company;
-import de.clerkvest.api.entity.employee.settings.EmployeeSetting;
+import de.clerkvest.api.entity.employee.settings.EmployeeSettings;
+import de.clerkvest.api.entity.image.Image;
 import de.clerkvest.api.entity.investment.Invest;
 import de.clerkvest.api.entity.project.Project;
 import de.clerkvest.api.implement.service.IServiceEntity;
@@ -62,7 +63,11 @@ public class Employee implements IServiceEntity {
     private List<Project> projects = new ArrayList<>();
 
     @OneToOne(mappedBy = "employee")
-    private EmployeeSetting setting;
+    private EmployeeSettings setting;
+
+    @OneToOne(targetEntity = Image.class, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "image_id")
+    private Image image;
 
     @NotNull
     @Email
@@ -140,12 +145,19 @@ public class Employee implements IServiceEntity {
 
     @Override
     public String toString() {
-        try {
-            return new com.fasterxml.jackson.databind.ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(this);
-        } catch (com.fasterxml.jackson.core.JsonProcessingException e) {
-            e.printStackTrace();
-        }
-        return null;
+        return "Employee{" +
+                "employeeId=" + employeeId +
+                ", company=" + company +
+                ", setting=" + setting +
+                ", email='" + email + '\'' +
+                ", balance=" + balance +
+                ", token='" + token + '\'' +
+                ", loginToken='" + loginToken + '\'' +
+                ", firstname='" + firstname + '\'' +
+                ", lastname='" + lastname + '\'' +
+                ", nickname='" + nickname + '\'' +
+                ", isAdmin=" + isAdmin +
+                '}';
     }
 
     @Override

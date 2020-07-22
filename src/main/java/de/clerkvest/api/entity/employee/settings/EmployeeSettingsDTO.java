@@ -11,7 +11,7 @@ import java.util.Objects;
 @Builder
 @AllArgsConstructor
 @JsonIgnoreProperties(value = {"employeeSettingId"}, ignoreUnknown = true)
-public class EmployeeSettingDTO extends RepresentationModel<EmployeeSettingDTO> implements IServiceEntity {
+public class EmployeeSettingsDTO extends RepresentationModel<EmployeeSettingsDTO> implements IServiceEntity {
     private Long employeeSettingId;
     private Long employeeId;
 
@@ -23,16 +23,16 @@ public class EmployeeSettingDTO extends RepresentationModel<EmployeeSettingDTO> 
 
     private boolean notificationProjectNearlyFunded;
 
-    public EmployeeSettingDTO(EmployeeSetting employeeSetting) {
-        employeeSettingId = employeeSetting.getId();
-        employeeId = employeeSetting.getEmployee().getId();
-        notificationProjectFunded = employeeSetting.isNotificationProjectFunded();
-        notificationProjectComment = employeeSetting.isNotificationProjectComment();
-        notificationProjectAvailable = employeeSetting.isNotificationProjectAvailable();
-        notificationProjectNearlyFunded = employeeSetting.isNotificationProjectNearlyFunded();
+    public EmployeeSettingsDTO(EmployeeSettings employeeSettings) {
+        employeeSettingId = employeeSettings.getId();
+        employeeId = employeeSettings.getEmployee().getId();
+        notificationProjectFunded = employeeSettings.isNotificationProjectFunded();
+        notificationProjectComment = employeeSettings.isNotificationProjectComment();
+        notificationProjectAvailable = employeeSettings.isNotificationProjectAvailable();
+        notificationProjectNearlyFunded = employeeSettings.isNotificationProjectNearlyFunded();
     }
 
-    public EmployeeSettingDTO() {
+    public EmployeeSettingsDTO() {
 
     }
 
@@ -99,7 +99,7 @@ public class EmployeeSettingDTO extends RepresentationModel<EmployeeSettingDTO> 
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
-        EmployeeSettingDTO that = (EmployeeSettingDTO) o;
+        EmployeeSettingsDTO that = (EmployeeSettingsDTO) o;
         return notificationProjectFunded == that.notificationProjectFunded &&
                 notificationProjectComment == that.notificationProjectComment &&
                 notificationProjectAvailable == that.notificationProjectAvailable &&
