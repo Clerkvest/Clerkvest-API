@@ -1,13 +1,16 @@
 package de.clerkvest.api.entity.investment;
 
+import de.clerkvest.api.entity.SendNotificationsService;
 import de.clerkvest.api.entity.employee.Employee;
 import de.clerkvest.api.entity.project.Project;
 import de.clerkvest.api.exception.ViolatedConstraintException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.PrePersist;
 import javax.persistence.PreRemove;
 import javax.persistence.PreUpdate;
+import java.math.RoundingMode;
 import java.time.LocalDateTime;
 
 @Component
@@ -22,6 +25,13 @@ public class InvestmentListener {
         this.employeeService = employeeService;
     }*/
 
+    private SendNotificationsService sendNotificationsService;
+
+    @Autowired
+    public void setMyService(SendNotificationsService sendNotificationsService) {
+        this.sendNotificationsService = sendNotificationsService;
+    }
+
     @PrePersist
     void preCreate(Invest invest) {
         Project project = invest.getProject();
@@ -30,6 +40,10 @@ public class InvestmentListener {
             if (project.getInvestedIn().equals(project.getGoal())) {
                 project.setReached(true);
                 project.setFundedAt(LocalDateTime.now());
+            }
+            if (!project.isReached() && project.getInvestedIn().divide(project.getGoal(), RoundingMode.DOWN).intValue() >= 80) {
+                //80% Funded send notification
+                sendNotificationsService.projectNearlyFunded(project.getEmployee(), project);
             }
         }
         Employee employee = invest.getEmployee();
